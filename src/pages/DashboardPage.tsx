@@ -1,8 +1,9 @@
-
 import { Layout } from "@/components/layout/Layout";
 import { RestaurantSelector } from "@/components/dashboard/RestaurantSelector";
 import { StatCard } from "@/components/dashboard/StatCard";
 import { ChartCard, NuaLineChart, NuaBarChart, NuaPieChart } from "@/components/dashboard/Chart";
+import { MonthlyNotes } from "@/components/dashboard/MonthlyNotes";
+import { SecondaryMetrics } from "@/components/dashboard/SecondaryMetrics";
 import { 
   Tabs, TabsContent, TabsList, TabsTrigger 
 } from "@/components/ui/tabs";
@@ -12,7 +13,6 @@ import {
   BarChart2, Percent, Target, AlertTriangle
 } from "lucide-react";
 
-// Mock data for charts
 const salesData = [
   { name: "Ene", ventas: 12000 },
   { name: "Feb", ventas: 14000 },
@@ -41,10 +41,9 @@ const expensesData = [
 ];
 
 export default function DashboardPage() {
-  // Mock data for current month
   const monthlyGoal = 15000;
   const currentSales = 12000;
-  const isBelow = currentSales < 9500; // Punto de equilibrio
+  const isBelow = currentSales < 9500;
 
   return (
     <Layout>
@@ -147,16 +146,9 @@ export default function DashboardPage() {
                 </ChartCard>
               </div>
               <div className="col-span-3 md:col-span-1">
-                <ChartCard title="Distribución de Gastos" subtitle="Mes actual">
-                  <NuaPieChart 
-                    data={expensesData} 
-                    dataKey="value" 
-                    nameKey="name" 
-                    colors={["#02B1C4", "#FF4797", "#FFCE85", "#364F6B"]}
-                  />
-                </ChartCard>
+                <MonthlyNotes />
               </div>
-              <div className="col-span-3">
+              <div className="col-span-3 md:col-span-2">
                 <ChartCard title="Clientes por Día" subtitle="Últimos 7 días">
                   <NuaBarChart 
                     data={clientsData} 
@@ -164,6 +156,9 @@ export default function DashboardPage() {
                     barColor="#FF4797"
                   />
                 </ChartCard>
+              </div>
+              <div className="col-span-3 md:col-span-1">
+                <SecondaryMetrics />
               </div>
             </div>
           </TabsContent>

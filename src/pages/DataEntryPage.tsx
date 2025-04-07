@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
@@ -6,6 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { CommentField } from "@/components/data-entry/CommentField";
 import {
   Select,
   SelectContent,
@@ -27,6 +27,8 @@ import { useToast } from "@/hooks/use-toast";
 
 export default function DataEntryPage() {
   const [date, setDate] = useState<Date | undefined>(new Date());
+  const [salesComment, setSalesComment] = useState("");
+  const [expenseComment, setExpenseComment] = useState("");
   const { toast } = useToast();
 
   const handleSave = () => {
@@ -140,14 +142,13 @@ export default function DataEntryPage() {
                     </div>
                   </div>
                   
-                  <div className="space-y-2">
-                    <Label htmlFor="notes">Notas</Label>
-                    <textarea 
-                      id="notes" 
-                      className="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                      placeholder="Información adicional sobre las ventas"
-                    />
-                  </div>
+                  <CommentField
+                    id="sales-notes"
+                    value={salesComment}
+                    onChange={setSalesComment}
+                    label="Comentarios sobre las ventas"
+                    placeholder="Ej: Semana Santa aumentó ingresos, promoción especial, etc."
+                  />
                   
                   <Button onClick={handleSave} className="w-full md:w-auto">
                     <Save className="mr-2 h-4 w-4" /> Guardar
@@ -250,14 +251,13 @@ export default function DataEntryPage() {
                     </div>
                   </div>
                   
-                  <div className="space-y-2">
-                    <Label htmlFor="expense-notes">Descripción</Label>
-                    <textarea 
-                      id="expense-notes" 
-                      className="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                      placeholder="Descripción del gasto"
-                    />
-                  </div>
+                  <CommentField
+                    id="expense-notes"
+                    value={expenseComment}
+                    onChange={setExpenseComment}
+                    label="Comentarios sobre los gastos"
+                    placeholder="Ej: Gasto extraordinario, compra semestral, etc."
+                  />
                   
                   <Button onClick={handleSave} className="w-full md:w-auto">
                     <Save className="mr-2 h-4 w-4" /> Guardar
