@@ -11,6 +11,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { cn } from "@/lib/utils";
 
 export function Header() {
   const [selectedRestaurant, setSelectedRestaurant] = useState("Mi Restaurante");
@@ -19,7 +20,7 @@ export function Header() {
   return (
     <header className="h-16 px-4 flex items-center justify-between border-b bg-background sticky top-0 z-10 shadow-sm">
       <div className="flex items-center md:ml-64 transition-all duration-300">
-        <div className="hidden md:flex items-center mr-4">
+        <div className="flex items-center mr-4">
           <img 
             src="/lovable-uploads/b59e57f7-7256-4917-a532-2863925ef4f1.png" 
             alt="NÜA Logo" 
