@@ -250,7 +250,7 @@ export const LoginForm = () => {
         <CardFooter className="flex flex-col space-y-4">
           <Button
             type="submit"
-            className="w-full"
+            className="w-full bg-gradient-to-r from-[#02f2d2] to-[#02b1c4] hover:from-[#02b1c4] hover:to-[#02f2d2]"
             disabled={isLoading}
           >
             {isLoading ? (
