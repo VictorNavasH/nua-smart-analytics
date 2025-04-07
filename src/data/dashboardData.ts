@@ -33,3 +33,29 @@ export const financeConstants = {
   currentSales: 12000,
   breakEvenPoint: 9500,
 };
+
+// New data for enhanced dashboard
+
+export const salesVsGoalsData = [
+  { name: "Ene", actual: 12000, goal: 13000 },
+  { name: "Feb", actual: 14000, goal: 13500 },
+  { name: "Mar", actual: 13000, goal: 14000 },
+  { name: "Abr", actual: 15000, goal: 14500 },
+  { name: "May", actual: 17000, goal: 15000 },
+  { name: "Jun", actual: 16000, goal: 15500 },
+];
+
+export const categoryRevenueData = [
+  { name: "Comidas", value: 7800, change: 12.5, color: "#02B1C4" },
+  { name: "Bebidas", value: 5600, change: 8.3, color: "#FF4797" },
+  { name: "Postres", value: 2400, change: -3.2, color: "#FFCE85" },
+  { name: "Extras", value: 1200, change: 15.7, color: "#364F6B" },
+];
+
+export const customerLoyaltyData = {
+  retentionRate: 78,
+  previousRate: 72,
+  repeatVisits: 3.2,
+  previousVisits: 2.8,
+  trend: 8.3
+};

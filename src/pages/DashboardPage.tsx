@@ -10,7 +10,10 @@ import { DashboardTabs } from "@/components/dashboard/DashboardTabs";
 import { useDashboardAlerts } from "@/hooks/useDashboardAlerts";
 import { useDashboardSettings } from "@/hooks/useDashboardSettings";
 import { useDateRange } from "@/hooks/useDateRange";
-import { salesData, clientsData, expensesData, financeConstants } from "@/data/dashboardData";
+import { 
+  salesData, clientsData, expensesData, financeConstants, 
+  salesVsGoalsData, categoryRevenueData, customerLoyaltyData 
+} from "@/data/dashboardData";
 
 export default function DashboardPage() {
   const { settings, setSettings } = useDashboardSettings();
@@ -55,13 +58,16 @@ export default function DashboardPage() {
         <StatsSection 
           currentSales={financeConstants.currentSales} 
           monthlyGoal={financeConstants.monthlyGoal} 
-          showProgressBars={settings.showProgressBars} 
+          showProgressBars={settings.showProgressBars}
+          customerLoyalty={customerLoyaltyData}
         />
         
         <ChartsSection 
           salesData={salesData}
           clientsData={clientsData}
           expensesData={expensesData}
+          salesVsGoalsData={salesVsGoalsData}
+          categoryRevenueData={categoryRevenueData}
           showMonthlyNotes={settings.showMonthlyNotes}
           showSecondaryMetrics={settings.showSecondaryMetrics}
           showExpensesChart={settings.showExpensesChart}

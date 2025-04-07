@@ -2,19 +2,25 @@
 import { StatCard } from "@/components/dashboard/StatCard";
 import { 
   CreditCard, DollarSign, Users, TrendingUp, 
-  Percent, Target
+  Percent, Target, Heart
 } from "lucide-react";
 
 interface StatsSectionProps {
   currentSales: number;
   monthlyGoal: number;
   showProgressBars: boolean;
+  customerLoyalty?: {
+    retentionRate: number;
+    previousRate: number;
+    trend: number;
+  };
 }
 
 export function StatsSection({ 
   currentSales, 
   monthlyGoal, 
-  showProgressBars 
+  showProgressBars,
+  customerLoyalty
 }: StatsSectionProps) {
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
@@ -47,6 +53,20 @@ export function StatsSection({
           colorClass="#FFCE85/10"
         />
       </div>
+      {customerLoyalty && (
+        <div className="col-span-2">
+          <StatCard 
+            title="Fidelidad de Clientes" 
+            value={`${customerLoyalty.retentionRate}%`} 
+            trend={customerLoyalty.trend} 
+            icon={<Heart className="h-5 w-5 text-red-500" />}
+            colorClass="rgba(239, 68, 68, 0.1)"
+            progress={showProgressBars ? customerLoyalty.retentionRate : undefined}
+            progressMax={100}
+            showProgressBar={showProgressBars}
+          />
+        </div>
+      )}
       <div className="col-span-2">
         <StatCard 
           title="Margen Neto" 
