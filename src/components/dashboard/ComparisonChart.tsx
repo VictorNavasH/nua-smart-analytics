@@ -17,10 +17,10 @@ interface ComparisonChartProps {
 export function ComparisonChart({ data, title, subtitle }: ComparisonChartProps) {
   return (
     <ChartCard title={title} subtitle={subtitle}>
-      <ResponsiveContainer width="100%" height={300}>
+      <ResponsiveContainer width="100%" height="100%" minHeight={350}>
         <BarChart
           data={data}
-          margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+          margin={{ top: 20, right: 30, left: 20, bottom: 20 }}
         >
           <CartesianGrid strokeDasharray="3 3" stroke="#eee" />
           <XAxis dataKey="name" />
