@@ -43,11 +43,7 @@ export function MobileSidebar({ navItems }: MobileSidebarProps) {
       >
         <div className="flex h-16 items-center border-b px-4">
           <Link to="/" className="flex items-center" onClick={() => toggleExpanded()}>
-            <img
-              src="/lovable-uploads/7f140b8e-4327-4848-b1f0-b992cb671c52.png"
-              alt="NÜA Logo"
-              className="h-8 w-auto"
-            />
+            <span className="font-semibold text-lg">NÜA</span>
           </Link>
           <div className="flex-1"></div>
           <button

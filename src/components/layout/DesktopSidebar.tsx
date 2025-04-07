@@ -35,17 +35,9 @@ export function DesktopSidebar({ navItems }: DesktopSidebarProps) {
       <div className="flex h-16 items-center border-b px-4">
         <Link to="/" className="flex items-center">
           {expanded ? (
-            <img
-              src="/lovable-uploads/7f140b8e-4327-4848-b1f0-b992cb671c52.png"
-              alt="NÜA Logo"
-              className="h-8 w-auto"
-            />
+            <span className="font-semibold text-lg">NÜA</span>
           ) : (
-            <img
-              src="/lovable-uploads/03330604-0926-4f80-9923-9ed3f0b9c399.png"
-              alt="NÜA"
-              className="h-8 w-8 rounded-md"
-            />
+            <span className="font-semibold text-lg">N</span>
           )}
         </Link>
         <div className="flex-1"></div>
