@@ -48,6 +48,19 @@ export type AIPrediction = {
   created_at?: string;
 };
 
+export type SmartForecast = {
+  id: string;
+  restaurant_id: string;
+  date: string;
+  daily_forecast: number;
+  weekly_forecast: number;
+  monthly_forecast: number;
+  is_holiday: boolean;
+  confidence_score: number;
+  previous_period_comparison: number;
+  created_at?: string;
+};
+
 export type Database = {
   public: {
     Tables: {
@@ -75,6 +88,11 @@ export type Database = {
         Row: AIPrediction;
         Insert: Omit<AIPrediction, "id" | "created_at">;
         Update: Partial<Omit<AIPrediction, "id" | "created_at">>;
+      };
+      smart_forecasts: {
+        Row: SmartForecast;
+        Insert: Omit<SmartForecast, "id" | "created_at">;
+        Update: Partial<Omit<SmartForecast, "id" | "created_at">>;
       };
     };
   };

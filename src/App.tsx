@@ -9,6 +9,7 @@ import ProjectionsPage from "@/pages/ProjectionsPage";
 import ProfilePage from "@/pages/ProfilePage";
 import AuthPage from "@/pages/AuthPage";
 import RestaurantsPage from "@/pages/RestaurantsPage";
+import SmartForecastPage from "@/pages/SmartForecastPage";
 import NotFound from "@/pages/NotFound";
 import { Toaster } from "@/components/ui/toast-notification";
 import { Loader } from "lucide-react";
@@ -67,6 +68,12 @@ function App() {
             <Route path="/dashboard" element={
               <ProtectedRoute>
                 <DashboardPage />
+              </ProtectedRoute>
+            } />
+            
+            <Route path="/smart-forecast" element={
+              <ProtectedRoute>
+                <SmartForecastPage />
               </ProtectedRoute>
             } />
             

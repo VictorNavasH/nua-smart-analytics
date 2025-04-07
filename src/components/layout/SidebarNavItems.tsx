@@ -6,7 +6,8 @@ import {
   TrendingUp, 
   UserCog, 
   Building, 
-  Receipt
+  Receipt,
+  LineChart
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 
@@ -16,6 +17,7 @@ export function useSidebarNavItems() {
   const navItems = [
     { name: "Inicio", href: "/", icon: HomeIcon },
     { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
+    { name: "Smart Forecast", href: "/smart-forecast", icon: LineChart },
   ];
   
   // Solo administradores y managers pueden ver estas opciones
@@ -44,6 +46,7 @@ export function useSidebarNavItems() {
 export const navItems = [
   { name: "Inicio", href: "/", icon: HomeIcon },
   { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
+  { name: "Smart Forecast", href: "/smart-forecast", icon: LineChart },
   { name: "Carga de Datos", href: "/data-entry", icon: ClipboardList },
   { name: "Proyecciones", href: "/projections", icon: TrendingUp },
   { name: "Restaurantes", href: "/restaurants", icon: Building },
