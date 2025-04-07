@@ -1,42 +1,35 @@
 
 import { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { Menu } from "lucide-react";
-import { useSidebar } from "./SidebarContext";
 import { DesktopSidebar } from "./DesktopSidebar";
 import { MobileSidebar } from "./MobileSidebar";
+import { useSidebarNavItems } from "./SidebarNavItems";
 
-export function Sidebar() {
-  const { expanded, setExpanded } = useSidebar();
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const location = useLocation();
-  
-  const toggleSidebar = () => setExpanded(!expanded);
-  const toggleMobileSidebar = () => setMobileOpen(!mobileOpen);
+interface SidebarProps {}
 
-  // Cerrar el sidebar móvil al cambiar de ruta
+export function Sidebar(props: SidebarProps) {
+  const [isMobile, setIsMobile] = useState(false);
+  const navItems = useSidebarNavItems();
+
   useEffect(() => {
-    setMobileOpen(false);
-  }, [location.pathname]);
+    const checkIfMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
 
-  return (
-    <>
-      {/* Mobile menu button */}
-      <Button
-        variant="outline"
-        size="icon"
-        onClick={toggleMobileSidebar}
-        className="fixed top-4 left-4 z-50 md:hidden"
-      >
-        <Menu className="h-4 w-4" />
-      </Button>
+    // Verificar al montar
+    checkIfMobile();
 
-      {/* Desktop sidebar */}
-      <DesktopSidebar expanded={expanded} toggleSidebar={toggleSidebar} />
+    // Añadir listener
+    window.addEventListener("resize", checkIfMobile);
 
-      {/* Mobile sidebar */}
-      <MobileSidebar mobileOpen={mobileOpen} toggleMobileSidebar={toggleMobileSidebar} />
-    </>
+    // Limpiar al desmontar
+    return () => {
+      window.removeEventListener("resize", checkIfMobile);
+    };
+  }, []);
+
+  return isMobile ? (
+    <MobileSidebar navItems={navItems} />
+  ) : (
+    <DesktopSidebar navItems={navItems} />
   );
 }

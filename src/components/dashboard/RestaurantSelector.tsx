@@ -16,9 +16,10 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { getRestaurants } from "@/lib/supabase/restaurants";
-import { Restaurant } from "@/lib/supabase/types";
 import { useToast } from "@/hooks/use-toast";
 import { useRestaurantStore } from "@/stores/restaurantStore";
+import { useAuth } from "@/contexts/AuthContext";
+import type { Restaurant } from "@/lib/supabase/auth";
 
 export function RestaurantSelector() {
   const [open, setOpen] = useState(false);
@@ -26,12 +27,32 @@ export function RestaurantSelector() {
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
   const { selectedRestaurant, setSelectedRestaurant } = useRestaurantStore();
+  const { profile, isAdmin } = useAuth();
 
   useEffect(() => {
     const fetchRestaurants = async () => {
       try {
         setLoading(true);
-        const data = await getRestaurants();
+        let data: Restaurant[] = [];
+        
+        // Si el usuario es administrador, cargar todos los restaurantes
+        if (isAdmin) {
+          const result = await getRestaurants();
+          data = result as unknown as Restaurant[];
+        } 
+        // Si no es admin pero tiene un restaurante asignado, solo mostrar ese
+        else if (profile?.restaurante_id) {
+          const { data: restaurantData, error } = await supabase
+            .from('restaurantes')
+            .select('*')
+            .eq('id', profile.restaurante_id)
+            .single();
+            
+          if (!error) {
+            data = [restaurantData as Restaurant];
+          }
+        }
+        
         setRestaurants(data);
         
         // Si no hay restaurante seleccionado y hay restaurantes disponibles
@@ -51,7 +72,7 @@ export function RestaurantSelector() {
     };
 
     fetchRestaurants();
-  }, []);
+  }, [profile, isAdmin]);
 
   const handleSelectRestaurant = (restaurant: Restaurant) => {
     setSelectedRestaurant(restaurant);
@@ -79,6 +100,20 @@ export function RestaurantSelector() {
     );
   }
 
+  // Si el usuario no es admin y solo tiene un restaurante, mostrar sin selector
+  if (!isAdmin && restaurants.length === 1) {
+    return (
+      <Button
+        variant="outline"
+        className="w-[200px] justify-start pointer-events-none"
+        disabled
+      >
+        <StoreIcon className="mr-2 h-4 w-4" />
+        {restaurants[0].nombre}
+      </Button>
+    );
+  }
+
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
@@ -91,7 +126,7 @@ export function RestaurantSelector() {
           {selectedRestaurant ? (
             <>
               <StoreIcon className="mr-2 h-4 w-4" />
-              {selectedRestaurant.name}
+              {selectedRestaurant.nombre}
             </>
           ) : (
             <>
@@ -110,7 +145,7 @@ export function RestaurantSelector() {
             {restaurants.map((restaurant) => (
               <CommandItem
                 key={restaurant.id}
-                value={restaurant.name}
+                value={restaurant.nombre}
                 onSelect={() => handleSelectRestaurant(restaurant)}
               >
                 <Check
@@ -121,7 +156,7 @@ export function RestaurantSelector() {
                       : "opacity-0"
                   )}
                 />
-                {restaurant.name}
+                {restaurant.nombre}
               </CommandItem>
             ))}
           </CommandGroup>

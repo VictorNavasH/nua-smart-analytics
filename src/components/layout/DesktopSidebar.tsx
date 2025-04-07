@@ -1,85 +1,102 @@
 
 import { Link, useLocation } from "react-router-dom";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { navItems } from "./SidebarNavItems";
+import { Button } from "@/components/ui/button";
+import { useSidebar } from "./SidebarContext";
+import { useAuth } from "@/contexts/AuthContext";
 
-interface DesktopSidebarProps {
-  expanded: boolean;
-  toggleSidebar: () => void;
+interface SidebarNavItem {
+  name: string;
+  href: string;
+  icon: React.ElementType;
 }
 
-export function DesktopSidebar({ expanded, toggleSidebar }: DesktopSidebarProps) {
+interface DesktopSidebarProps {
+  navItems: SidebarNavItem[];
+}
+
+export function DesktopSidebar({ navItems }: DesktopSidebarProps) {
+  const { expanded, toggleExpanded } = useSidebar();
   const location = useLocation();
+  const { user } = useAuth();
+
+  // Si el usuario no está autenticado, no mostrar el sidebar
+  if (!user) {
+    return null;
+  }
 
   return (
     <aside
       className={cn(
-        "hidden md:flex flex-col h-screen bg-sidebar text-sidebar-foreground transition-all duration-300 fixed z-30 top-0 left-0 border-r border-sidebar-border shadow-md",
+        "fixed inset-y-0 left-0 z-20 flex h-full flex-col border-r bg-background transition-all duration-300 ease-in-out",
         expanded ? "w-64" : "w-16"
       )}
     >
-      <div className="flex items-center justify-between p-4 h-16 border-b border-sidebar-border">
-        {expanded ? (
-          <div className="flex items-center">
-            <img 
-              src="/lovable-uploads/03330604-0926-4f80-9923-9ed3f0b9c399.png" 
-              alt="NÜA Smart Analytics Logo" 
-              className="h-[34px] w-auto" 
+      <div className="flex h-16 items-center border-b px-4">
+        <Link to="/" className="flex items-center">
+          {expanded ? (
+            <img
+              src="/lovable-uploads/7f140b8e-4327-4848-b1f0-b992cb671c52.png"
+              alt="NÜA Logo"
+              className="h-8 w-auto"
             />
-          </div>
-        ) : (
-          <div className="flex-1"></div>
-        )}
+          ) : (
+            <img
+              src="/lovable-uploads/03330604-0926-4f80-9923-9ed3f0b9c399.png"
+              alt="NÜA"
+              className="h-8 w-8 rounded-md"
+            />
+          )}
+        </Link>
+        <div className="flex-1"></div>
         <Button
           variant="ghost"
           size="icon"
-          onClick={toggleSidebar}
-          className={cn(
-            "text-sidebar-foreground hover:text-white hover:bg-sidebar-accent transition-all duration-300",
-            expanded ? "ml-auto" : "mx-auto"
-          )}
+          className="h-8 w-8"
+          onClick={toggleExpanded}
         >
-          {expanded ? <ChevronLeft className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
+          <span className="sr-only">
+            {expanded ? "Collapse sidebar" : "Expand sidebar"}
+          </span>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="h-4 w-4"
+          >
+            <path d="m15 4-8 8 8 8"></path>
+          </svg>
         </Button>
       </div>
-
-      <nav className="flex-1 p-2 space-y-1 overflow-y-auto scrollbar-thin">
-        {navItems.map((item) => (
-          <Link
-            key={item.href}
-            to={item.href}
-            className={cn(
-              "flex items-center rounded-md py-2 px-3 text-sm transition-all duration-200",
-              location.pathname === item.href
-                ? "bg-sidebar-accent text-white font-medium"
-                : "text-sidebar-foreground hover:bg-sidebar-accent/50 hover:text-white",
-              !expanded && "justify-center",
-              location.pathname === item.href && expanded
-                ? "border-l-4 border-nua-turquoise"
-                : "border-l-4 border-transparent"
-            )}
-          >
-            <item.icon className={cn("h-5 w-5", expanded && "mr-2")} />
-            {expanded && <span>{item.name}</span>}
-          </Link>
-        ))}
+      <nav className="flex-1 overflow-auto p-2">
+        <ul className="grid gap-1">
+          {navItems.map((item, index) => {
+            const Icon = item.icon;
+            return (
+              <li key={index}>
+                <Link
+                  to={item.href}
+                  className={cn(
+                    "group flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-all hover:bg-accent hover:text-accent-foreground",
+                    location.pathname === item.href
+                      ? "bg-accent text-accent-foreground"
+                      : "transparent"
+                  )}
+                >
+                  <Icon className="h-5 w-5" />
+                  {expanded && <span>{item.name}</span>}
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
       </nav>
-
-      <div className="p-4 border-t border-sidebar-border">
-        <div className="flex items-center justify-center">
-          <div className="w-8 h-8 rounded-full bg-nua-turquoise flex items-center justify-center text-white font-semibold">
-            N
-          </div>
-          {expanded && (
-            <div className="ml-3">
-              <p className="text-sm font-medium">Mi Restaurante</p>
-              <p className="text-xs text-sidebar-foreground/70">Administrador</p>
-            </div>
-          )}
-        </div>
-      </div>
     </aside>
   );
 }

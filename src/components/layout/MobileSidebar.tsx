@@ -1,82 +1,102 @@
-import { Link, useLocation } from "react-router-dom";
-import { ChevronLeft } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-import { navItems } from "./SidebarNavItems";
 
-interface MobileSidebarProps {
-  mobileOpen: boolean;
-  toggleMobileSidebar: () => void;
+import { Link, useLocation } from "react-router-dom";
+import { cn } from "@/lib/utils";
+import { useSidebar } from "./SidebarContext";
+import { useAuth } from "@/contexts/AuthContext";
+
+interface SidebarNavItem {
+  name: string;
+  href: string;
+  icon: React.ElementType;
 }
 
-export function MobileSidebar({ mobileOpen, toggleMobileSidebar }: MobileSidebarProps) {
+interface MobileSidebarProps {
+  navItems: SidebarNavItem[];
+}
+
+export function MobileSidebar({ navItems }: MobileSidebarProps) {
+  const { expanded, setExpanded } = useSidebar();
   const location = useLocation();
+  const { user } = useAuth();
+
+  // Si el usuario no está autenticado, no mostrar el sidebar
+  if (!user) {
+    return null;
+  }
 
   return (
     <>
+      {/* Overlay que se muestra cuando el sidebar está expandido */}
+      {expanded && (
+        <div
+          className="fixed inset-0 z-10 bg-black/50 md:hidden"
+          onClick={() => setExpanded(false)}
+        ></div>
+      )}
+
+      {/* Sidebar móvil */}
       <aside
         className={cn(
-          "md:hidden fixed inset-0 z-40 flex flex-col bg-sidebar text-sidebar-foreground transition-all duration-300 transform",
-          mobileOpen ? "translate-x-0" : "-translate-x-full"
+          "fixed inset-y-0 left-0 z-20 flex h-full w-64 flex-col border-r bg-background transition-all duration-200 ease-in-out md:hidden",
+          expanded ? "translate-x-0" : "-translate-x-full"
         )}
       >
-        <div className="flex items-center justify-between p-4 h-16 border-b border-sidebar-border">
-          <div className="flex items-center">
-            <img 
-              src="/lovable-uploads/03330604-0926-4f80-9923-9ed3f0b9c399.png" 
-              alt="NÜA Smart Analytics Logo" 
-              className="h-[30px] w-auto" 
+        <div className="flex h-16 items-center border-b px-4">
+          <Link to="/" className="flex items-center" onClick={() => setExpanded(false)}>
+            <img
+              src="/lovable-uploads/7f140b8e-4327-4848-b1f0-b992cb671c52.png"
+              alt="NÜA Logo"
+              className="h-8 w-auto"
             />
-          </div>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={toggleMobileSidebar}
-            className="text-sidebar-foreground hover:text-white hover:bg-sidebar-accent"
+          </Link>
+          <div className="flex-1"></div>
+          <button
+            className="h-8 w-8 rounded-md text-muted-foreground hover:text-foreground"
+            onClick={() => setExpanded(false)}
           >
-            <ChevronLeft className="h-4 w-4" />
-          </Button>
-        </div>
-
-        <nav className="flex-1 p-2 space-y-1 overflow-y-auto">
-          {navItems.map((item) => (
-            <Link
-              key={item.href}
-              to={item.href}
-              className={cn(
-                "flex items-center rounded-md py-2 px-3 text-sm transition-colors",
-                location.pathname === item.href
-                  ? "bg-sidebar-accent text-white font-medium border-l-4 border-nua-turquoise"
-                  : "text-sidebar-foreground hover:bg-sidebar-accent/50 hover:text-white border-l-4 border-transparent"
-              )}
-              onClick={toggleMobileSidebar}
+            <span className="sr-only">Close sidebar</span>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="h-4 w-4"
             >
-              <item.icon className="h-5 w-5 mr-2" />
-              <span>{item.name}</span>
-            </Link>
-          ))}
-        </nav>
-
-        <div className="p-4 border-t border-sidebar-border">
-          <div className="flex items-center">
-            <div className="w-8 h-8 rounded-full bg-nua-turquoise flex items-center justify-center text-white font-semibold">
-              N
-            </div>
-            <div className="ml-3">
-              <p className="text-sm font-medium">Mi Restaurante</p>
-              <p className="text-xs text-sidebar-foreground/70">Administrador</p>
-            </div>
-          </div>
+              <path d="M18 6 6 18"></path>
+              <path d="m6 6 12 12"></path>
+            </svg>
+          </button>
         </div>
+        <nav className="flex-1 overflow-auto p-2">
+          <ul className="grid gap-1">
+            {navItems.map((item, index) => {
+              const Icon = item.icon;
+              return (
+                <li key={index}>
+                  <Link
+                    to={item.href}
+                    className={cn(
+                      "group flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground",
+                      location.pathname === item.href
+                        ? "bg-accent text-accent-foreground"
+                        : "transparent"
+                    )}
+                    onClick={() => setExpanded(false)}
+                  >
+                    <Icon className="h-5 w-5" />
+                    <span>{item.name}</span>
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        </nav>
       </aside>
-      
-      {/* Mobile overlay */}
-      {mobileOpen && (
-        <div 
-          className="md:hidden fixed inset-0 z-30 bg-black/50 backdrop-blur-sm" 
-          onClick={toggleMobileSidebar}
-        />
-      )}
     </>
   );
 }

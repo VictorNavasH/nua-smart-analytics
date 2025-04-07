@@ -1,16 +1,31 @@
 
-import { supabase } from './client';
+import { supabase } from '@/integrations/supabase/client';
+import type { Database } from '@/integrations/supabase/types';
 
-export type AuthUser = {
+export type UserRole = Database['public']['Enums']['user_role'];
+
+export type Profile = {
   id: string;
   email: string;
-  name?: string;
+  rol: UserRole;
+  nombre_completo: string | null;
+  restaurante_id: string | null;
 };
 
-export async function signUp(email: string, password: string) {
+export type Restaurant = {
+  id: string;
+  nombre: string;
+  ubicacion: string;
+  activo: boolean | null;
+};
+
+export async function signUp(email: string, password: string, userData: { nombre_completo?: string }) {
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
+    options: {
+      data: userData
+    }
   });
   
   if (error) throw error;
@@ -32,33 +47,98 @@ export async function signOut() {
   if (error) throw error;
 }
 
-export async function getCurrentUser(): Promise<AuthUser | null> {
+export async function getCurrentUser(): Promise<{ user: any, profile: Profile | null }> {
   const { data: { session }, error } = await supabase.auth.getSession();
   
   if (error) {
     console.error('Error fetching current user:', error);
-    return null;
+    return { user: null, profile: null };
   }
   
-  if (!session?.user) return null;
+  if (!session?.user) return { user: null, profile: null };
   
-  return {
-    id: session.user.id,
-    email: session.user.email || '',
-    name: session.user.user_metadata?.name,
+  // Obtener el perfil del usuario
+  const { data: profile, error: profileError } = await supabase
+    .from('profiles')
+    .select('*')
+    .eq('id', session.user.id)
+    .single();
+    
+  if (profileError) {
+    console.error('Error fetching user profile:', profileError);
+  }
+  
+  return { 
+    user: session.user,
+    profile: profile as Profile || null
   };
 }
 
-export function subscribeToAuthChanges(callback: (user: AuthUser | null) => void) {
-  return supabase.auth.onAuthStateChange((event, session) => {
+export async function getUserProfile(): Promise<Profile | null> {
+  const { data: { session } } = await supabase.auth.getSession();
+  if (!session?.user) return null;
+  
+  const { data, error } = await supabase
+    .from('profiles')
+    .select('*')
+    .eq('id', session.user.id)
+    .single();
+    
+  if (error) {
+    console.error('Error fetching user profile:', error);
+    return null;
+  }
+  
+  return data as Profile;
+}
+
+export async function getUserRestaurant(restaurantId: string | null): Promise<Restaurant | null> {
+  if (!restaurantId) return null;
+  
+  const { data, error } = await supabase
+    .from('restaurantes')
+    .select('*')
+    .eq('id', restaurantId)
+    .single();
+    
+  if (error) {
+    console.error('Error fetching restaurant:', error);
+    return null;
+  }
+  
+  return data as Restaurant;
+}
+
+export function subscribeToAuthChanges(callback: (user: any, profile: Profile | null) => void) {
+  return supabase.auth.onAuthStateChange(async (event, session) => {
     if (event === 'SIGNED_IN' && session?.user) {
-      callback({
-        id: session.user.id,
-        email: session.user.email || '',
-        name: session.user.user_metadata?.name,
-      });
+      // Cuando un usuario inicia sesión, obtener su perfil
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', session.user.id)
+        .single();
+        
+      if (error) {
+        console.error('Error fetching user profile on auth change:', error);
+        callback(session.user, null);
+      } else {
+        callback(session.user, data as Profile);
+      }
     } else if (event === 'SIGNED_OUT') {
-      callback(null);
+      callback(null, null);
     }
   });
+}
+
+export function isAdmin(profile: Profile | null): boolean {
+  return profile?.rol === 'admin';
+}
+
+export function isManager(profile: Profile | null): boolean {
+  return profile?.rol === 'manager';
+}
+
+export function isAnalyst(profile: Profile | null): boolean {
+  return profile?.rol === 'analyst';
 }

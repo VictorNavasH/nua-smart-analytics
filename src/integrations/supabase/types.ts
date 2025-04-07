@@ -9,16 +9,81 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      profiles: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          nombre_completo: string | null
+          restaurante_id: string | null
+          rol: Database["public"]["Enums"]["user_role"]
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id: string
+          nombre_completo?: string | null
+          restaurante_id?: string | null
+          rol?: Database["public"]["Enums"]["user_role"]
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          nombre_completo?: string | null
+          restaurante_id?: string | null
+          rol?: Database["public"]["Enums"]["user_role"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "profiles_restaurante_id_fkey"
+            columns: ["restaurante_id"]
+            isOneToOne: false
+            referencedRelation: "restaurantes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      restaurantes: {
+        Row: {
+          activo: boolean | null
+          created_at: string
+          id: string
+          nombre: string
+          ubicacion: string
+        }
+        Insert: {
+          activo?: boolean | null
+          created_at?: string
+          id?: string
+          nombre: string
+          ubicacion: string
+        }
+        Update: {
+          activo?: boolean | null
+          created_at?: string
+          id?: string
+          nombre?: string
+          ubicacion?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_user_restaurant_id: {
+        Args: Record<PropertyKey, never>
+        Returns: string
+      }
+      is_admin: {
+        Args: { user_id: string }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      user_role: "admin" | "manager" | "analyst"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -133,6 +198,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      user_role: ["admin", "manager", "analyst"],
+    },
   },
 } as const

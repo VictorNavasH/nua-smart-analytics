@@ -13,9 +13,15 @@ import NotFound from "@/pages/NotFound";
 import { Toaster } from "@/components/ui/toast-notification";
 import { Loader } from "lucide-react";
 
-// Protected route component
-const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  const { user, loading } = useAuth();
+// Componente para rutas protegidas
+const ProtectedRoute = ({ 
+  children,
+  requiredRoles = [],
+}: { 
+  children: React.ReactNode;
+  requiredRoles?: Array<'admin' | 'manager' | 'analyst'>;
+}) => {
+  const { user, loading, profile } = useAuth();
 
   if (loading) {
     return (
@@ -30,6 +36,15 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 
   if (!user) {
     return <Navigate to="/auth" replace />;
+  }
+
+  // Si se requieren roles específicos y el usuario no tiene ninguno de ellos
+  if (
+    requiredRoles.length > 0 &&
+    profile &&
+    !requiredRoles.includes(profile.rol)
+  ) {
+    return <Navigate to="/" replace />;
   }
 
   return <>{children}</>;
@@ -56,13 +71,13 @@ function App() {
             } />
             
             <Route path="/data-entry" element={
-              <ProtectedRoute>
+              <ProtectedRoute requiredRoles={['admin', 'manager']}>
                 <DataEntryPage />
               </ProtectedRoute>
             } />
             
             <Route path="/projections" element={
-              <ProtectedRoute>
+              <ProtectedRoute requiredRoles={['admin', 'manager']}>
                 <ProjectionsPage />
               </ProtectedRoute>
             } />
@@ -74,7 +89,7 @@ function App() {
             } />
             
             <Route path="/restaurants" element={
-              <ProtectedRoute>
+              <ProtectedRoute requiredRoles={['admin']}>
                 <RestaurantsPage />
               </ProtectedRoute>
             } />

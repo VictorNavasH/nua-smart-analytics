@@ -1,12 +1,14 @@
 
-import { supabase } from './client';
-import type { Restaurant } from './types';
+import { supabase } from '@/integrations/supabase/client';
+import type { Database } from '@/integrations/supabase/types';
+
+export type Restaurant = Database['public']['Tables']['restaurantes']['Row'];
 
 export async function getRestaurants() {
   const { data, error } = await supabase
-    .from('restaurants')
+    .from('restaurantes')
     .select('*')
-    .order('name');
+    .order('nombre');
   
   if (error) throw error;
   return data || [];
@@ -14,7 +16,7 @@ export async function getRestaurants() {
 
 export async function getRestaurantById(id: string) {
   const { data, error } = await supabase
-    .from('restaurants')
+    .from('restaurantes')
     .select('*')
     .eq('id', id)
     .single();
@@ -25,7 +27,7 @@ export async function getRestaurantById(id: string) {
 
 export async function createRestaurant(restaurant: Omit<Restaurant, 'id' | 'created_at'>) {
   const { data, error } = await supabase
-    .from('restaurants')
+    .from('restaurantes')
     .insert(restaurant)
     .select()
     .single();
@@ -36,7 +38,7 @@ export async function createRestaurant(restaurant: Omit<Restaurant, 'id' | 'crea
 
 export async function updateRestaurant(id: string, updates: Partial<Omit<Restaurant, 'id' | 'created_at'>>) {
   const { data, error } = await supabase
-    .from('restaurants')
+    .from('restaurantes')
     .update(updates)
     .eq('id', id)
     .select()
@@ -48,7 +50,7 @@ export async function updateRestaurant(id: string, updates: Partial<Omit<Restaur
 
 export async function deleteRestaurant(id: string) {
   const { error } = await supabase
-    .from('restaurants')
+    .from('restaurantes')
     .delete()
     .eq('id', id);
   
