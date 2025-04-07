@@ -12,7 +12,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import {
-  Form,
   FormControl,
   FormDescription,
   FormField,
@@ -76,90 +75,68 @@ export function UserSettings({ settings, onSettingsChange }: UserSettingsProps) 
           </DialogDescription>
         </DialogHeader>
         <div className="py-4">
-          <Form>
-            <div className="space-y-4">
-              <FormField
-                name="showSecondaryMetrics"
-                render={() => (
-                  <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3">
-                    <div className="space-y-0.5">
-                      <FormLabel>Mostrar métricas secundarias</FormLabel>
-                      <FormDescription>
-                        Muestra la sección de métricas adicionales
-                      </FormDescription>
-                    </div>
-                    <FormControl>
-                      <Switch
-                        checked={localSettings.showSecondaryMetrics}
-                        onCheckedChange={() => handleToggle("showSecondaryMetrics")}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                name="showMonthlyNotes"
-                render={() => (
-                  <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3">
-                    <div className="space-y-0.5">
-                      <FormLabel>Mostrar notas mensuales</FormLabel>
-                      <FormDescription>
-                        Muestra la sección de notas y comentarios
-                      </FormDescription>
-                    </div>
-                    <FormControl>
-                      <Switch
-                        checked={localSettings.showMonthlyNotes}
-                        onCheckedChange={() => handleToggle("showMonthlyNotes")}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                name="showProgressBars"
-                render={() => (
-                  <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3">
-                    <div className="space-y-0.5">
-                      <FormLabel>Mostrar barras de progreso</FormLabel>
-                      <FormDescription>
-                        Muestra el progreso hacia objetivos
-                      </FormDescription>
-                    </div>
-                    <FormControl>
-                      <Switch
-                        checked={localSettings.showProgressBars}
-                        onCheckedChange={() => handleToggle("showProgressBars")}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                name="showExpensesChart"
-                render={() => (
-                  <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3">
-                    <div className="space-y-0.5">
-                      <FormLabel>Mostrar gráfico de gastos</FormLabel>
-                      <FormDescription>
-                        Muestra el gráfico de distribución de gastos
-                      </FormDescription>
-                    </div>
-                    <FormControl>
-                      <Switch
-                        checked={localSettings.showExpensesChart}
-                        onCheckedChange={() => handleToggle("showExpensesChart")}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-          </Form>
+          <div className="space-y-4">
+            <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3">
+              <div className="space-y-0.5">
+                <FormLabel>Mostrar métricas secundarias</FormLabel>
+                <FormDescription>
+                  Muestra la sección de métricas adicionales
+                </FormDescription>
+              </div>
+              <FormControl>
+                <Switch
+                  checked={localSettings.showSecondaryMetrics}
+                  onCheckedChange={() => handleToggle("showSecondaryMetrics")}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+            <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3">
+              <div className="space-y-0.5">
+                <FormLabel>Mostrar notas mensuales</FormLabel>
+                <FormDescription>
+                  Muestra la sección de notas y comentarios
+                </FormDescription>
+              </div>
+              <FormControl>
+                <Switch
+                  checked={localSettings.showMonthlyNotes}
+                  onCheckedChange={() => handleToggle("showMonthlyNotes")}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+            <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3">
+              <div className="space-y-0.5">
+                <FormLabel>Mostrar barras de progreso</FormLabel>
+                <FormDescription>
+                  Muestra el progreso hacia objetivos
+                </FormDescription>
+              </div>
+              <FormControl>
+                <Switch
+                  checked={localSettings.showProgressBars}
+                  onCheckedChange={() => handleToggle("showProgressBars")}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+            <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3">
+              <div className="space-y-0.5">
+                <FormLabel>Mostrar gráfico de gastos</FormLabel>
+                <FormDescription>
+                  Muestra el gráfico de distribución de gastos
+                </FormDescription>
+              </div>
+              <FormControl>
+                <Switch
+                  checked={localSettings.showExpensesChart}
+                  onCheckedChange={() => handleToggle("showExpensesChart")}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          </div>
         </div>
         <DialogFooter>
           <Button variant="outline" onClick={handleCancel}>

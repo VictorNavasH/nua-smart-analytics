@@ -2,12 +2,12 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
 import { SidebarProvider } from "@/components/layout/SidebarContext";
-import { HomePage } from "@/pages/HomePage";
-import { DashboardPage } from "@/pages/DashboardPage";
-import { DataEntryPage } from "@/pages/DataEntryPage";
-import { ProjectionsPage } from "@/pages/ProjectionsPage";
-import { ProfilePage } from "@/pages/ProfilePage";
-import { NotFound } from "@/pages/NotFound";
+import HomePage from "@/pages/HomePage";
+import DashboardPage from "@/pages/DashboardPage";
+import DataEntryPage from "@/pages/DataEntryPage";
+import ProjectionsPage from "@/pages/ProjectionsPage";
+import ProfilePage from "@/pages/ProfilePage";
+import NotFound from "@/pages/NotFound";
 import { Toaster } from "@/components/ui/toaster";
 
 function App() {
