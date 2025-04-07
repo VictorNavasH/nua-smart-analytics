@@ -1,4 +1,3 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -6,25 +5,25 @@
 @layer base {
   :root {
     --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --foreground: 240 25% 24%; /* Changed to #2f2f4c equivalent in HSL */
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 240 25% 24%; /* Changed to #2f2f4c equivalent in HSL */
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 240 25% 24%; /* Changed to #2f2f4c equivalent in HSL */
 
     --primary: 188 98% 39%; /* NÜA Turquoise */
     --primary-foreground: 210 40% 98%;
 
     --secondary: 335 100% 64%; /* NÜA Pink */
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary-foreground: 240 25% 24%; /* Changed to #2f2f4c equivalent in HSL */
 
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
 
     --accent: 36 100% 76%; /* NÜA Yellow */
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent-foreground: 240 25% 24%; /* Changed to #2f2f4c equivalent in HSL */
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;

@@ -50,14 +50,14 @@ export function Header() {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-56 bg-white border border-gray-200 shadow-lg rounded-md">
-            <DropdownMenuLabel>Cambiar restaurante</DropdownMenuLabel>
+            <DropdownMenuLabel className="text-[#2f2f4c]">Cambiar restaurante</DropdownMenuLabel>
             <DropdownMenuSeparator />
             {restaurants.map((restaurant) => (
               <DropdownMenuItem
                 key={restaurant}
                 onClick={() => setSelectedRestaurant(restaurant)}
                 className={cn(
-                  "cursor-pointer",
+                  "cursor-pointer text-[#2f2f4c]",
                   restaurant === selectedRestaurant ? "bg-muted text-nua-blue font-medium" : ""
                 )}
               >
@@ -68,7 +68,7 @@ export function Header() {
         </DropdownMenu>
         
         <Button variant="ghost" size="icon" className="relative hover:bg-nua-pink/10">
-          <BellRing className="h-5 w-5 text-gray-600" />
+          <BellRing className="h-5 w-5 text-[#2f2f4c]" />
           <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-nua-pink"></span>
         </Button>
 
@@ -81,13 +81,13 @@ export function Header() {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-56 bg-white border border-gray-200 shadow-lg rounded-md">
-            <DropdownMenuLabel>Mi cuenta</DropdownMenuLabel>
+            <DropdownMenuLabel className="text-[#2f2f4c]">Mi cuenta</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="cursor-pointer flex items-center gap-2">
+            <DropdownMenuItem className="cursor-pointer flex items-center gap-2 text-[#2f2f4c]">
               <UserCog className="h-4 w-4" />
               Perfil
             </DropdownMenuItem>
-            <DropdownMenuItem className="cursor-pointer flex items-center gap-2">
+            <DropdownMenuItem className="cursor-pointer flex items-center gap-2 text-[#2f2f4c]">
               <Settings className="h-4 w-4" />
               Configuración
             </DropdownMenuItem>
