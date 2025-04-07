@@ -68,6 +68,53 @@ export type Database = {
         }
         Relationships: []
       }
+      smart_forecasts: {
+        Row: {
+          confidence_score: number | null
+          created_at: string
+          daily_forecast: number
+          date: string
+          id: string
+          is_holiday: boolean | null
+          monthly_forecast: number
+          previous_period_comparison: number | null
+          restaurant_id: string
+          weekly_forecast: number
+        }
+        Insert: {
+          confidence_score?: number | null
+          created_at?: string
+          daily_forecast: number
+          date: string
+          id?: string
+          is_holiday?: boolean | null
+          monthly_forecast: number
+          previous_period_comparison?: number | null
+          restaurant_id: string
+          weekly_forecast: number
+        }
+        Update: {
+          confidence_score?: number | null
+          created_at?: string
+          daily_forecast?: number
+          date?: string
+          id?: string
+          is_holiday?: boolean | null
+          monthly_forecast?: number
+          previous_period_comparison?: number | null
+          restaurant_id?: string
+          weekly_forecast?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "smart_forecasts_restaurant_id_fkey"
+            columns: ["restaurant_id"]
+            isOneToOne: false
+            referencedRelation: "restaurantes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never

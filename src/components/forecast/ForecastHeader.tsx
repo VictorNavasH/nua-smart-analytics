@@ -59,13 +59,13 @@ export function ForecastHeader({
 
       <div className="flex flex-col space-y-2 md:space-y-0 md:flex-row md:space-x-4 md:items-center">
         <RestaurantSelector
-          value={selectedRestaurantId}
-          onChange={onRestaurantChange}
+          selectedId={selectedRestaurantId}
+          onSelect={onRestaurantChange}
         />
 
         <DateRangeSelector
-          dateRange={dateRange}
-          onDateRangeChange={onDateRangeChange}
+          selectedRange={dateRange}
+          onRangeChange={onDateRangeChange}
         />
 
         <div className="flex space-x-2">

@@ -1,6 +1,6 @@
 
-import { useState, useEffect } from "react";
-import { Check, ChevronsUpDown, StoreIcon } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Check, ChevronsUpDown, Store } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -16,104 +16,44 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { getRestaurants } from "@/lib/supabase/restaurants";
-import { useToast } from "@/hooks/use-toast";
-import { useRestaurantStore } from "@/stores/restaurantStore";
-import { useAuth } from "@/contexts/AuthContext";
-import { supabase } from "@/integrations/supabase/client";
-import type { Restaurant } from "@/lib/supabase/auth";
+import { Restaurant } from "@/lib/supabase/types";
 
-export function RestaurantSelector() {
+interface RestaurantSelectorProps {
+  selectedId: string;
+  onSelect: (id: string) => void;
+  className?: string;
+}
+
+export function RestaurantSelector({
+  selectedId,
+  onSelect,
+  className,
+}: RestaurantSelectorProps) {
   const [open, setOpen] = useState(false);
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
-  const [loading, setLoading] = useState(true);
-  const { toast } = useToast();
-  const { selectedRestaurant, setSelectedRestaurant } = useRestaurantStore();
-  const { profile, isAdmin } = useAuth();
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const fetchRestaurants = async () => {
+    async function loadRestaurants() {
       try {
-        setLoading(true);
-        let data: Restaurant[] = [];
-        
-        // Si el usuario es administrador, cargar todos los restaurantes
-        if (isAdmin) {
-          const result = await getRestaurants();
-          data = result as unknown as Restaurant[];
-        } 
-        // Si no es admin pero tiene un restaurante asignado, solo mostrar ese
-        else if (profile?.restaurante_id) {
-          const { data: restaurantData, error } = await supabase
-            .from('restaurantes')
-            .select('*')
-            .eq('id', profile.restaurante_id)
-            .single();
-            
-          if (!error) {
-            data = [restaurantData as Restaurant];
-          }
-        }
-        
+        const data = await getRestaurants();
         setRestaurants(data);
         
-        // Si no hay restaurante seleccionado y hay restaurantes disponibles
-        if (!selectedRestaurant && data.length > 0) {
-          setSelectedRestaurant(data[0]);
+        // Si no hay restaurante seleccionado y hay restaurantes disponibles, seleccionar el primero
+        if (!selectedId && data.length > 0) {
+          onSelect(data[0].id);
         }
       } catch (error) {
-        console.error("Error fetching restaurants:", error);
-        toast({
-          title: "Error",
-          description: "No se pudieron cargar los restaurantes",
-          variant: "destructive",
-        });
+        console.error("Error al cargar restaurantes:", error);
       } finally {
-        setLoading(false);
+        setIsLoading(false);
       }
-    };
+    }
 
-    fetchRestaurants();
-  }, [profile, isAdmin]);
+    loadRestaurants();
+  }, [selectedId, onSelect]);
 
-  const handleSelectRestaurant = (restaurant: Restaurant) => {
-    setSelectedRestaurant(restaurant);
-    setOpen(false);
-  };
-
-  if (loading) {
-    return (
-      <Button variant="outline" className="w-[200px] justify-start" disabled>
-        <span className="animate-pulse">Cargando...</span>
-      </Button>
-    );
-  }
-
-  if (restaurants.length === 0) {
-    return (
-      <Button
-        variant="outline"
-        className="w-[200px] justify-start text-muted-foreground"
-        disabled
-      >
-        <StoreIcon className="mr-2 h-4 w-4" />
-        No hay restaurantes
-      </Button>
-    );
-  }
-
-  // Si el usuario no es admin y solo tiene un restaurante, mostrar sin selector
-  if (!isAdmin && restaurants.length === 1) {
-    return (
-      <Button
-        variant="outline"
-        className="w-[200px] justify-start pointer-events-none"
-        disabled
-      >
-        <StoreIcon className="mr-2 h-4 w-4" />
-        {restaurants[0].nombre}
-      </Button>
-    );
-  }
+  const selectedRestaurant = restaurants.find(r => r.id === selectedId);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -122,42 +62,49 @@ export function RestaurantSelector() {
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-[200px] justify-between"
+          className={cn("justify-between w-[220px] text-left", className)}
+          size="sm"
+          disabled={isLoading}
         >
-          {selectedRestaurant ? (
-            <>
-              <StoreIcon className="mr-2 h-4 w-4" />
-              {selectedRestaurant.nombre}
-            </>
-          ) : (
-            <>
-              <StoreIcon className="mr-2 h-4 w-4" />
-              Seleccionar restaurante
-            </>
-          )}
+          <div className="flex items-center">
+            <Store className="mr-2 h-4 w-4 shrink-0" />
+            <span className="truncate">
+              {selectedRestaurant
+                ? selectedRestaurant.name
+                : isLoading
+                ? "Cargando..."
+                : "Selecciona restaurante"}
+            </span>
+          </div>
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[200px] p-0">
+      <PopoverContent className="p-0 w-[220px]">
         <Command>
           <CommandInput placeholder="Buscar restaurante..." />
           <CommandEmpty>No se encontraron restaurantes.</CommandEmpty>
-          <CommandGroup>
+          <CommandGroup className="max-h-[300px] overflow-y-auto">
             {restaurants.map((restaurant) => (
               <CommandItem
                 key={restaurant.id}
-                value={restaurant.nombre}
-                onSelect={() => handleSelectRestaurant(restaurant)}
+                value={restaurant.name}
+                onSelect={() => {
+                  onSelect(restaurant.id);
+                  setOpen(false);
+                }}
               >
                 <Check
                   className={cn(
                     "mr-2 h-4 w-4",
-                    selectedRestaurant?.id === restaurant.id
-                      ? "opacity-100"
-                      : "opacity-0"
+                    selectedId === restaurant.id ? "opacity-100" : "opacity-0"
                   )}
                 />
-                {restaurant.nombre}
+                <div className="flex flex-col">
+                  <span className="text-sm">{restaurant.name}</span>
+                  <span className="text-xs text-muted-foreground">
+                    {restaurant.city}
+                  </span>
+                </div>
               </CommandItem>
             ))}
           </CommandGroup>

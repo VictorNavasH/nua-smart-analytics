@@ -1,13 +1,13 @@
 
 import { create } from 'zustand';
-import { Restaurant } from '@/lib/supabase/auth';
+import { Restaurant } from '@/lib/supabase/types';
 
 interface RestaurantStore {
-  selectedRestaurant: Restaurant | null;
-  setSelectedRestaurant: (restaurant: Restaurant) => void;
+  selectedRestaurantId: string;
+  setSelectedRestaurantId: (id: string) => void;
 }
 
 export const useRestaurantStore = create<RestaurantStore>((set) => ({
-  selectedRestaurant: null,
-  setSelectedRestaurant: (restaurant) => set({ selectedRestaurant: restaurant }),
+  selectedRestaurantId: '',
+  setSelectedRestaurantId: (id) => set({ selectedRestaurantId: id }),
 }));
