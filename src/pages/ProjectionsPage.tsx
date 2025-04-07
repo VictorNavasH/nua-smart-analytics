@@ -44,7 +44,7 @@ export default function ProjectionsPage() {
   
   return (
     <Layout>
-      <div className="space-y-6">
+      <div className="space-y-4">
         <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
           <div>
             <h1 className="text-3xl font-bold tracking-tight">Proyecciones</h1>
@@ -52,7 +52,7 @@ export default function ProjectionsPage() {
               Analiza tendencias y establece objetivos financieros
             </p>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2 mt-2 md:mt-0">
             <ScenarioSelector currentScenario={scenario} onScenarioChange={setScenario} />
             <Button className="flex items-center gap-2">
               <PlusCircle className="h-4 w-4" />
@@ -82,15 +82,15 @@ export default function ProjectionsPage() {
         )}
 
         <Tabs defaultValue="sales" className="space-y-4">
-          <TabsList>
+          <TabsList className="w-full md:w-auto overflow-x-auto">
             <TabsTrigger value="sales">Ventas</TabsTrigger>
             <TabsTrigger value="costs">Costos</TabsTrigger>
             <TabsTrigger value="profit">Beneficios</TabsTrigger>
             <TabsTrigger value="custom">Personalizado</TabsTrigger>
           </TabsList>
           
-          <TabsContent value="sales" className="space-y-6">
-            <div className="grid gap-6 md:grid-cols-2">
+          <TabsContent value="sales" className="space-y-4">
+            <div className="grid gap-4 md:grid-cols-2">
               <ChartCard title="Proyección de Ventas Anual" subtitle="Actual vs. Proyectado">
                 <NuaLineChart 
                   data={salesProjection}
@@ -103,33 +103,33 @@ export default function ProjectionsPage() {
                 />
               </ChartCard>
 
-              <Card>
-                <CardHeader>
+              <Card className="shadow-sm">
+                <CardHeader className="pb-2">
                   <CardTitle>Parámetros de Proyección</CardTitle>
                   <CardDescription>Ajusta los parámetros para la proyección de ventas</CardDescription>
                 </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="space-y-2">
+                <CardContent className="space-y-3">
+                  <div className="space-y-1">
                     <Label htmlFor="growth-rate">Tasa de Crecimiento Mensual (%)</Label>
                     <Input id="growth-rate" defaultValue="3.5" type="number" step="0.1" />
                   </div>
                   
-                  <div className="space-y-2">
+                  <div className="space-y-1">
                     <Label htmlFor="seasonality">Factor de Estacionalidad</Label>
                     <Input id="seasonality" defaultValue="1.2" type="number" step="0.1" />
                   </div>
                   
-                  <div className="space-y-2">
+                  <div className="space-y-1">
                     <Label htmlFor="base-value">Valor Base (€)</Label>
                     <Input id="base-value" defaultValue="12000" type="number" />
                   </div>
                   
-                  <Button className="w-full">Recalcular Proyección</Button>
+                  <Button className="w-full mt-2">Recalcular Proyección</Button>
                 </CardContent>
               </Card>
             </div>
 
-            <Card>
+            <Card className="shadow-sm">
               <CardHeader className="pb-2">
                 <CardTitle>Progreso hacia el Objetivo Mensual</CardTitle>
                 <CardDescription className="flex items-center justify-between">
@@ -142,7 +142,7 @@ export default function ProjectionsPage() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="space-y-4">
+                <div className="space-y-3">
                   <div className="flex justify-between text-sm mb-1">
                     <span>€{currentMonthSales.toLocaleString()}</span>
                     <span>€{currentMonthGoal.toLocaleString()}</span>
@@ -152,7 +152,7 @@ export default function ProjectionsPage() {
                     {progressPercentage}% completado
                   </div>
                   
-                  <div className="flex items-center justify-between px-2">
+                  <div className="flex items-center justify-between px-2 mt-2">
                     <div className="flex items-center">
                       <Target className="h-4 w-4 mr-1 text-nua-blue" />
                       <span className="text-sm">Punto de Equilibrio</span>
@@ -177,14 +177,14 @@ export default function ProjectionsPage() {
               </CardContent>
             </Card>
 
-            <Card>
-              <CardHeader>
+            <Card className="shadow-sm">
+              <CardHeader className="pb-2">
                 <CardTitle>Objetivos de Ventas</CardTitle>
                 <CardDescription>Establece y monitoriza tus objetivos de ventas</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="space-y-4">
-                  <div className="grid gap-4 md:grid-cols-3">
+                <div className="space-y-3">
+                  <div className="grid gap-3 md:grid-cols-3">
                     <div>
                       <Label htmlFor="quarterly-target">Objetivo Trimestral (€)</Label>
                       <Input id="quarterly-target" defaultValue="45000" type="number" className="mt-1" />
@@ -199,7 +199,7 @@ export default function ProjectionsPage() {
                     </div>
                   </div>
                   
-                  <div className="flex justify-end space-x-2">
+                  <div className="flex justify-end space-x-2 mt-2">
                     <Button variant="outline">Restablecer</Button>
                     <Button>Guardar Objetivos</Button>
                   </div>
@@ -209,21 +209,21 @@ export default function ProjectionsPage() {
           </TabsContent>
           
           <TabsContent value="costs" className="space-y-4">
-            <div className="flex items-center justify-center h-40 bg-muted rounded-md">
+            <Card className="h-40 flex items-center justify-center bg-muted/20">
               <p className="text-muted-foreground">Proyecciones de costos (próximamente)</p>
-            </div>
+            </Card>
           </TabsContent>
           
           <TabsContent value="profit" className="space-y-4">
-            <div className="flex items-center justify-center h-40 bg-muted rounded-md">
+            <Card className="h-40 flex items-center justify-center bg-muted/20">
               <p className="text-muted-foreground">Proyecciones de beneficios (próximamente)</p>
-            </div>
+            </Card>
           </TabsContent>
           
           <TabsContent value="custom" className="space-y-4">
-            <div className="flex items-center justify-center h-40 bg-muted rounded-md">
+            <Card className="h-40 flex items-center justify-center bg-muted/20">
               <p className="text-muted-foreground">Proyecciones personalizadas (próximamente)</p>
-            </div>
+            </Card>
           </TabsContent>
         </Tabs>
       </div>

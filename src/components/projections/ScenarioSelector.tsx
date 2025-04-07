@@ -11,7 +11,7 @@ export function ScenarioSelector({ currentScenario, onScenarioChange }: Scenario
     <div className="flex items-center">
       <div className="mr-2 text-sm font-medium">Escenario:</div>
       <Select value={currentScenario} onValueChange={onScenarioChange}>
-        <SelectTrigger className="w-[160px]">
+        <SelectTrigger className="w-[160px] bg-white">
           <SelectValue placeholder="Seleccionar escenario" />
         </SelectTrigger>
         <SelectContent>
