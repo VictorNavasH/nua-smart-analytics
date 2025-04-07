@@ -1,8 +1,10 @@
+
 import { Link } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { ChevronRight, LineChart, PieChart, TrendingUp, Receipt, FilePlus } from "lucide-react";
+import { ChevronRight, LineChart, PieChart, TrendingUp, Receipt, FilePlus, Github } from "lucide-react";
+
 export default function HomePage() {
   const quickLinks = [{
     title: "Dashboard Financiero",
@@ -20,10 +22,22 @@ export default function HomePage() {
     icon: <TrendingUp className="h-10 w-10 text-nua-yellow" />,
     href: "/projections"
   }];
+  
   return <Layout>
       <div className="space-y-6">
         <div className="flex flex-col gap-4">
-          <h1 className="text-3xl font-bold tracking-tight">Bienvenido a NÜA Smart Analytics</h1>
+          <div className="flex justify-between items-center">
+            <h1 className="text-3xl font-bold tracking-tight">Bienvenido a NÜA Smart Analytics</h1>
+            <a 
+              href="https://github.com/nua-analytics/nua-dashboard" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors"
+            >
+              <Github className="h-5 w-5" />
+              <span className="hidden md:inline">GitHub</span>
+            </a>
+          </div>
           <p className="text-muted-foreground">Impulsa tu éxito con la inteligencia financiera de NÜA Smart Restaurant.</p>
         </div>
 
