@@ -22,7 +22,7 @@ export default function DashboardPage() {
   const { dateRange, setDateRange } = useDateRange();
   const { showSuccess } = useVisualFeedback();
   
-  const handleExport = async (type: "csv" | "excel") => {
+  const handleExport = async (type: "csv" | "excel"): Promise<boolean> => {
     // Here we would handle real data export based on dateRange
     const columns = [
       { key: "name", label: "Período" },
@@ -32,8 +32,10 @@ export default function DashboardPage() {
     try {
       await exportData(salesData, columns, type, `ventas_dashboard_${new Date().toISOString().split('T')[0]}`);
       showSuccess(`Datos exportados en formato ${type.toUpperCase()} correctamente`);
+      return true; // Indicate success
     } catch (error) {
       console.error("Error exporting data:", error);
+      return false; // Indicate failure
     }
   };
 
