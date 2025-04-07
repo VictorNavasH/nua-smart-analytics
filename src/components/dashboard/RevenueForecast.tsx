@@ -4,6 +4,8 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { RevenueForecastChart } from "@/components/dashboard/RevenueForecastChart";
 import { RevenueForecastControls } from "@/components/dashboard/RevenueForecastControls";
 import { revenueForecastData } from "@/data/dashboardData";
+import { Button } from "@/components/ui/button";
+import { RotateCcw } from "lucide-react";
 
 interface RevenueForecastProps {
   title?: string;
@@ -12,6 +14,11 @@ interface RevenueForecastProps {
 export function RevenueForecast({ title = "Revenue Forecast" }: RevenueForecastProps) {
   const [growthRate, setGrowthRate] = useState<number>(5);
   const [seasonality, setSeasonality] = useState<number>(10);
+  
+  const resetControls = () => {
+    setGrowthRate(5);
+    setSeasonality(10);
+  };
   
   // Combine historical and forecast data
   const combinedData = [
@@ -32,9 +39,14 @@ export function RevenueForecast({ title = "Revenue Forecast" }: RevenueForecastP
   
   return (
     <Card className="h-full">
-      <CardHeader className="pb-2">
-        <CardTitle className="text-lg font-medium">{title}</CardTitle>
-        <CardDescription>Adjust parameters to visualize different scenarios</CardDescription>
+      <CardHeader className="pb-2 flex flex-row items-start justify-between">
+        <div>
+          <CardTitle className="text-lg font-medium">{title}</CardTitle>
+          <CardDescription>Adjust parameters to visualize different scenarios</CardDescription>
+        </div>
+        <Button variant="outline" size="icon" onClick={resetControls} title="Reset to defaults">
+          <RotateCcw className="h-4 w-4" />
+        </Button>
       </CardHeader>
       <CardContent>
         <RevenueForecastChart data={combinedData} />

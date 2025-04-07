@@ -1,5 +1,6 @@
 
-import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, AreaChart, Area } from 'recharts';
+import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Line } from 'recharts';
+import { Card, CardContent } from "@/components/ui/card";
 
 interface RevenueForecastChartProps {
   data: Array<{
@@ -13,12 +14,26 @@ interface RevenueForecastChartProps {
 export function RevenueForecastChart({ data }: RevenueForecastChartProps) {
   const formatCurrency = (value: number) => `€${value.toLocaleString()}`;
   
+  // Determine where the forecast part begins
+  const forecastStartIndex = data.findIndex(item => item.min !== undefined && item.max !== undefined);
+  
   return (
-    <div className="h-[240px]">
+    <div className="h-[240px] relative">
+      {forecastStartIndex > 0 && (
+        <div className="absolute top-0 bottom-0 border-l border-dashed border-muted-foreground" 
+             style={{ left: `${(forecastStartIndex / data.length) * 100}%` }}>
+        </div>
+      )}
+      {forecastStartIndex > 0 && (
+        <div className="absolute top-0 text-xs text-muted-foreground px-1 bg-background rounded" 
+             style={{ left: `${(forecastStartIndex / data.length) * 100}%`, transform: 'translateX(-50%)' }}>
+          Forecast →
+        </div>
+      )}
       <ResponsiveContainer width="100%" height="100%">
         <AreaChart
           data={data}
-          margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
+          margin={{ top: 20, right: 30, left: 0, bottom: 0 }}
         >
           <defs>
             <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
@@ -41,7 +56,7 @@ export function RevenueForecastChart({ data }: RevenueForecastChartProps) {
             stroke="transparent"
             fill="url(#colorRange)" 
             fillOpacity={0.3}
-            name="Rango Mínimo"
+            name="Min Range"
           />
           <Area 
             type="monotone" 
@@ -50,7 +65,7 @@ export function RevenueForecastChart({ data }: RevenueForecastChartProps) {
             stroke="transparent"
             fill="url(#colorRange)" 
             fillOpacity={0.3}
-            name="Rango Máximo"
+            name="Max Range"
           />
           <Line 
             type="monotone" 
@@ -58,7 +73,7 @@ export function RevenueForecastChart({ data }: RevenueForecastChartProps) {
             stroke="#02B1C4" 
             strokeWidth={2}
             activeDot={{ r: 8 }}
-            name="Ingresos Proyectados"
+            name="Projected Revenue"
           />
         </AreaChart>
       </ResponsiveContainer>
