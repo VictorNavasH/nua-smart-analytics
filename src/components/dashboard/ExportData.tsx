@@ -8,7 +8,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useToast } from "@/hooks/use-toast";
+import { notify } from "@/components/ui/toast-notification";
 
 interface ExportDataProps {
   onExport: (type: "csv" | "excel") => Promise<boolean>;
@@ -16,7 +16,6 @@ interface ExportDataProps {
 }
 
 export function ExportData({ onExport, disabled = false }: ExportDataProps) {
-  const { toast } = useToast();
   const [isExporting, setIsExporting] = useState(false);
 
   const handleExport = async (type: "csv" | "excel") => {
@@ -27,22 +26,23 @@ export function ExportData({ onExport, disabled = false }: ExportDataProps) {
       const success = await onExport(type);
       
       if (success) {
-        toast({
-          title: `Exportación a ${type.toUpperCase()} completada`,
+        notify({
+          message: `Exportación a ${type.toUpperCase()} completada`,
           description: "Los datos se han exportado correctamente.",
+          type: "success"
         });
       } else {
-        toast({
-          title: "Error al exportar",
+        notify({
+          message: "Error al exportar",
           description: "No se pudieron exportar los datos.",
-          variant: "destructive"
+          type: "error"
         });
       }
     } catch (error) {
-      toast({
-        title: "Error al exportar",
+      notify({
+        message: "Error al exportar",
         description: "Ocurrió un error inesperado.",
-        variant: "destructive"
+        type: "error"
       });
     } finally {
       setIsExporting(false);
@@ -55,7 +55,7 @@ export function ExportData({ onExport, disabled = false }: ExportDataProps) {
         <Button 
           variant="outline" 
           disabled={disabled || isExporting}
-          className="flex gap-2"
+          className="flex gap-2 hover:bg-background/80 transition-all"
         >
           {isExporting ? (
             <Loader2 className="h-4 w-4 animate-spin" />
@@ -65,12 +65,14 @@ export function ExportData({ onExport, disabled = false }: ExportDataProps) {
           Exportar
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-[200px]">
-        <DropdownMenuItem onClick={() => handleExport("csv")} disabled={isExporting}>
+      <DropdownMenuContent align="end" className="w-[200px] animate-fade-in">
+        <DropdownMenuItem onClick={() => handleExport("csv")} disabled={isExporting}
+          className="transition-colors hover:bg-accent/60">
           <FileText className="mr-2 h-4 w-4" />
           <span>Exportar a CSV</span>
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => handleExport("excel")} disabled={isExporting}>
+        <DropdownMenuItem onClick={() => handleExport("excel")} disabled={isExporting}
+          className="transition-colors hover:bg-accent/60">
           <FileSpreadsheet className="mr-2 h-4 w-4" />
           <span>Exportar a Excel</span>
         </DropdownMenuItem>

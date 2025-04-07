@@ -7,7 +7,7 @@ import DataEntryPage from "@/pages/DataEntryPage";
 import ProjectionsPage from "@/pages/ProjectionsPage";
 import ProfilePage from "@/pages/ProfilePage";
 import NotFound from "@/pages/NotFound";
-import { Toaster } from "@/components/ui/toaster";
+import { Toaster } from "@/components/ui/toast-notification";
 import { Layout } from "@/components/layout/Layout";
 
 function App() {

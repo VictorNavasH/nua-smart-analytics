@@ -58,7 +58,7 @@ export function FinancialAlert({
     <Alert 
       variant={getVariant() as any} 
       className={cn(
-        "relative animate-fade-in", 
+        "relative animate-fade-in transition-all duration-300 hover:shadow-md", 
         type === "warning" && "border-yellow-500 bg-yellow-50 text-yellow-800",
         className
       )}
@@ -67,7 +67,7 @@ export function FinancialAlert({
       <AlertTitle className="flex items-center gap-2">
         {title}
         {threshold && current && (
-          <Badge variant={type === "success" ? "outline" : "secondary"} className="ml-2">
+          <Badge variant={type === "success" ? "outline" : "secondary"} className="ml-2 animate-pulse-subtle">
             {type === "danger" ? "Por debajo" : type === "success" ? "Superado" : "Cercano"} al umbral
           </Badge>
         )}
@@ -85,7 +85,7 @@ export function FinancialAlert({
         <Button 
           variant="ghost" 
           size="icon" 
-          className="absolute right-2 top-2 h-6 w-6 rounded-full p-0" 
+          className="absolute right-2 top-2 h-6 w-6 rounded-full p-0 transition-transform hover:scale-110 active:scale-95" 
           onClick={onDismiss}
         >
           <X className="h-3 w-3" />

@@ -20,7 +20,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Switch } from "@/components/ui/switch";
-import { useToast } from "@/hooks/use-toast";
+import { useVisualFeedback } from "@/hooks/useVisualFeedback";
 
 export interface DashboardSettings {
   showSecondaryMetrics: boolean;
@@ -35,7 +35,7 @@ interface UserSettingsProps {
 }
 
 export function UserSettings({ settings, onSettingsChange }: UserSettingsProps) {
-  const { toast } = useToast();
+  const { showSuccess } = useVisualFeedback();
   const [open, setOpen] = useState(false);
   const [localSettings, setLocalSettings] = useState<DashboardSettings>(settings);
 
@@ -49,10 +49,10 @@ export function UserSettings({ settings, onSettingsChange }: UserSettingsProps) 
   const handleSave = () => {
     onSettingsChange(localSettings);
     setOpen(false);
-    toast({
-      title: "Configuración guardada",
-      description: "Tus preferencias han sido actualizadas.",
-    });
+    showSuccess(
+      "Configuración guardada", 
+      "Tus preferencias han sido actualizadas."
+    );
   };
 
   const handleCancel = () => {
@@ -63,11 +63,15 @@ export function UserSettings({ settings, onSettingsChange }: UserSettingsProps) 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline" size="icon" className="h-9 w-9">
+        <Button 
+          variant="outline" 
+          size="icon" 
+          className="h-9 w-9 transition-transform active:scale-95 hover:bg-accent/80"
+        >
           <Settings className="h-4 w-4" />
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[425px] animate-scale-in">
         <DialogHeader>
           <DialogTitle>Personalizar Dashboard</DialogTitle>
           <DialogDescription>
@@ -76,7 +80,7 @@ export function UserSettings({ settings, onSettingsChange }: UserSettingsProps) 
         </DialogHeader>
         <div className="py-4">
           <div className="space-y-4">
-            <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3">
+            <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 transition-all hover:shadow-sm">
               <div className="space-y-0.5">
                 <FormLabel>Mostrar métricas secundarias</FormLabel>
                 <FormDescription>
@@ -91,7 +95,7 @@ export function UserSettings({ settings, onSettingsChange }: UserSettingsProps) 
               </FormControl>
               <FormMessage />
             </FormItem>
-            <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3">
+            <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 transition-all hover:shadow-sm">
               <div className="space-y-0.5">
                 <FormLabel>Mostrar notas mensuales</FormLabel>
                 <FormDescription>
@@ -106,7 +110,7 @@ export function UserSettings({ settings, onSettingsChange }: UserSettingsProps) 
               </FormControl>
               <FormMessage />
             </FormItem>
-            <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3">
+            <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 transition-all hover:shadow-sm">
               <div className="space-y-0.5">
                 <FormLabel>Mostrar barras de progreso</FormLabel>
                 <FormDescription>
@@ -121,7 +125,7 @@ export function UserSettings({ settings, onSettingsChange }: UserSettingsProps) 
               </FormControl>
               <FormMessage />
             </FormItem>
-            <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3">
+            <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 transition-all hover:shadow-sm">
               <div className="space-y-0.5">
                 <FormLabel>Mostrar gráfico de gastos</FormLabel>
                 <FormDescription>
@@ -139,10 +143,12 @@ export function UserSettings({ settings, onSettingsChange }: UserSettingsProps) 
           </div>
         </div>
         <DialogFooter>
-          <Button variant="outline" onClick={handleCancel}>
+          <Button variant="outline" onClick={handleCancel} className="transition-all hover:bg-background/80">
             Cancelar
           </Button>
-          <Button onClick={handleSave}>Guardar cambios</Button>
+          <Button onClick={handleSave} className="transition-all active:scale-95">
+            Guardar cambios
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
