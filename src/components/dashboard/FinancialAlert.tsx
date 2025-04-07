@@ -1,5 +1,5 @@
 
-import { AlertTriangle, TrendingDown, TrendingUp, X } from "lucide-react";
+import { AlertTriangle, TrendingDown, TrendingUp, X, AlertCircle, CheckCircle, Info } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -29,11 +29,11 @@ export function FinancialAlert({
   const getIcon = () => {
     switch (type) {
       case "danger":
-        return <TrendingDown className="h-4 w-4" />;
+        return <AlertCircle className="h-4 w-4" />;
       case "success":
-        return <TrendingUp className="h-4 w-4" />;
+        return <CheckCircle className="h-4 w-4" />;
       case "info":
-        return <TrendingUp className="h-4 w-4" />;
+        return <Info className="h-4 w-4" />;
       default:
         return <AlertTriangle className="h-4 w-4" />;
     }

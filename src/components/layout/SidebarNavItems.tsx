@@ -1,10 +1,18 @@
 
-import { BarChart2, Home, FileText, TrendingUp, User } from "lucide-react";
+import { 
+  HomeIcon, 
+  BarChart3, 
+  ClipboardList, 
+  TrendingUp, 
+  UserCog, 
+  LayoutDashboard,
+  Receipt 
+} from "lucide-react";
 
 export const navItems = [
-  { name: "Inicio", href: "/", icon: Home },
-  { name: "Dashboard", href: "/dashboard", icon: BarChart2 },
-  { name: "Carga de Datos", href: "/data-entry", icon: FileText },
+  { name: "Inicio", href: "/", icon: HomeIcon },
+  { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
+  { name: "Carga de Datos", href: "/data-entry", icon: ClipboardList },
   { name: "Proyecciones", href: "/projections", icon: TrendingUp },
-  { name: "Perfil", href: "/profile", icon: User },
+  { name: "Perfil", href: "/profile", icon: UserCog },
 ];

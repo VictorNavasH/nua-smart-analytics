@@ -1,8 +1,16 @@
 
 import { StatCard } from "@/components/dashboard/StatCard";
 import { 
-  CreditCard, DollarSign, Users, TrendingUp, 
-  Percent, Target, Heart
+  CreditCard, 
+  BanknoteIcon, 
+  Users, 
+  TrendingUp, 
+  Percent, 
+  Target, 
+  HeartPulse,
+  Receipt,
+  BarChart4,
+  Scales
 } from "lucide-react";
 
 interface StatsSectionProps {
@@ -29,7 +37,7 @@ export function StatsSection({
           title="Ingresos" 
           value="€2,854.00" 
           trend={12.5} 
-          icon={<DollarSign className="h-5 w-5 text-nua-turquoise" />}
+          icon={<BanknoteIcon className="h-5 w-5 text-nua-turquoise" />}
           progress={showProgressBars ? currentSales : undefined}
           progressMax={monthlyGoal}
           showProgressBar={showProgressBars}
@@ -49,7 +57,7 @@ export function StatsSection({
           title="Ticket Medio" 
           value="€13.59" 
           trend={3.7} 
-          icon={<CreditCard className="h-5 w-5 text-nua-yellow" />}
+          icon={<Receipt className="h-5 w-5 text-nua-yellow" />}
           colorClass="#FFCE85/10"
         />
       </div>
@@ -59,7 +67,7 @@ export function StatsSection({
             title="Fidelidad de Clientes" 
             value={`${customerLoyalty.retentionRate}%`} 
             trend={customerLoyalty.trend} 
-            icon={<Heart className="h-5 w-5 text-red-500" />}
+            icon={<HeartPulse className="h-5 w-5 text-red-500" />}
             colorClass="rgba(239, 68, 68, 0.1)"
             progress={showProgressBars ? customerLoyalty.retentionRate : undefined}
             progressMax={100}
@@ -81,7 +89,7 @@ export function StatsSection({
           title="Beneficio Operativo" 
           value="€705.75" 
           trend={7.3} 
-          icon={<TrendingUp className="h-5 w-5 text-green-500" />}
+          icon={<BarChart4 className="h-5 w-5 text-green-500" />}
           colorClass="rgba(34, 197, 94, 0.1)"
         />
       </div>
@@ -89,7 +97,7 @@ export function StatsSection({
         <StatCard 
           title="% Punto Equilibrio" 
           value="76%" 
-          icon={<Target className="h-5 w-5 text-orange-500" />}
+          icon={<Scales className="h-5 w-5 text-orange-500" />}
           colorClass="rgba(249, 115, 22, 0.1)"
         />
       </div>

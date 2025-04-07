@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { Bell, ChevronDown, Search } from "lucide-react";
+import { BellRing, ChevronDown, Search, Store, LogOut, UserCog, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -33,6 +33,7 @@ export function Header() {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="flex items-center gap-2 border-nua-blue/20 hover:bg-nua-blue/5">
+              <Store className="h-4 w-4 text-nua-blue" />
               {selectedRestaurant}
               <ChevronDown className="h-4 w-4 text-nua-blue" />
             </Button>
@@ -56,7 +57,7 @@ export function Header() {
         </DropdownMenu>
         
         <Button variant="ghost" size="icon" className="relative hover:bg-nua-pink/10">
-          <Bell className="h-5 w-5 text-gray-600" />
+          <BellRing className="h-5 w-5 text-gray-600" />
           <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-nua-pink"></span>
         </Button>
 
@@ -71,10 +72,19 @@ export function Header() {
           <DropdownMenuContent align="end" className="w-56 bg-white border border-gray-200 shadow-lg rounded-md">
             <DropdownMenuLabel>Mi cuenta</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="cursor-pointer">Perfil</DropdownMenuItem>
-            <DropdownMenuItem className="cursor-pointer">Configuración</DropdownMenuItem>
+            <DropdownMenuItem className="cursor-pointer flex items-center gap-2">
+              <UserCog className="h-4 w-4" />
+              Perfil
+            </DropdownMenuItem>
+            <DropdownMenuItem className="cursor-pointer flex items-center gap-2">
+              <Settings className="h-4 w-4" />
+              Configuración
+            </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="cursor-pointer text-red-500 hover:text-red-700 hover:bg-red-50">Cerrar sesión</DropdownMenuItem>
+            <DropdownMenuItem className="cursor-pointer text-red-500 hover:text-red-700 hover:bg-red-50 flex items-center gap-2">
+              <LogOut className="h-4 w-4" />
+              Cerrar sesión
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

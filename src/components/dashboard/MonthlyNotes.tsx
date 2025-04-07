@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { MessageSquare, Plus, Save } from "lucide-react";
+import { StickyNote, PlusCircle, Save, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 interface Note {
@@ -66,7 +66,7 @@ export function MonthlyNotes() {
             variant="outline"
             className="h-8"
           >
-            <Plus className="h-4 w-4 mr-1" /> Añadir
+            <PlusCircle className="h-4 w-4 mr-1" /> Añadir
           </Button>
         )}
       </CardHeader>
@@ -85,7 +85,7 @@ export function MonthlyNotes() {
                 variant="outline" 
                 size="sm"
               >
-                Cancelar
+                <X className="h-4 w-4 mr-1" /> Cancelar
               </Button>
               <Button 
                 onClick={handleAddNote} 
@@ -101,7 +101,7 @@ export function MonthlyNotes() {
               notes.map((note) => (
                 <div key={note.id} className="p-3 bg-muted/50 rounded-md">
                   <div className="flex items-start">
-                    <MessageSquare className="h-4 w-4 mr-2 mt-0.5 text-muted-foreground" />
+                    <StickyNote className="h-4 w-4 mr-2 mt-0.5 text-muted-foreground" />
                     <div>
                       <p className="text-sm">{note.text}</p>
                       <p className="text-xs text-muted-foreground mt-1">
