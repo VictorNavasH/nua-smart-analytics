@@ -1,3 +1,4 @@
+
 import { ChartGrid } from "@/components/dashboard/charts/ChartGrid";
 import { RevenueChart } from "@/components/dashboard/charts/RevenueChart";
 import { ClientsChart } from "@/components/dashboard/charts/ClientsChart";
@@ -33,34 +34,47 @@ export function ChartsSection({
 }: ChartsSectionProps) {
   return (
     <div className="space-y-6">
-      <ChartGrid>
-        <RevenueChart data={salesData} />
-        <MonthlyNotesContainer show={showMonthlyNotes} />
-        <ClientsChart data={clientsData} />
-        <SecondaryMetricsContainer show={showSecondaryMetrics} />
-      </ChartGrid>
+      {/* Primera sección: Gráficos primarios */}
+      <div className="bg-background/60 p-4 rounded-lg border shadow-sm">
+        <h2 className="text-lg font-medium mb-4">Tendencias Principales</h2>
+        <ChartGrid>
+          <RevenueChart data={salesData} />
+          <ClientsChart data={clientsData} />
+          <MonthlyNotesContainer show={showMonthlyNotes} />
+          <SecondaryMetricsContainer show={showSecondaryMetrics} />
+        </ChartGrid>
+      </div>
       
-      <ChartGrid>
-        <SalesGoalsChart data={salesVsGoalsData} />
-      </ChartGrid>
+      {/* Segunda sección: Comparativa de ventas vs objetivos */}
+      <div className="bg-background/60 p-4 rounded-lg border shadow-sm">
+        <h2 className="text-lg font-medium mb-4">Ventas vs Objetivos</h2>
+        <ChartGrid>
+          <SalesGoalsChart data={salesVsGoalsData} />
+          <CategoryRevenueContainer data={categoryRevenueData} />
+        </ChartGrid>
+      </div>
       
-      <ChartGrid>
-        <CategoryRevenueContainer data={categoryRevenueData} />
-      </ChartGrid>
+      {/* Tercera sección: Análisis histórico y previsiones */}
+      <div className="bg-background/60 p-4 rounded-lg border shadow-sm">
+        <h2 className="text-lg font-medium mb-4">Análisis Histórico y Previsiones</h2>
+        <ChartGrid>
+          <div className="col-span-full lg:col-span-3 xl:col-span-6">
+            <HistoricalComparisonContainer title="Comparativa con Año Anterior" />
+          </div>
+          <div className="col-span-full lg:col-span-3 xl:col-span-6">
+            <RevenueForecastContainer />
+          </div>
+        </ChartGrid>
+      </div>
       
-      <ChartGrid>
-        <div className="col-span-full lg:col-span-3 xl:col-span-6">
-          <HistoricalComparisonContainer title="Comparativa con Año Anterior" />
-        </div>
-        <div className="col-span-full lg:col-span-3 xl:col-span-6">
-          <RevenueForecastContainer />
-        </div>
-      </ChartGrid>
-      
-      <ChartGrid>
-        <ProductPerformanceContainer />
-        <ExpensesChartContainer data={expensesData} show={showExpensesChart} />
-      </ChartGrid>
+      {/* Cuarta sección: Desglose de rendimiento y gastos */}
+      <div className="bg-background/60 p-4 rounded-lg border shadow-sm">
+        <h2 className="text-lg font-medium mb-4">Análisis Detallado</h2>
+        <ChartGrid>
+          <ProductPerformanceContainer />
+          <ExpensesChartContainer data={expensesData} show={showExpensesChart} />
+        </ChartGrid>
+      </div>
     </div>
   );
 }
