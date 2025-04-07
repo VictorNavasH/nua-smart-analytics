@@ -1,4 +1,3 @@
-
 import { Link, useLocation } from "react-router-dom";
 import { ChevronLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -22,9 +21,12 @@ export function MobileSidebar({ mobileOpen, toggleMobileSidebar }: MobileSidebar
         )}
       >
         <div className="flex items-center justify-between p-4 h-16 border-b border-sidebar-border">
-          <div className="font-bold text-xl flex items-center">
-            <span className="text-nua-turquoise">NÜA</span>
-            <span className="text-white ml-1 text-sm">Smart Analytics</span>
+          <div className="flex items-center">
+            <img 
+              src="/lovable-uploads/03330604-0926-4f80-9923-9ed3f0b9c399.png" 
+              alt="NÜA Smart Analytics Logo" 
+              className="h-[30px] w-auto" 
+            />
           </div>
           <Button
             variant="ghost"

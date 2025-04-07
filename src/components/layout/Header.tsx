@@ -22,8 +22,8 @@ export function Header() {
       <div className="flex items-center md:ml-2 transition-all duration-300">
         <div className="flex items-center mr-4">
           <img 
-            src="/lovable-uploads/7f140b8e-4327-4848-b1f0-b992cb671c52.png" 
-            alt="NÜA Logo" 
+            src="/lovable-uploads/03330604-0926-4f80-9923-9ed3f0b9c399.png" 
+            alt="NÜA Smart Analytics Logo" 
             className="h-[40px] w-auto" 
           />
         </div>
