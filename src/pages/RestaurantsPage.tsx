@@ -43,7 +43,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { PlusCircle, Edit, Trash2, StoreIcon, Buildings } from "lucide-react";
+import { PlusCircle, Edit, Trash2, StoreIcon, Building } from "lucide-react";
 
 export default function RestaurantsPage() {
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
@@ -159,7 +159,7 @@ export default function RestaurantsPage() {
         <div className="flex justify-between items-center">
           <div>
             <h1 className="text-3xl font-bold tracking-tight flex items-center gap-2">
-              <Buildings className="h-8 w-8 text-nua-turquoise" />
+              <Building className="h-8 w-8 text-nua-turquoise" />
               Gestión de Restaurantes
             </h1>
             <p className="text-muted-foreground">
