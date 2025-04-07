@@ -21,13 +21,7 @@ import {
 } from "@/components/ui/form";
 import { Switch } from "@/components/ui/switch";
 import { useVisualFeedback } from "@/hooks/useVisualFeedback";
-
-export interface DashboardSettings {
-  showSecondaryMetrics: boolean;
-  showMonthlyNotes: boolean;
-  showProgressBars: boolean;
-  showExpensesChart: boolean;
-}
+import { DashboardSettings } from "@/hooks/useDashboardSettings";
 
 interface UserSettingsProps {
   settings: DashboardSettings;
@@ -136,6 +130,21 @@ export function UserSettings({ settings, onSettingsChange }: UserSettingsProps) 
                 <Switch
                   checked={localSettings.showExpensesChart}
                   onCheckedChange={() => handleToggle("showExpensesChart")}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+            <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 transition-all hover:shadow-sm">
+              <div className="space-y-0.5">
+                <FormLabel>Mostrar predicciones IA</FormLabel>
+                <FormDescription>
+                  Muestra las predicciones de inteligencia artificial
+                </FormDescription>
+              </div>
+              <FormControl>
+                <Switch
+                  checked={localSettings.showAIPredictions}
+                  onCheckedChange={() => handleToggle("showAIPredictions")}
                 />
               </FormControl>
               <FormMessage />

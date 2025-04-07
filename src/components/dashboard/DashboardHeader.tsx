@@ -1,6 +1,7 @@
 
 import { RestaurantSelector } from "@/components/dashboard/RestaurantSelector";
-import { UserSettings, DashboardSettings } from "@/components/dashboard/UserSettings";
+import { UserSettings } from "@/components/dashboard/UserSettings";
+import { DashboardSettings } from "@/hooks/useDashboardSettings";
 
 interface DashboardHeaderProps {
   settings: DashboardSettings;

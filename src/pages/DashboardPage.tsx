@@ -84,6 +84,7 @@ export default function DashboardPage() {
           showMonthlyNotes={settings.showMonthlyNotes}
           showSecondaryMetrics={settings.showSecondaryMetrics}
           showExpensesChart={settings.showExpensesChart}
+          showAIPredictions={settings.showAIPredictions}
         />
       </DashboardTabs>
     </div>

@@ -21,6 +21,7 @@ interface ChartsSectionProps {
   showMonthlyNotes: boolean;
   showSecondaryMetrics: boolean;
   showExpensesChart: boolean;
+  showAIPredictions: boolean;
 }
 
 export function ChartsSection({ 
@@ -31,7 +32,8 @@ export function ChartsSection({
   categoryRevenueData,
   showMonthlyNotes,
   showSecondaryMetrics,
-  showExpensesChart
+  showExpensesChart,
+  showAIPredictions
 }: ChartsSectionProps) {
   return (
     <div className="space-y-6">
@@ -59,7 +61,7 @@ export function ChartsSection({
       <div className="bg-background/60 p-4 rounded-lg border shadow-sm">
         <h2 className="text-lg font-medium mb-4">Predicciones y Análisis Avanzado</h2>
         <ChartGrid>
-          <AIPredictionContainer />
+          {showAIPredictions && <AIPredictionContainer />}
           <div className="col-span-full lg:col-span-3 xl:col-span-3">
             <RevenueForecastContainer />
           </div>
