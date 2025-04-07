@@ -2,29 +2,46 @@
 import { Layout } from "@/components/layout/Layout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ChartCard, NuaLineChart } from "@/components/dashboard/Chart";
+import { ChartCard, NuaLineChart, NuaBarChart } from "@/components/dashboard/Chart";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { TrendingUp, BarChart2, PlusCircle } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Progress } from "@/components/ui/progress";
+import { useState } from "react";
+import { TrendingUp, BarChart2, PlusCircle, AlertTriangle, Target, ArrowDownRight, ArrowUpRight } from "lucide-react";
+import { ScenarioSelector } from "@/components/projections/ScenarioSelector";
+import { FinancialHealthIndicator } from "@/components/projections/FinancialHealthIndicator";
 
 // Mock data for projections
 const salesProjection = [
-  { name: "Ene", actual: 12000, proyectado: 12000 },
-  { name: "Feb", actual: 14000, proyectado: 13500 },
-  { name: "Mar", actual: 13000, proyectado: 14000 },
-  { name: "Abr", actual: 15000, proyectado: 14500 },
-  { name: "May", actual: 17000, proyectado: 15000 },
-  { name: "Jun", actual: 16000, proyectado: 15500 },
-  { name: "Jul", actual: 18000, proyectado: 16000 },
-  { name: "Ago", actual: null, proyectado: 16500 },
-  { name: "Sep", actual: null, proyectado: 17000 },
-  { name: "Oct", actual: null, proyectado: 18000 },
-  { name: "Nov", actual: null, proyectado: 20000 },
-  { name: "Dic", actual: null, proyectado: 22000 },
+  { name: "Ene", actual: 12000, proyectado: 12000, optimista: 13000, pesimista: 11000 },
+  { name: "Feb", actual: 14000, proyectado: 13500, optimista: 14500, pesimista: 12500 },
+  { name: "Mar", actual: 13000, proyectado: 14000, optimista: 15000, pesimista: 13000 },
+  { name: "Abr", actual: 15000, proyectado: 14500, optimista: 15500, pesimista: 13500 },
+  { name: "May", actual: 17000, proyectado: 15000, optimista: 16000, pesimista: 14000 },
+  { name: "Jun", actual: 16000, proyectado: 15500, optimista: 16500, pesimista: 14500 },
+  { name: "Jul", actual: 18000, proyectado: 16000, optimista: 17000, pesimista: 15000 },
+  { name: "Ago", actual: null, proyectado: 16500, optimista: 17500, pesimista: 15500 },
+  { name: "Sep", actual: null, proyectado: 17000, optimista: 18000, pesimista: 16000 },
+  { name: "Oct", actual: null, proyectado: 18000, optimista: 19000, pesimista: 17000 },
+  { name: "Nov", actual: null, proyectado: 20000, optimista: 21000, pesimista: 19000 },
+  { name: "Dic", actual: null, proyectado: 22000, optimista: 23000, pesimista: 21000 },
 ];
 
 export default function ProjectionsPage() {
+  const [scenario, setScenario] = useState("proyectado");
+  const [breakEvenPoint] = useState(15000);
+  const [currentMonthGoal] = useState(16000);
+  const [currentMonthSales] = useState(12800);
+  const progressPercentage = Math.min(Math.round((currentMonthSales / currentMonthGoal) * 100), 100);
+  
+  // Determine financial health status
+  const salesTrend = 3.5; // Mock: percentage change in sales
+  const marginTrend = -1.2; // Mock: percentage change in margin
+  const breakEvenStatus = currentMonthSales < breakEvenPoint;
+  
   return (
     <Layout>
       <div className="space-y-6">
@@ -35,11 +52,34 @@ export default function ProjectionsPage() {
               Analiza tendencias y establece objetivos financieros
             </p>
           </div>
-          <Button className="flex items-center gap-2">
-            <PlusCircle className="h-4 w-4" />
-            <span>Nueva Proyección</span>
-          </Button>
+          <div className="flex items-center gap-2">
+            <ScenarioSelector currentScenario={scenario} onScenarioChange={setScenario} />
+            <Button className="flex items-center gap-2">
+              <PlusCircle className="h-4 w-4" />
+              <span>Nueva Proyección</span>
+            </Button>
+          </div>
         </div>
+
+        {breakEvenStatus && (
+          <Alert variant="destructive" className="animate-fade-in">
+            <AlertTriangle className="h-4 w-4" />
+            <AlertTitle>Alerta de punto de equilibrio</AlertTitle>
+            <AlertDescription>
+              Las ventas actuales (€{currentMonthSales.toLocaleString()}) están por debajo del punto de equilibrio (€{breakEvenPoint.toLocaleString()}).
+            </AlertDescription>
+          </Alert>
+        )}
+
+        {marginTrend < 0 && (
+          <Alert className="animate-fade-in border-orange-300 bg-orange-50 text-orange-800">
+            <ArrowDownRight className="h-4 w-4 text-orange-500" />
+            <AlertTitle>Disminución de margen</AlertTitle>
+            <AlertDescription>
+              El margen ha disminuido un {Math.abs(marginTrend)}% respecto al mes anterior.
+            </AlertDescription>
+          </Alert>
+        )}
 
         <Tabs defaultValue="sales" className="space-y-4">
           <TabsList>
@@ -54,8 +94,12 @@ export default function ProjectionsPage() {
               <ChartCard title="Proyección de Ventas Anual" subtitle="Actual vs. Proyectado">
                 <NuaLineChart 
                   data={salesProjection}
-                  dataKey="proyectado"
-                  stroke="#02B1C4"
+                  dataKey={scenario}
+                  stroke={
+                    scenario === "optimista" ? "#22c55e" : 
+                    scenario === "pesimista" ? "#ef4444" : 
+                    "#02B1C4"
+                  }
                 />
               </ChartCard>
 
@@ -84,6 +128,54 @@ export default function ProjectionsPage() {
                 </CardContent>
               </Card>
             </div>
+
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle>Progreso hacia el Objetivo Mensual</CardTitle>
+                <CardDescription className="flex items-center justify-between">
+                  <span>Ventas actuales vs objetivo del mes</span>
+                  <FinancialHealthIndicator 
+                    salesTrend={salesTrend} 
+                    marginTrend={marginTrend} 
+                    breakEvenStatus={breakEvenStatus} 
+                  />
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="flex justify-between text-sm mb-1">
+                    <span>€{currentMonthSales.toLocaleString()}</span>
+                    <span>€{currentMonthGoal.toLocaleString()}</span>
+                  </div>
+                  <Progress value={progressPercentage} className="h-3" />
+                  <div className="text-center text-sm text-muted-foreground">
+                    {progressPercentage}% completado
+                  </div>
+                  
+                  <div className="flex items-center justify-between px-2">
+                    <div className="flex items-center">
+                      <Target className="h-4 w-4 mr-1 text-nua-blue" />
+                      <span className="text-sm">Punto de Equilibrio</span>
+                    </div>
+                    <span className="text-sm font-medium">€{breakEvenPoint.toLocaleString()}</span>
+                  </div>
+
+                  <div className="flex items-center justify-between px-2">
+                    <div className="flex items-center">
+                      {salesTrend >= 0 ? (
+                        <ArrowUpRight className="h-4 w-4 mr-1 text-green-500" />
+                      ) : (
+                        <ArrowDownRight className="h-4 w-4 mr-1 text-red-500" />
+                      )}
+                      <span className="text-sm">Tendencia Ventas</span>
+                    </div>
+                    <span className={`text-sm font-medium ${salesTrend >= 0 ? 'text-green-500' : 'text-red-500'}`}>
+                      {salesTrend >= 0 ? '+' : ''}{salesTrend}%
+                    </span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
 
             <Card>
               <CardHeader>

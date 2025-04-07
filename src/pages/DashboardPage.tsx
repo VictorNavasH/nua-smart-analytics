@@ -6,9 +6,10 @@ import { ChartCard, NuaLineChart, NuaBarChart, NuaPieChart } from "@/components/
 import { 
   Tabs, TabsContent, TabsList, TabsTrigger 
 } from "@/components/ui/tabs";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { 
   CreditCard, DollarSign, Users, TrendingUp, 
-  BarChart2, Percent, Target 
+  BarChart2, Percent, Target, AlertTriangle
 } from "lucide-react";
 
 // Mock data for charts
@@ -40,6 +41,11 @@ const expensesData = [
 ];
 
 export default function DashboardPage() {
+  // Mock data for current month
+  const monthlyGoal = 15000;
+  const currentSales = 12000;
+  const isBelow = currentSales < 9500; // Punto de equilibrio
+
   return (
     <Layout>
       <div className="space-y-6">
@@ -52,6 +58,16 @@ export default function DashboardPage() {
           </div>
           <RestaurantSelector />
         </div>
+
+        {isBelow && (
+          <Alert variant="destructive" className="animate-fade-in">
+            <AlertTriangle className="h-4 w-4" />
+            <AlertTitle>Alerta de punto de equilibrio</AlertTitle>
+            <AlertDescription>
+              Las ventas actuales no alcanzan el punto de equilibrio. Es necesario tomar medidas.
+            </AlertDescription>
+          </Alert>
+        )}
 
         <Tabs defaultValue="daily" className="space-y-4">
           <TabsList>
@@ -69,6 +85,9 @@ export default function DashboardPage() {
                   value="€2,854.00" 
                   trend={12.5} 
                   icon={<DollarSign className="h-5 w-5 text-nua-turquoise" />}
+                  progress={currentSales}
+                  progressMax={monthlyGoal}
+                  showProgressBar={true}
                 />
               </div>
               <div className="col-span-2">
