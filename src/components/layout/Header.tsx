@@ -17,14 +17,14 @@ export function Header() {
   const restaurants = ["Mi Restaurante", "Sucursal Centro", "Sucursal Norte"];
 
   return (
-    <header className="h-16 px-4 flex items-center justify-between border-b bg-background">
-      <div className="flex items-center md:ml-64">
+    <header className="h-16 px-4 flex items-center justify-between border-b bg-background sticky top-0 z-10 shadow-sm">
+      <div className="flex items-center md:ml-64 transition-all duration-300">
         <div className="relative hidden md:flex items-center mx-4">
           <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
             type="search"
             placeholder="Buscar..."
-            className="pl-8 w-[200px] lg:w-[300px]"
+            className="pl-8 w-[200px] lg:w-[300px] focus-visible:ring-nua-turquoise"
           />
         </div>
       </div>
@@ -32,19 +32,22 @@ export function Header() {
       <div className="flex items-center gap-4">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="flex items-center gap-2">
+            <Button variant="outline" className="flex items-center gap-2 border-nua-blue/20 hover:bg-nua-blue/5">
               {selectedRestaurant}
-              <ChevronDown className="h-4 w-4" />
+              <ChevronDown className="h-4 w-4 text-nua-blue" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
+          <DropdownMenuContent align="end" className="w-56 bg-white border border-gray-200 shadow-lg rounded-md">
             <DropdownMenuLabel>Cambiar restaurante</DropdownMenuLabel>
             <DropdownMenuSeparator />
             {restaurants.map((restaurant) => (
               <DropdownMenuItem 
                 key={restaurant}
                 onClick={() => setSelectedRestaurant(restaurant)}
-                className={restaurant === selectedRestaurant ? "bg-muted" : ""}
+                className={cn(
+                  "cursor-pointer",
+                  restaurant === selectedRestaurant ? "bg-muted text-nua-blue font-medium" : ""
+                )}
               >
                 {restaurant}
               </DropdownMenuItem>
@@ -52,29 +55,34 @@ export function Header() {
           </DropdownMenuContent>
         </DropdownMenu>
         
-        <Button variant="ghost" size="icon" className="relative">
-          <Bell className="h-5 w-5" />
-          <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-secondary"></span>
+        <Button variant="ghost" size="icon" className="relative hover:bg-nua-pink/10">
+          <Bell className="h-5 w-5 text-gray-600" />
+          <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-nua-pink"></span>
         </Button>
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon" className="rounded-full">
-              <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white font-semibold">
+            <Button variant="ghost" size="icon" className="rounded-full hover:bg-nua-turquoise/10">
+              <div className="w-8 h-8 rounded-full bg-nua-turquoise flex items-center justify-center text-white font-semibold">
                 U
               </div>
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
+          <DropdownMenuContent align="end" className="w-56 bg-white border border-gray-200 shadow-lg rounded-md">
             <DropdownMenuLabel>Mi cuenta</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Perfil</DropdownMenuItem>
-            <DropdownMenuItem>Configuración</DropdownMenuItem>
+            <DropdownMenuItem className="cursor-pointer">Perfil</DropdownMenuItem>
+            <DropdownMenuItem className="cursor-pointer">Configuración</DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Cerrar sesión</DropdownMenuItem>
+            <DropdownMenuItem className="cursor-pointer text-red-500 hover:text-red-700 hover:bg-red-50">Cerrar sesión</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
     </header>
   );
+}
+
+// Helper function to conditionally join class names
+function cn(...classes: (string | boolean | undefined)[]) {
+  return classes.filter(Boolean).join(' ');
 }

@@ -25,9 +25,9 @@ export function RevenueForecastChart({ data }: RevenueForecastChartProps) {
         </div>
       )}
       {forecastStartIndex > 0 && (
-        <div className="absolute top-0 text-xs text-muted-foreground px-1 bg-background rounded" 
+        <div className="absolute top-0 text-xs text-muted-foreground px-1 bg-background rounded shadow-sm" 
              style={{ left: `${(forecastStartIndex / data.length) * 100}%`, transform: 'translateX(-50%)' }}>
-          Forecast →
+          <span className="font-medium text-nua-turquoise">Forecast →</span>
         </div>
       )}
       <ResponsiveContainer width="100%" height="100%">
@@ -46,9 +46,26 @@ export function RevenueForecastChart({ data }: RevenueForecastChartProps) {
             </linearGradient>
           </defs>
           <CartesianGrid strokeDasharray="3 3" stroke="#eee" />
-          <XAxis dataKey="month" />
-          <YAxis tickFormatter={(value) => `€${(value / 1000).toFixed(0)}k`} />
-          <Tooltip formatter={(value) => formatCurrency(Number(value))} />
+          <XAxis 
+            dataKey="month" 
+            tick={{ fill: '#364F6B' }}
+            axisLine={{ stroke: '#E5E7EB' }}
+          />
+          <YAxis 
+            tickFormatter={(value) => `€${(value / 1000).toFixed(0)}k`} 
+            tick={{ fill: '#364F6B' }}
+            axisLine={{ stroke: '#E5E7EB' }}
+          />
+          <Tooltip 
+            formatter={(value) => formatCurrency(Number(value))} 
+            contentStyle={{ 
+              backgroundColor: 'white', 
+              borderRadius: '0.5rem', 
+              boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+              border: '1px solid #e5e7eb'
+            }}
+            labelStyle={{ fontWeight: 'bold', color: '#364F6B' }}
+          />
           <Area 
             type="monotone" 
             dataKey="min" 
@@ -72,7 +89,7 @@ export function RevenueForecastChart({ data }: RevenueForecastChartProps) {
             dataKey="revenue" 
             stroke="#02B1C4" 
             strokeWidth={2}
-            activeDot={{ r: 8 }}
+            activeDot={{ r: 8, fill: '#02B1C4', stroke: 'white', strokeWidth: 2 }}
             name="Projected Revenue"
           />
         </AreaChart>

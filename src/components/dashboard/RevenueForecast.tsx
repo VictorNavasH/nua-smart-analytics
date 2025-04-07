@@ -38,14 +38,20 @@ export function RevenueForecast({ title = "Revenue Forecast" }: RevenueForecastP
   ];
   
   return (
-    <Card className="h-full">
+    <Card className="h-full shadow-md hover:shadow-lg transition-shadow duration-300 border-t-4 border-t-nua-turquoise">
       <CardHeader className="pb-2 flex flex-row items-start justify-between">
         <div>
-          <CardTitle className="text-lg font-medium">{title}</CardTitle>
+          <CardTitle className="text-lg font-medium text-nua-blue">{title}</CardTitle>
           <CardDescription>Adjust parameters to visualize different scenarios</CardDescription>
         </div>
-        <Button variant="outline" size="icon" onClick={resetControls} title="Reset to defaults">
-          <RotateCcw className="h-4 w-4" />
+        <Button 
+          variant="outline" 
+          size="icon" 
+          onClick={resetControls} 
+          title="Reset to defaults"
+          className="hover:bg-nua-turquoise/10 border-nua-turquoise/50"
+        >
+          <RotateCcw className="h-4 w-4 text-nua-turquoise" />
         </Button>
       </CardHeader>
       <CardContent>

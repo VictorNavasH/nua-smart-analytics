@@ -21,8 +21,11 @@ export function MobileSidebar({ mobileOpen, toggleMobileSidebar }: MobileSidebar
           mobileOpen ? "translate-x-0" : "-translate-x-full"
         )}
       >
-        <div className="flex items-center justify-between p-4 h-16">
-          <div className="font-bold text-xl">NÜA</div>
+        <div className="flex items-center justify-between p-4 h-16 border-b border-sidebar-border">
+          <div className="font-bold text-xl flex items-center">
+            <span className="text-nua-turquoise">NÜA</span>
+            <span className="text-white ml-1 text-sm">Business Insights</span>
+          </div>
           <Button
             variant="ghost"
             size="icon"
@@ -33,7 +36,7 @@ export function MobileSidebar({ mobileOpen, toggleMobileSidebar }: MobileSidebar
           </Button>
         </div>
 
-        <nav className="flex-1 p-2 space-y-1">
+        <nav className="flex-1 p-2 space-y-1 overflow-y-auto">
           {navItems.map((item) => (
             <Link
               key={item.href}
@@ -41,8 +44,8 @@ export function MobileSidebar({ mobileOpen, toggleMobileSidebar }: MobileSidebar
               className={cn(
                 "flex items-center rounded-md py-2 px-3 text-sm transition-colors",
                 location.pathname === item.href
-                  ? "bg-sidebar-accent text-white font-medium"
-                  : "text-sidebar-foreground hover:bg-sidebar-accent/50 hover:text-white"
+                  ? "bg-sidebar-accent text-white font-medium border-l-4 border-nua-turquoise"
+                  : "text-sidebar-foreground hover:bg-sidebar-accent/50 hover:text-white border-l-4 border-transparent"
               )}
               onClick={toggleMobileSidebar}
             >
@@ -54,11 +57,12 @@ export function MobileSidebar({ mobileOpen, toggleMobileSidebar }: MobileSidebar
 
         <div className="p-4 border-t border-sidebar-border">
           <div className="flex items-center">
-            <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white font-semibold">
+            <div className="w-8 h-8 rounded-full bg-nua-turquoise flex items-center justify-center text-white font-semibold">
               N
             </div>
             <div className="ml-3">
               <p className="text-sm font-medium">Mi Restaurante</p>
+              <p className="text-xs text-sidebar-foreground/70">Administrador</p>
             </div>
           </div>
         </div>
@@ -67,7 +71,7 @@ export function MobileSidebar({ mobileOpen, toggleMobileSidebar }: MobileSidebar
       {/* Mobile overlay */}
       {mobileOpen && (
         <div 
-          className="md:hidden fixed inset-0 z-30 bg-black/50" 
+          className="md:hidden fixed inset-0 z-30 bg-black/50 backdrop-blur-sm" 
           onClick={toggleMobileSidebar}
         />
       )}
