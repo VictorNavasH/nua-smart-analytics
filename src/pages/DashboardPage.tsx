@@ -1,16 +1,24 @@
+
+import { useEffect, useState } from "react";
 import { Layout } from "@/components/layout/Layout";
 import { RestaurantSelector } from "@/components/dashboard/RestaurantSelector";
 import { StatCard } from "@/components/dashboard/StatCard";
-import { ChartCard, NuaLineChart, NuaBarChart, NuaPieChart } from "@/components/dashboard/Chart";
+import { ChartCard, NuaLineChart, NuaBarChart } from "@/components/dashboard/Chart";
 import { MonthlyNotes } from "@/components/dashboard/MonthlyNotes";
 import { SecondaryMetrics } from "@/components/dashboard/SecondaryMetrics";
+import { DateRangeSelector } from "@/components/dashboard/DateRangeSelector";
+import { ExportData } from "@/components/dashboard/ExportData";
+import { UserSettings, DashboardSettings } from "@/components/dashboard/UserSettings";
+import { FinancialAlert } from "@/components/dashboard/FinancialAlert";
+import { ExpensesChart } from "@/components/dashboard/ExpensesChart";
+import { DateRange } from "react-day-picker";
+import { exportData } from "@/services/exportService";
 import { 
   Tabs, TabsContent, TabsList, TabsTrigger 
 } from "@/components/ui/tabs";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { 
   CreditCard, DollarSign, Users, TrendingUp, 
-  BarChart2, Percent, Target, AlertTriangle
+  BarChart2, Percent, Target
 } from "lucide-react";
 
 const salesData = [
@@ -44,29 +52,90 @@ export default function DashboardPage() {
   const monthlyGoal = 15000;
   const currentSales = 12000;
   const isBelow = currentSales < 9500;
+  
+  const [dateRange, setDateRange] = useState<DateRange | undefined>({
+    from: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
+    to: new Date(),
+  });
+  
+  const [alerts, setAlerts] = useState<Array<{
+    id: string;
+    type: "warning" | "danger" | "success" | "info";
+    title: string;
+    description: string;
+    threshold?: number;
+    current?: number;
+  }>>([
+    {
+      id: "1",
+      type: "danger",
+      title: "Alerta de punto de equilibrio",
+      description: "Las ventas actuales no alcanzan el punto de equilibrio. Es necesario tomar medidas.",
+      threshold: 9500,
+      current: 8700
+    }
+  ]);
+  
+  const [settings, setSettings] = useState<DashboardSettings>({
+    showSecondaryMetrics: true,
+    showMonthlyNotes: true,
+    showProgressBars: true,
+    showExpensesChart: true,
+  });
+  
+  const dismissAlert = (id: string) => {
+    setAlerts(alerts.filter(alert => alert.id !== id));
+  };
+  
+  const handleExport = async (type: "csv" | "excel") => {
+    // Aquí se manejaría la exportación de datos real, obteniendo los datos según el dateRange
+    // Para este ejemplo, usamos los datos de prueba
+    const columns = [
+      { key: "name", label: "Período" },
+      { key: "ventas", label: "Ventas (€)" }
+    ];
+    
+    return await exportData(salesData, columns, type, `ventas_dashboard_${new Date().toISOString().split('T')[0]}`);
+  };
+
+  // Efecto para simular la carga de datos al cambiar el rango de fechas
+  useEffect(() => {
+    // Aquí se cargarían los datos basados en el rango de fechas
+    console.log("Cargando datos para el rango:", dateRange);
+  }, [dateRange]);
 
   return (
     <Layout>
       <div className="space-y-6">
-        <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+        <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
           <div>
             <h1 className="text-3xl font-bold tracking-tight">Dashboard Financiero</h1>
             <p className="text-muted-foreground">
               Monitoriza el rendimiento financiero de tu restaurante
             </p>
           </div>
-          <RestaurantSelector />
+          <div className="flex items-center gap-2">
+            <RestaurantSelector />
+            <UserSettings settings={settings} onSettingsChange={setSettings} />
+          </div>
+        </div>
+        
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <DateRangeSelector onRangeChange={setDateRange} />
+          <ExportData onExport={handleExport} />
         </div>
 
-        {isBelow && (
-          <Alert variant="destructive" className="animate-fade-in">
-            <AlertTriangle className="h-4 w-4" />
-            <AlertTitle>Alerta de punto de equilibrio</AlertTitle>
-            <AlertDescription>
-              Las ventas actuales no alcanzan el punto de equilibrio. Es necesario tomar medidas.
-            </AlertDescription>
-          </Alert>
-        )}
+        {alerts.map(alert => (
+          <FinancialAlert
+            key={alert.id}
+            type={alert.type}
+            title={alert.title}
+            description={alert.description}
+            threshold={alert.threshold}
+            current={alert.current}
+            onDismiss={() => dismissAlert(alert.id)}
+          />
+        ))}
 
         <Tabs defaultValue="daily" className="space-y-4">
           <TabsList>
@@ -84,9 +153,9 @@ export default function DashboardPage() {
                   value="€2,854.00" 
                   trend={12.5} 
                   icon={<DollarSign className="h-5 w-5 text-nua-turquoise" />}
-                  progress={currentSales}
+                  progress={settings.showProgressBars ? currentSales : undefined}
                   progressMax={monthlyGoal}
-                  showProgressBar={true}
+                  showProgressBar={settings.showProgressBars}
                 />
               </div>
               <div className="col-span-2">
@@ -145,9 +214,11 @@ export default function DashboardPage() {
                   />
                 </ChartCard>
               </div>
-              <div className="col-span-3 md:col-span-1">
-                <MonthlyNotes />
-              </div>
+              {settings.showMonthlyNotes && (
+                <div className="col-span-3 md:col-span-1">
+                  <MonthlyNotes />
+                </div>
+              )}
               <div className="col-span-3 md:col-span-2">
                 <ChartCard title="Clientes por Día" subtitle="Últimos 7 días">
                   <NuaBarChart 
@@ -157,9 +228,16 @@ export default function DashboardPage() {
                   />
                 </ChartCard>
               </div>
-              <div className="col-span-3 md:col-span-1">
-                <SecondaryMetrics />
-              </div>
+              {settings.showSecondaryMetrics && (
+                <div className="col-span-3 md:col-span-1">
+                  <SecondaryMetrics />
+                </div>
+              )}
+              {settings.showExpensesChart && (
+                <div className="col-span-3">
+                  <ExpensesChart data={expensesData} />
+                </div>
+              )}
             </div>
           </TabsContent>
           
