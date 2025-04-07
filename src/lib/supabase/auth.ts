@@ -1,3 +1,4 @@
+
 import { supabase } from '@/integrations/supabase/client';
 import type { Database } from '@/integrations/supabase/types';
 
@@ -134,18 +135,15 @@ export function subscribeToAuthChanges(callback: (user: any, profile: Profile | 
 // Verifica si los proveedores de OAuth están disponibles
 export async function getEnabledAuthProviders(): Promise<string[]> {
   try {
+    // Intenta iniciar un flujo OAuth con Google pero sin redirección
     const { data } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        queryParams: {
-          access_type: 'offline',
-          prompt: 'consent',
-        },
         skipBrowserRedirect: true
       }
     });
     
-    // If we can initialize the OAuth flow, Google is enabled
+    // Si data.url existe, significa que el proveedor Google está habilitado
     return data.url ? ['google'] : [];
   } catch (error) {
     console.error('Error fetching auth providers:', error);

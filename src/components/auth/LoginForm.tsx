@@ -1,4 +1,5 @@
-import { useState } from "react";
+
+import { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -8,6 +9,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Mail, Lock, LogIn, UserPlus, User, Eye, EyeOff, AlertTriangle, Info } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
+import { useVisualFeedback } from "@/hooks/useVisualFeedback";
 
 interface FormErrors {
   email?: string;
@@ -28,11 +30,12 @@ export const LoginForm = () => {
   const { signIn, signUp, enabledAuthProviders } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
+  const feedback = useVisualFeedback();
 
   // Comprobar si Google Auth está habilitado
-  useState(() => {
+  useEffect(() => {
     setGoogleEnabled(enabledAuthProviders.includes('google'));
-  });
+  }, [enabledAuthProviders]);
 
   // Validar formulario
   const validateForm = () => {
@@ -79,17 +82,14 @@ export const LoginForm = () => {
     try {
       if (isLogin) {
         await signIn(email, password);
-        toast({
-          title: "Inicio de sesión exitoso",
-          description: "Bienvenido a NÜA Smart Analytics",
-        });
+        feedback.showSuccess("Inicio de sesión exitoso", "Bienvenido a NÜA Smart Analytics");
         navigate("/");
       } else {
         await signUp(email, password, { nombre_completo: nombreCompleto });
-        toast({
-          title: "Registro exitoso",
-          description: "Se ha enviado un email de confirmación a tu dirección de correo. Por favor verifica tu cuenta para continuar.",
-        });
+        feedback.showSuccess(
+          "Registro exitoso",
+          "Se ha enviado un email de confirmación a tu dirección de correo. Por favor verifica tu cuenta para continuar."
+        );
         // En este caso no redirigimos automáticamente ya que el usuario debe verificar su email
       }
     } catch (error: any) {
@@ -104,11 +104,7 @@ export const LoginForm = () => {
         errorMessage = "Este email ya está registrado. Por favor inicia sesión.";
       }
       
-      toast({
-        title: "Error",
-        description: errorMessage,
-        variant: "destructive",
-      });
+      feedback.showError("Error", errorMessage);
     } finally {
       setIsLoading(false);
     }
@@ -128,11 +124,10 @@ export const LoginForm = () => {
       
       // No necesitamos manejar redirección aquí, ya que Supabase lo hace automáticamente
     } catch (error: any) {
-      toast({
-        title: "Error al iniciar sesión con Google",
-        description: error.message || "Ha ocurrido un error intentando iniciar sesión con Google",
-        variant: "destructive",
-      });
+      feedback.showError(
+        "Error al iniciar sesión con Google",
+        error.message || "Ha ocurrido un error intentando iniciar sesión con Google"
+      );
     } finally {
       setIsLoading(false);
     }
@@ -206,10 +201,7 @@ export const LoginForm = () => {
                   className="p-0 h-auto text-xs"
                   type="button"
                   onClick={() => {
-                    toast({
-                      title: "Recuperación de contraseña",
-                      description: "Función en desarrollo. Pronto estará disponible.",
-                    });
+                    feedback.showInfo("Recuperación de contraseña", "Función en desarrollo. Pronto estará disponible.");
                   }}
                 >
                   ¿Olvidaste tu contraseña?
