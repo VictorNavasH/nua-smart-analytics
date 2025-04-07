@@ -1,14 +1,15 @@
 
 import { ReactNode } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface DataEntryCardProps {
   title: string;
   description: string;
   children: ReactNode;
+  footer?: ReactNode;
 }
 
-export function DataEntryCard({ title, description, children }: DataEntryCardProps) {
+export function DataEntryCard({ title, description, children, footer }: DataEntryCardProps) {
   return (
     <Card>
       <CardHeader>
@@ -16,6 +17,7 @@ export function DataEntryCard({ title, description, children }: DataEntryCardPro
         <CardDescription>{description}</CardDescription>
       </CardHeader>
       <CardContent>{children}</CardContent>
+      {footer && <CardFooter>{footer}</CardFooter>}
     </Card>
   );
 }

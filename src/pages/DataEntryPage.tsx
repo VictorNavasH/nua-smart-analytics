@@ -7,6 +7,7 @@ import { useToast } from "@/hooks/use-toast";
 import { DataEntryCard } from "@/components/data-entry/DataEntryCard";
 import { SalesForm } from "@/components/data-entry/SalesForm";
 import { ExpensesForm } from "@/components/data-entry/ExpensesForm";
+import { CsvUploader } from "@/components/data-entry/CsvUploader";
 
 export default function DataEntryPage() {
   const [date, setDate] = useState<Date | undefined>(new Date());
@@ -19,6 +20,11 @@ export default function DataEntryPage() {
       title: "Datos guardados",
       description: "Los datos se han guardado correctamente",
     });
+  };
+
+  const handleUploadComplete = (data: any[]) => {
+    console.log("Upload completed with data:", data);
+    // Here you would typically update your state with the imported data
   };
 
   return (
@@ -47,6 +53,12 @@ export default function DataEntryPage() {
             <DataEntryCard 
               title="Registro de Ventas"
               description="Ingresa las ventas diarias de tu restaurante"
+              footer={
+                <div className="w-full">
+                  <h4 className="text-sm font-medium mb-2">Importar desde CSV</h4>
+                  <CsvUploader type="sales" onUploadComplete={handleUploadComplete} />
+                </div>
+              }
             >
               <SalesForm 
                 date={date}
@@ -62,6 +74,12 @@ export default function DataEntryPage() {
             <DataEntryCard 
               title="Registro de Gastos"
               description="Ingresa los gastos de tu restaurante"
+              footer={
+                <div className="w-full">
+                  <h4 className="text-sm font-medium mb-2">Importar desde CSV</h4>
+                  <CsvUploader type="expenses" onUploadComplete={handleUploadComplete} />
+                </div>
+              }
             >
               <ExpensesForm 
                 date={date}
