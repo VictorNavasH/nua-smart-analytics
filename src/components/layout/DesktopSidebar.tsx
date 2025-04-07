@@ -24,7 +24,7 @@ export function DesktopSidebar({ expanded, toggleSidebar }: DesktopSidebarProps)
         {expanded && (
           <div className="font-bold text-xl flex items-center">
             <span className="text-nua-turquoise">NÜA</span>
-            <span className="text-white ml-1 text-sm">Business Insights</span>
+            <span className="text-white ml-1 text-sm">Smart Money</span>
           </div>
         )}
         <Button
