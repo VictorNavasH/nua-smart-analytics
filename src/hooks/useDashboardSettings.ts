@@ -6,6 +6,7 @@ export interface DashboardSettings {
   showMonthlyNotes: boolean;
   showProgressBars: boolean;
   showExpensesChart: boolean;
+  showAIPredictions: boolean;
 }
 
 export function useDashboardSettings() {
@@ -14,6 +15,7 @@ export function useDashboardSettings() {
     showMonthlyNotes: true,
     showProgressBars: true,
     showExpensesChart: true,
+    showAIPredictions: true,
   });
   
   return {
