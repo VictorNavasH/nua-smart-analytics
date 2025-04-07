@@ -4,6 +4,7 @@ import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight, BarChart2, Home, FileText, TrendingUp, User, Menu } from "lucide-react";
+import { useSidebar } from "./SidebarContext";
 
 const navItems = [
   { name: "Inicio", href: "/", icon: Home },
@@ -14,8 +15,7 @@ const navItems = [
 ];
 
 export function Sidebar() {
-  // Por defecto, el sidebar estará colapsado en vista de escritorio
-  const [expanded, setExpanded] = useState(false);
+  const { expanded, setExpanded } = useSidebar();
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
   

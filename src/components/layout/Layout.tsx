@@ -3,16 +3,24 @@ import { ReactNode } from "react";
 import { Sidebar } from "./Sidebar";
 import { Header } from "./Header";
 import { cn } from "@/lib/utils";
+import { useSidebar } from "./SidebarContext";
 
 interface LayoutProps {
   children: ReactNode;
 }
 
 export function Layout({ children }: LayoutProps) {
+  const { expanded } = useSidebar();
+
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <Sidebar />
-      <div className="flex-1 md:ml-16">
+      <div 
+        className={cn(
+          "flex-1 transition-all duration-300",
+          expanded ? "md:ml-64" : "md:ml-16"
+        )}
+      >
         <Header />
         <main className="p-4 md:p-6">{children}</main>
       </div>
