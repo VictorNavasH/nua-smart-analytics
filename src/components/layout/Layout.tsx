@@ -22,7 +22,7 @@ export function Layout({ children }: LayoutProps) {
         )}
       >
         <Header />
-        <main className="p-3 md:p-4 lg:px-6 xl:px-8 max-w-[1920px] mx-auto animate-scale-in">{children}</main>
+        <main className="p-4 md:p-6 lg:px-8 xl:px-10 max-w-[1920px] mx-auto animate-scale-in">{children}</main>
       </div>
     </div>
   );

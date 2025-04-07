@@ -7,26 +7,26 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 240 25% 24%; /* Changed to #2f2f4c equivalent in HSL */
+    --background: 210 20% 98%; /* Cambiado a #f5f7fa equivalente en HSL */
+    --foreground: 240 25% 24%; /* #2f2f4c equivalente en HSL */
 
-    --card: 0 0% 100%;
-    --card-foreground: 240 25% 24%; /* Changed to #2f2f4c equivalent in HSL */
+    --card: 0 0% 100%; /* Mantenemos las tarjetas blancas */
+    --card-foreground: 240 25% 24%; /* #2f2f4c equivalente en HSL */
 
     --popover: 0 0% 100%;
-    --popover-foreground: 240 25% 24%; /* Changed to #2f2f4c equivalent in HSL */
+    --popover-foreground: 240 25% 24%; /* #2f2f4c equivalente en HSL */
 
     --primary: 188 98% 39%; /* NÜA Turquoise */
     --primary-foreground: 210 40% 98%;
 
     --secondary: 335 100% 64%; /* NÜA Pink */
-    --secondary-foreground: 240 25% 24%; /* Changed to #2f2f4c equivalent in HSL */
+    --secondary-foreground: 240 25% 24%; /* #2f2f4c equivalente en HSL */
 
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
 
     --accent: 36 100% 76%; /* NÜA Yellow */
-    --accent-foreground: 240 25% 24%; /* Changed to #2f2f4c equivalent in HSL */
+    --accent-foreground: 240 25% 24%; /* #2f2f4c equivalente en HSL */
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
@@ -35,7 +35,7 @@
     --input: 214.3 31.8% 91.4%;
     --ring: 188 98% 39%; /* Matches turquoise */
 
-    --radius: 0.5rem;
+    --radius: 1rem; /* Incrementamos el radio de borde a 16px */
 
     --sidebar-background: 218 32% 31%; /* NÜA Blue */
     --sidebar-foreground: 0 0% 98%;
@@ -100,7 +100,7 @@
 
 @layer components {
   .nua-card {
-    @apply rounded-xl border bg-card p-6 shadow-lg transition-all hover:shadow-xl;
+    @apply rounded-xl border bg-card p-6 shadow-md transition-all hover:shadow-lg;
   }
   
   .nua-stat-card {
