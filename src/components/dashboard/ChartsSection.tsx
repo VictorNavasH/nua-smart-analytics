@@ -11,6 +11,7 @@ import { RevenueForecastContainer } from "@/components/dashboard/charts/RevenueF
 import { ProductPerformanceContainer } from "@/components/dashboard/charts/ProductPerformanceContainer";
 import { ExpensesChartContainer } from "@/components/dashboard/charts/ExpensesChartContainer";
 import { AIPredictionContainer } from "@/components/dashboard/charts/AIPredictionContainer";
+import { ProfitabilityAnalysisContainer } from "@/components/dashboard/charts/ProfitabilityAnalysisContainer";
 
 interface ChartsSectionProps {
   salesData: Array<{ name: string; ventas: number }>;
@@ -57,7 +58,15 @@ export function ChartsSection({
         </ChartGrid>
       </div>
       
-      {/* Nueva sección: Predicciones IA y Análisis Histórico */}
+      {/* Nueva sección: Análisis de Rentabilidad */}
+      <div className="bg-background/60 p-4 rounded-lg border shadow-sm">
+        <h2 className="text-lg font-medium mb-4">Análisis de Rentabilidad</h2>
+        <ChartGrid>
+          <ProfitabilityAnalysisContainer />
+        </ChartGrid>
+      </div>
+      
+      {/* Sección: Predicciones IA y Análisis Avanzado */}
       <div className="bg-background/60 p-4 rounded-lg border shadow-sm">
         <h2 className="text-lg font-medium mb-4">Predicciones y Análisis Avanzado</h2>
         <ChartGrid>

@@ -1,4 +1,3 @@
-
 // Mock data for the dashboard
 
 export const salesData = [
@@ -173,5 +172,91 @@ export const revenueForecastData = {
     { month: "Oct", revenue: 19000, min: 17000, max: 21000 },
     { month: "Nov", revenue: 21000, min: 18500, max: 23500 },
     { month: "Dic", revenue: 24000, min: 21000, max: 27000 },
+  ]
+};
+
+// Nueva sección: Datos de análisis de rentabilidad
+export const profitabilityData = {
+  categories: [
+    { 
+      name: "Comidas", 
+      revenue: 42000, 
+      expenses: 28350, 
+      profit: 13650, 
+      margin: 32.5, 
+      previousMargin: 30.1,
+      change: 2.4
+    },
+    { 
+      name: "Bebidas", 
+      revenue: 28500, 
+      expenses: 12825, 
+      profit: 15675, 
+      margin: 55.0, 
+      previousMargin: 52.3,
+      change: 2.7
+    },
+    { 
+      name: "Postres", 
+      revenue: 14200, 
+      expenses: 7810, 
+      profit: 6390, 
+      margin: 45.0, 
+      previousMargin: 46.8,
+      change: -1.8
+    },
+    { 
+      name: "Extras", 
+      revenue: 7800, 
+      expenses: 3120, 
+      profit: 4680, 
+      margin: 60.0, 
+      previousMargin: 57.2,
+      change: 2.8
+    },
+  ],
+  periods: [
+    { 
+      name: "Enero", 
+      totalRevenue: 14500, 
+      totalExpenses: 9570, 
+      totalProfit: 4930, 
+      margin: 34.0
+    },
+    { 
+      name: "Febrero", 
+      totalRevenue: 15200, 
+      totalExpenses: 9880, 
+      totalProfit: 5320, 
+      margin: 35.0
+    },
+    { 
+      name: "Marzo", 
+      totalRevenue: 15800, 
+      totalExpenses: 10270, 
+      totalProfit: 5530, 
+      margin: 35.0
+    },
+    { 
+      name: "Abril", 
+      totalRevenue: 16200, 
+      totalExpenses: 10368, 
+      totalProfit: 5832, 
+      margin: 36.0
+    },
+    { 
+      name: "Mayo", 
+      totalRevenue: 16800, 
+      totalExpenses: 10584, 
+      totalProfit: 6216, 
+      margin: 37.0
+    },
+    { 
+      name: "Junio", 
+      totalRevenue: 17200, 
+      totalExpenses: 10664, 
+      totalProfit: 6536, 
+      margin: 38.0
+    },
   ]
 };
