@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { 
   getCurrentUser, 
@@ -73,7 +72,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  // Cargar proveedores de autenticación disponibles
   useEffect(() => {
     async function loadAuthProviders() {
       try {
@@ -88,7 +86,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []);
 
   useEffect(() => {
-    // Configurar listener para cambios de autenticación antes de verificar sesión existente
     const { data: authListener } = subscribeToAuthChanges(async (authUser, authProfile) => {
       setUser(authUser);
       setProfile(authProfile);
@@ -103,7 +100,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setLoading(false);
     });
 
-    // Verificar si hay sesión existente
     refreshUserData();
 
     return () => {
@@ -111,7 +107,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     };
   }, []);
 
-  // Determinar roles
   const isAdmin = profile?.rol === 'admin';
   const isManager = profile?.rol === 'manager';
   const isAnalyst = profile?.rol === 'analyst';
