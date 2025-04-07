@@ -29,13 +29,7 @@ export function DesktopSidebar({ expanded, toggleSidebar }: DesktopSidebarProps)
             />
           </div>
         ) : (
-          <div className="flex items-center justify-center w-full">
-            <img 
-              src="/lovable-uploads/03330604-0926-4f80-9923-9ed3f0b9c399.png" 
-              alt="NÜA Logo" 
-              className="h-[24px] w-auto" 
-            />
-          </div>
+          <div className="flex-1"></div>
         )}
         <Button
           variant="ghost"
