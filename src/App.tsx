@@ -8,22 +8,19 @@ import ProjectionsPage from "@/pages/ProjectionsPage";
 import ProfilePage from "@/pages/ProfilePage";
 import NotFound from "@/pages/NotFound";
 import { Toaster } from "@/components/ui/toast-notification";
-import { Layout } from "@/components/layout/Layout";
 
 function App() {
   return (
     <Router>
       <SidebarProvider>
-        <Layout>
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/dashboard" element={<DashboardPage />} />
-            <Route path="/data-entry" element={<DataEntryPage />} />
-            <Route path="/projections" element={<ProjectionsPage />} />
-            <Route path="/profile" element={<ProfilePage />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </Layout>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/dashboard" element={<DashboardPage />} />
+          <Route path="/data-entry" element={<DataEntryPage />} />
+          <Route path="/projections" element={<ProjectionsPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
         <Toaster />
       </SidebarProvider>
     </Router>
