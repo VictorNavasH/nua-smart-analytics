@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -14,12 +14,18 @@ const navItems = [
 ];
 
 export function Sidebar() {
-  const [expanded, setExpanded] = useState(true);
+  // Por defecto, el sidebar estará colapsado en vista de escritorio
+  const [expanded, setExpanded] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
   
   const toggleSidebar = () => setExpanded(!expanded);
   const toggleMobileSidebar = () => setMobileOpen(!mobileOpen);
+
+  // Cerrar el sidebar móvil al cambiar de ruta
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [location.pathname]);
 
   return (
     <>
@@ -37,7 +43,7 @@ export function Sidebar() {
       <aside
         className={cn(
           "hidden md:flex flex-col h-screen bg-sidebar text-sidebar-foreground transition-all duration-300 fixed z-30 top-0 left-0 border-r border-sidebar-border",
-          expanded ? "w-64" : "w-20"
+          expanded ? "w-64" : "w-16"
         )}
       >
         <div className="flex items-center justify-between p-4 h-16">
@@ -50,7 +56,10 @@ export function Sidebar() {
             variant="ghost"
             size="icon"
             onClick={toggleSidebar}
-            className="ml-auto text-sidebar-foreground hover:text-white hover:bg-sidebar-accent"
+            className={cn(
+              "text-sidebar-foreground hover:text-white hover:bg-sidebar-accent",
+              expanded ? "ml-auto" : "mx-auto"
+            )}
           >
             {expanded ? <ChevronLeft className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
           </Button>
@@ -76,7 +85,7 @@ export function Sidebar() {
         </nav>
 
         <div className="p-4 border-t border-sidebar-border">
-          <div className="flex items-center">
+          <div className="flex items-center justify-center">
             <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white font-semibold">
               N
             </div>
