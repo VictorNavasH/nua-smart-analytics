@@ -1,27 +1,28 @@
 
-import { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState } from "react";
 
-interface SidebarContextType {
+export interface SidebarContextType {
   expanded: boolean;
-  setExpanded: (expanded: boolean) => void;
+  toggleExpanded: () => void;
 }
 
-const SidebarContext = createContext<SidebarContextType | undefined>(undefined);
+const SidebarContext = createContext<SidebarContextType>({
+  expanded: true,
+  toggleExpanded: () => {},
+});
 
-export function SidebarProvider({ children }: { children: ReactNode }) {
-  const [expanded, setExpanded] = useState(false);
+export const SidebarProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [expanded, setExpanded] = useState(true);
+
+  const toggleExpanded = () => {
+    setExpanded(!expanded);
+  };
 
   return (
-    <SidebarContext.Provider value={{ expanded, setExpanded }}>
+    <SidebarContext.Provider value={{ expanded, toggleExpanded }}>
       {children}
     </SidebarContext.Provider>
   );
-}
+};
 
-export function useSidebar() {
-  const context = useContext(SidebarContext);
-  if (context === undefined) {
-    throw new Error('useSidebar must be used within a SidebarProvider');
-  }
-  return context;
-}
+export const useSidebar = () => useContext(SidebarContext);

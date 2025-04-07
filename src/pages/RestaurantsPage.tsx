@@ -1,9 +1,8 @@
-
 import { useState, useEffect } from "react";
 import { Layout } from "@/components/layout/Layout";
 import { getRestaurants, createRestaurant, updateRestaurant, deleteRestaurant } from "@/lib/supabase/restaurants";
 import { useToast } from "@/hooks/use-toast";
-import { Restaurant } from "@/lib/supabase/types";
+import { Restaurant } from "@/lib/supabase/auth";
 import { 
   Card, 
   CardContent, 
@@ -80,9 +79,9 @@ export default function RestaurantsPage() {
 
   function handleEditClick(restaurant: Restaurant) {
     setEditingRestaurant(restaurant);
-    setName(restaurant.name);
-    setCity(restaurant.city);
-    setActive(restaurant.active);
+    setName(restaurant.nombre);
+    setCity(restaurant.ubicacion);
+    setActive(restaurant.activo);
     setIsDialogOpen(true);
   }
 
@@ -121,9 +120,9 @@ export default function RestaurantsPage() {
       if (editingRestaurant?.id) {
         // Update existing restaurant
         await updateRestaurant(editingRestaurant.id, {
-          name,
-          city,
-          active,
+          nombre: name,
+          ubicacion: city,
+          activo: active,
         });
         toast({
           title: "Restaurante actualizado",
@@ -132,9 +131,9 @@ export default function RestaurantsPage() {
       } else {
         // Create new restaurant
         await createRestaurant({
-          name,
-          city,
-          active,
+          nombre: name,
+          ubicacion: city,
+          activo: active,
         });
         toast({
           title: "Restaurante creado",
@@ -216,15 +215,15 @@ export default function RestaurantsPage() {
                 <TableBody>
                   {restaurants.map((restaurant) => (
                     <TableRow key={restaurant.id}>
-                      <TableCell className="font-medium">{restaurant.name}</TableCell>
-                      <TableCell>{restaurant.city}</TableCell>
+                      <TableCell className="font-medium">{restaurant.nombre}</TableCell>
+                      <TableCell>{restaurant.ubicacion}</TableCell>
                       <TableCell>
                         <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
-                          restaurant.active
+                          restaurant.activo
                             ? "bg-green-100 text-green-800"
                             : "bg-gray-100 text-gray-800"
                         }`}>
-                          {restaurant.active ? "Activo" : "Inactivo"}
+                          {restaurant.activo ? "Activo" : "Inactivo"}
                         </span>
                       </TableCell>
                       <TableCell className="text-right">
@@ -253,7 +252,7 @@ export default function RestaurantsPage() {
                               <AlertDialogHeader>
                                 <AlertDialogTitle>¿Confirmar eliminación?</AlertDialogTitle>
                                 <AlertDialogDescription>
-                                  Esta acción no se puede deshacer. Se eliminará permanentemente el restaurante "{restaurant.name}" y todos sus datos asociados.
+                                  Esta acción no se puede deshacer. Se eliminará permanentemente el restaurante "{restaurant.nombre}" y todos sus datos asociados.
                                 </AlertDialogDescription>
                               </AlertDialogHeader>
                               <AlertDialogFooter>

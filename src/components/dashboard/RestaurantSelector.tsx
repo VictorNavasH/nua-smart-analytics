@@ -19,6 +19,7 @@ import { getRestaurants } from "@/lib/supabase/restaurants";
 import { useToast } from "@/hooks/use-toast";
 import { useRestaurantStore } from "@/stores/restaurantStore";
 import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/integrations/supabase/client";
 import type { Restaurant } from "@/lib/supabase/auth";
 
 export function RestaurantSelector() {

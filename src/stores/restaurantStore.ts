@@ -1,21 +1,13 @@
 
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
-import { Restaurant } from '@/lib/supabase/types';
+import { Restaurant } from '@/lib/supabase/auth';
 
-interface RestaurantState {
+interface RestaurantStore {
   selectedRestaurant: Restaurant | null;
   setSelectedRestaurant: (restaurant: Restaurant) => void;
 }
 
-export const useRestaurantStore = create<RestaurantState>()(
-  persist(
-    (set) => ({
-      selectedRestaurant: null,
-      setSelectedRestaurant: (restaurant) => set({ selectedRestaurant: restaurant }),
-    }),
-    {
-      name: 'restaurant-storage',
-    }
-  )
-);
+export const useRestaurantStore = create<RestaurantStore>((set) => ({
+  selectedRestaurant: null,
+  setSelectedRestaurant: (restaurant) => set({ selectedRestaurant: restaurant }),
+}));

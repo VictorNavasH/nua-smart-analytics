@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { Layout } from "@/components/layout/Layout";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -24,10 +23,8 @@ export default function ProfilePage() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isSaving, setIsSaving] = useState(false);
   
-  // Inicializar datos del perfil
   useEffect(() => {
     if (profile) {
-      // Dividir el nombre completo en nombre y apellidos
       const nameParts = profile.nombre_completo?.split(' ') || ["", ""];
       setFirstName(nameParts[0] || "");
       setLastName(nameParts.slice(1).join(' ') || "");
@@ -35,7 +32,6 @@ export default function ProfilePage() {
     }
   }, [profile]);
   
-  // Obtener iniciales para avatar
   const getInitials = () => {
     if (profile?.nombre_completo) {
       return profile.nombre_completo
@@ -48,7 +44,6 @@ export default function ProfilePage() {
     return user?.email?.substring(0, 2).toUpperCase() || "NU";
   };
   
-  // Obtener el rol en español
   const getRoleName = () => {
     if (!profile) return "";
     
@@ -67,7 +62,6 @@ export default function ProfilePage() {
     try {
       const nombreCompleto = `${firstName} ${lastName}`.trim();
       
-      // Actualizar perfil en la base de datos
       const { error } = await supabase
         .from('profiles')
         .update({ 
@@ -77,7 +71,6 @@ export default function ProfilePage() {
         
       if (error) throw error;
       
-      // Actualizar datos en contexto
       await refreshUserData();
       
       toast({
@@ -116,14 +109,12 @@ export default function ProfilePage() {
     
     setIsSaving(true);
     try {
-      // Actualizar contraseña en Supabase Auth
       const { error } = await supabase.auth.updateUser({
         password: newPassword
       });
       
       if (error) throw error;
       
-      // Limpiar campos
       setCurrentPassword("");
       setNewPassword("");
       setConfirmPassword("");

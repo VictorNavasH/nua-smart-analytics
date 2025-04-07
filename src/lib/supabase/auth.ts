@@ -2,7 +2,8 @@
 import { supabase } from '@/integrations/supabase/client';
 import type { Database } from '@/integrations/supabase/types';
 
-export type UserRole = Database['public']['Enums']['user_role'];
+// Definiciones de tipos
+export type UserRole = 'admin' | 'manager' | 'analyst';
 
 export type Profile = {
   id: string;

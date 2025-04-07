@@ -1,8 +1,7 @@
 
 import { supabase } from '@/integrations/supabase/client';
 import type { Database } from '@/integrations/supabase/types';
-
-export type Restaurant = Database['public']['Tables']['restaurantes']['Row'];
+import type { Restaurant } from './auth';
 
 export async function getRestaurants() {
   const { data, error } = await supabase
@@ -25,7 +24,7 @@ export async function getRestaurantById(id: string) {
   return data;
 }
 
-export async function createRestaurant(restaurant: Omit<Restaurant, 'id' | 'created_at'>) {
+export async function createRestaurant(restaurant: { nombre: string, ubicacion: string, activo?: boolean }) {
   const { data, error } = await supabase
     .from('restaurantes')
     .insert(restaurant)
@@ -36,7 +35,7 @@ export async function createRestaurant(restaurant: Omit<Restaurant, 'id' | 'crea
   return data;
 }
 
-export async function updateRestaurant(id: string, updates: Partial<Omit<Restaurant, 'id' | 'created_at'>>) {
+export async function updateRestaurant(id: string, updates: Partial<{ nombre: string, ubicacion: string, activo?: boolean }>) {
   const { data, error } = await supabase
     .from('restaurantes')
     .update(updates)
