@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -32,17 +31,14 @@ export const LoginForm = () => {
   const navigate = useNavigate();
   const feedback = useVisualFeedback();
 
-  // Comprobar si Google Auth está habilitado
   useEffect(() => {
     setGoogleEnabled(enabledAuthProviders.includes('google'));
   }, [enabledAuthProviders]);
 
-  // Validar formulario
   const validateForm = () => {
     const errors: FormErrors = {};
     let isValid = true;
 
-    // Validar email
     if (!email) {
       errors.email = "El email es obligatorio";
       isValid = false;
@@ -51,7 +47,6 @@ export const LoginForm = () => {
       isValid = false;
     }
 
-    // Validar contraseña
     if (!password) {
       errors.password = "La contraseña es obligatoria";
       isValid = false;
@@ -60,7 +55,6 @@ export const LoginForm = () => {
       isValid = false;
     }
 
-    // Validar nombre completo si es registro
     if (!isLogin && !nombreCompleto) {
       errors.nombreCompleto = "El nombre es obligatorio";
       isValid = false;
@@ -90,12 +84,10 @@ export const LoginForm = () => {
           "Registro exitoso",
           "Se ha enviado un email de confirmación a tu dirección de correo. Por favor verifica tu cuenta para continuar."
         );
-        // En este caso no redirigimos automáticamente ya que el usuario debe verificar su email
       }
     } catch (error: any) {
       let errorMessage = error.message || "Ha ocurrido un error";
       
-      // Personalizar mensajes de error comunes
       if (error.message?.includes("Email not confirmed")) {
         errorMessage = "Tu email no ha sido confirmado. Por favor revisa tu bandeja de entrada.";
       } else if (error.message?.includes("Invalid login credentials")) {
@@ -113,22 +105,25 @@ export const LoginForm = () => {
   const handleGoogleSignIn = async () => {
     try {
       setIsLoading(true);
-      const { error } = await supabase.auth.signInWithOAuth({
+      const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/auth`
+          redirectTo: `${window.location.origin}/auth`,
+          queryParams: {
+            prompt: 'select_account'
+          }
         }
       });
       
       if (error) throw error;
       
       // No necesitamos manejar redirección aquí, ya que Supabase lo hace automáticamente
+      // y AuthPage detectará cuando regresemos con un token de acceso
     } catch (error: any) {
       feedback.showError(
         "Error al iniciar sesión con Google",
         error.message || "Ha ocurrido un error intentando iniciar sesión con Google"
       );
-    } finally {
       setIsLoading(false);
     }
   };

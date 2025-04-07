@@ -87,7 +87,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []);
 
   useEffect(() => {
+    // Primero, configurar el oyente de cambios de autenticación
     const { data: authListener } = subscribeToAuthChanges(async (authUser, authProfile) => {
+      console.log("Auth state changed:", authUser ? "User authenticated" : "User signed out");
       setUser(authUser);
       setProfile(authProfile);
       
@@ -101,10 +103,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setLoading(false);
     });
 
-    refreshUserData();
+    // Luego, obtener el estado actual de la sesión
+    (async () => {
+      setLoading(true);
+      try {
+        await refreshUserData();
+      } catch (error) {
+        console.error("Error during initial auth check:", error);
+        setLoading(false);
+      }
+    })();
 
     return () => {
-      authListener?.subscription.unsubscribe();
+      if (authListener?.subscription) {
+        authListener.subscription.unsubscribe();
+      }
     };
   }, []);
 
