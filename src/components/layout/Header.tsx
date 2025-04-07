@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Bell, ChevronDown, Search, Store, LogOut, UserCog, Settings, BellRing, Home } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -34,12 +33,9 @@ export function Header() {
             <img 
               src="/lovable-uploads/03330604-0926-4f80-9923-9ed3f0b9c399.png" 
               alt="NÜA Smart Analytics Logo" 
-              className="h-[36px] w-auto" // Aumentado de 30px a 36px
+              className="h-[38px] w-auto" 
             />
           </div>
-          <span className="text-[10px] text-nua-navy font-medium mt-0.5 hidden md:block animate-fade-in">
-            Impulsa tu éxito con inteligencia financiera
-          </span>
         </div>
       </div>
       

@@ -1,3 +1,4 @@
+
 import { Link, useLocation } from "react-router-dom";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -25,7 +26,7 @@ export function DesktopSidebar({ expanded, toggleSidebar }: DesktopSidebarProps)
             <img 
               src="/lovable-uploads/03330604-0926-4f80-9923-9ed3f0b9c399.png" 
               alt="NÜA Smart Analytics Logo" 
-              className="h-[30px] w-auto" 
+              className="h-[34px] w-auto" 
             />
           </div>
         ) : (
