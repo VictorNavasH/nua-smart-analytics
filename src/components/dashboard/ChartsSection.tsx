@@ -1,4 +1,3 @@
-
 import { ChartGrid } from "@/components/dashboard/charts/ChartGrid";
 import { RevenueChart } from "@/components/dashboard/charts/RevenueChart";
 import { ClientsChart } from "@/components/dashboard/charts/ClientsChart";
@@ -33,17 +32,35 @@ export function ChartsSection({
   showExpensesChart
 }: ChartsSectionProps) {
   return (
-    <ChartGrid>
-      <RevenueChart data={salesData} />
-      <MonthlyNotesContainer show={showMonthlyNotes} />
-      <ClientsChart data={clientsData} />
-      <SecondaryMetricsContainer show={showSecondaryMetrics} />
-      <SalesGoalsChart data={salesVsGoalsData} />
-      <CategoryRevenueContainer data={categoryRevenueData} />
-      <HistoricalComparisonContainer />
-      <RevenueForecastContainer />
-      <ProductPerformanceContainer />
-      <ExpensesChartContainer data={expensesData} show={showExpensesChart} />
-    </ChartGrid>
+    <div className="space-y-6">
+      <ChartGrid>
+        <RevenueChart data={salesData} />
+        <MonthlyNotesContainer show={showMonthlyNotes} />
+        <ClientsChart data={clientsData} />
+        <SecondaryMetricsContainer show={showSecondaryMetrics} />
+      </ChartGrid>
+      
+      <ChartGrid>
+        <SalesGoalsChart data={salesVsGoalsData} />
+      </ChartGrid>
+      
+      <ChartGrid>
+        <CategoryRevenueContainer data={categoryRevenueData} />
+      </ChartGrid>
+      
+      <ChartGrid>
+        <div className="col-span-full lg:col-span-3 xl:col-span-6">
+          <HistoricalComparisonContainer title="Comparativa con Año Anterior" />
+        </div>
+        <div className="col-span-full lg:col-span-3 xl:col-span-6">
+          <RevenueForecastContainer />
+        </div>
+      </ChartGrid>
+      
+      <ChartGrid>
+        <ProductPerformanceContainer />
+        <ExpensesChartContainer data={expensesData} show={showExpensesChart} />
+      </ChartGrid>
+    </div>
   );
 }

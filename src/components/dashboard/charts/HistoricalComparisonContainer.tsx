@@ -3,7 +3,7 @@ import { HistoricalComparison } from "@/components/dashboard/HistoricalCompariso
 
 export function HistoricalComparisonContainer() {
   return (
-    <div className="col-span-full lg:col-span-3 xl:col-span-3">
+    <div className="col-span-full lg:col-span-3 xl:col-span-6">
       <HistoricalComparison title="Comparativa con Año Anterior" />
     </div>
   );

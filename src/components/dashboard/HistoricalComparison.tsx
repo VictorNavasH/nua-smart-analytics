@@ -36,22 +36,20 @@ export function HistoricalComparison({ title = "Comparativa Histórica" }: Histo
   };
   
   return (
-    <Card className="h-full">
-      <CardHeader className="pb-0">
-        <div className="flex justify-between items-center">
-          <CardTitle className="text-lg font-medium">{title}</CardTitle>
-          <Tabs 
-            defaultValue="sales" 
-            className="w-[260px]"
-            onValueChange={(value) => setMetric(value as "sales" | "customers" | "avgTicket")}
-          >
-            <TabsList className="grid grid-cols-3">
-              <TabsTrigger value="sales">Ventas</TabsTrigger>
-              <TabsTrigger value="customers">Clientes</TabsTrigger>
-              <TabsTrigger value="avgTicket">Ticket</TabsTrigger>
-            </TabsList>
-          </Tabs>
-        </div>
+    <Card className="h-full shadow-lg hover:shadow-xl transition-shadow duration-300 border-t-4 border-t-nua-turquoise rounded-xl overflow-hidden">
+      <CardHeader className="pb-0 flex flex-row items-start justify-between bg-gradient-to-r from-white to-nua-turquoise/5">
+        <CardTitle className="text-lg font-medium text-nua-blue">{title}</CardTitle>
+        <Tabs 
+          defaultValue="sales" 
+          className="w-[260px]"
+          onValueChange={(value) => setMetric(value as "sales" | "customers" | "avgTicket")}
+        >
+          <TabsList className="grid grid-cols-3">
+            <TabsTrigger value="sales">Ventas</TabsTrigger>
+            <TabsTrigger value="customers">Clientes</TabsTrigger>
+            <TabsTrigger value="avgTicket">Ticket</TabsTrigger>
+          </TabsList>
+        </Tabs>
       </CardHeader>
       <CardContent>
         <div className="h-[350px] w-full">
