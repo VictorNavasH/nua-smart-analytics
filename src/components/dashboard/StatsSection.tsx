@@ -1,4 +1,3 @@
-
 import { StatCard } from "@/components/dashboard/StatCard";
 import { 
   CreditCard, 
@@ -10,7 +9,7 @@ import {
   HeartPulse,
   Receipt,
   BarChart4,
-  Scales
+  Scale
 } from "lucide-react";
 
 interface StatsSectionProps {
@@ -97,7 +96,7 @@ export function StatsSection({
         <StatCard 
           title="% Punto Equilibrio" 
           value="76%" 
-          icon={<Scales className="h-5 w-5 text-orange-500" />}
+          icon={<Scale className="h-5 w-5 text-orange-500" />}
           colorClass="rgba(249, 115, 22, 0.1)"
         />
       </div>
