@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { RestaurantSelector } from "@/components/dashboard/RestaurantSelector";
 import { useSidebar } from "./SidebarContext";
 import { useAuth } from "@/contexts/AuthContext";
+import { useRestaurantStore } from "@/stores/restaurantStore";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,6 +19,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 export function Header() {
   const { toggleExpanded } = useSidebar();
   const { user, profile, restaurant, signOut } = useAuth();
+  const { selectedRestaurantId, setSelectedRestaurantId } = useRestaurantStore();
   const navigate = useNavigate();
 
   const handleSignOut = async () => {
@@ -84,7 +86,12 @@ export function Header() {
             className="h-6 w-auto"
           />
           
-          {user && <RestaurantSelector />}
+          {user && (
+            <RestaurantSelector 
+              selectedId={selectedRestaurantId} 
+              onSelect={setSelectedRestaurantId} 
+            />
+          )}
         </nav>
       </div>
       <div className="flex items-center gap-2 md:gap-4">

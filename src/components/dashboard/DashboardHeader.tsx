@@ -2,6 +2,7 @@
 import { RestaurantSelector } from "@/components/dashboard/RestaurantSelector";
 import { UserSettings } from "@/components/dashboard/UserSettings";
 import { DashboardSettings } from "@/hooks/useDashboardSettings";
+import { useRestaurantStore } from "@/stores/restaurantStore";
 
 interface DashboardHeaderProps {
   settings: DashboardSettings;
@@ -9,6 +10,8 @@ interface DashboardHeaderProps {
 }
 
 export function DashboardHeader({ settings, onSettingsChange }: DashboardHeaderProps) {
+  const { selectedRestaurantId, setSelectedRestaurantId } = useRestaurantStore();
+
   return (
     <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
       <div>
@@ -18,7 +21,10 @@ export function DashboardHeader({ settings, onSettingsChange }: DashboardHeaderP
         </p>
       </div>
       <div className="flex items-center gap-2">
-        <RestaurantSelector />
+        <RestaurantSelector 
+          selectedId={selectedRestaurantId} 
+          onSelect={setSelectedRestaurantId} 
+        />
         <UserSettings settings={settings} onSettingsChange={onSettingsChange} />
       </div>
     </div>

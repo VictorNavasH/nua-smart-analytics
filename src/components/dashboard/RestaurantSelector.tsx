@@ -37,11 +37,20 @@ export function RestaurantSelector({
     async function loadRestaurants() {
       try {
         const data = await getRestaurants();
-        setRestaurants(data);
+        // Convertir el formato de los datos de restaurantes al formato esperado por Restaurant
+        const formattedRestaurants: Restaurant[] = data.map(resto => ({
+          id: resto.id,
+          name: resto.nombre,
+          city: resto.ubicacion,
+          active: resto.activo || false,
+          created_at: resto.created_at
+        }));
+        
+        setRestaurants(formattedRestaurants);
         
         // Si no hay restaurante seleccionado y hay restaurantes disponibles, seleccionar el primero
-        if (!selectedId && data.length > 0) {
-          onSelect(data[0].id);
+        if (!selectedId && formattedRestaurants.length > 0) {
+          onSelect(formattedRestaurants[0].id);
         }
       } catch (error) {
         console.error("Error al cargar restaurantes:", error);
