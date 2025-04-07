@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -26,7 +27,7 @@ export const LoginForm = () => {
   const [formErrors, setFormErrors] = useState<FormErrors>({});
   const [googleEnabled, setGoogleEnabled] = useState(false);
   
-  const { signIn, signUp, enabledAuthProviders } = useAuth();
+  const { signIn, signUp, enabledAuthProviders, signInWithGoogle } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
   const feedback = useVisualFeedback();
@@ -34,6 +35,15 @@ export const LoginForm = () => {
   useEffect(() => {
     setGoogleEnabled(enabledAuthProviders.includes('google'));
   }, [enabledAuthProviders]);
+
+  // Para tests y desarrollo
+  useEffect(() => {
+    // Configurar credenciales de prueba para facilitar el inicio de sesión durante el desarrollo
+    if (import.meta.env.DEV) {
+      setEmail("test@example.com");
+      setPassword("password123");
+    }
+  }, []);
 
   const validateForm = () => {
     const errors: FormErrors = {};
@@ -72,10 +82,12 @@ export const LoginForm = () => {
     }
     
     setIsLoading(true);
+    console.log("Intentando autenticar con:", email, password.replace(/./g, '*'));
 
     try {
       if (isLogin) {
-        await signIn(email, password);
+        const result = await signIn(email, password);
+        console.log("Resultado de inicio de sesión:", result);
         feedback.showSuccess("Inicio de sesión exitoso", "Bienvenido a NÜA Smart Analytics");
         navigate("/");
       } else {
@@ -86,6 +98,7 @@ export const LoginForm = () => {
         );
       }
     } catch (error: any) {
+      console.error("Error de autenticación:", error);
       let errorMessage = error.message || "Ha ocurrido un error";
       
       if (error.message?.includes("Email not confirmed")) {
@@ -96,7 +109,7 @@ export const LoginForm = () => {
         errorMessage = "Este email ya está registrado. Por favor inicia sesión.";
       }
       
-      feedback.showError("Error", errorMessage);
+      feedback.showError("Error de autenticación", errorMessage);
     } finally {
       setIsLoading(false);
     }
@@ -105,21 +118,15 @@ export const LoginForm = () => {
   const handleGoogleSignIn = async () => {
     try {
       setIsLoading(true);
-      const { data, error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: {
-          redirectTo: `${window.location.origin}/auth`,
-          queryParams: {
-            prompt: 'select_account'
-          }
-        }
-      });
+      console.log("Iniciando autenticación con Google...");
       
-      if (error) throw error;
+      // Usar la función del contexto de Auth para iniciar sesión con Google
+      await signInWithGoogle(`${window.location.origin}/auth`);
       
       // No necesitamos manejar redirección aquí, ya que Supabase lo hace automáticamente
       // y AuthPage detectará cuando regresemos con un token de acceso
     } catch (error: any) {
+      console.error("Error al iniciar sesión con Google:", error);
       feedback.showError(
         "Error al iniciar sesión con Google",
         error.message || "Ha ocurrido un error intentando iniciar sesión con Google"
@@ -146,6 +153,15 @@ export const LoginForm = () => {
       </CardHeader>
       <form onSubmit={handleSubmit}>
         <CardContent className="space-y-4">
+          {/* Información de desarrollo */}
+          {import.meta.env.DEV && (
+            <div className="p-2 bg-blue-50 text-blue-800 rounded-md text-xs mb-4">
+              <p className="font-semibold">Credenciales de prueba (solo desarrollo):</p>
+              <p>Email: test@example.com</p>
+              <p>Contraseña: password123</p>
+            </div>
+          )}
+
           {!isLogin && (
             <div className="space-y-2">
               <Label htmlFor="nombreCompleto">Nombre Completo</Label>

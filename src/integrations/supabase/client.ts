@@ -17,6 +17,12 @@ export const supabase = createClient<Database>(
       storage: localStorage,
       persistSession: true,
       autoRefreshToken: true,
+      detectSessionInUrl: true, // Detectar automáticamente tokens en la URL
     },
   }
 );
+
+// Log authentication state for debugging
+supabase.auth.onAuthStateChange((event, session) => {
+  console.log('Supabase Auth Event:', event, session ? 'User session available' : 'No user session');
+});
