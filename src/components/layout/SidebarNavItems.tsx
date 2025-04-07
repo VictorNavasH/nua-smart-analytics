@@ -6,7 +6,8 @@ import {
   TrendingUp, 
   UserCog, 
   LayoutDashboard,
-  Receipt 
+  Receipt,
+  Buildings 
 } from "lucide-react";
 
 export const navItems = [
@@ -14,5 +15,6 @@ export const navItems = [
   { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
   { name: "Carga de Datos", href: "/data-entry", icon: ClipboardList },
   { name: "Proyecciones", href: "/projections", icon: TrendingUp },
+  { name: "Restaurantes", href: "/restaurants", icon: Buildings },
   { name: "Perfil", href: "/profile", icon: UserCog },
 ];
