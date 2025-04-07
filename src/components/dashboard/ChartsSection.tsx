@@ -1,13 +1,15 @@
 
-import { ChartCard, NuaLineChart, NuaBarChart } from "@/components/dashboard/Chart";
-import { MonthlyNotes } from "@/components/dashboard/MonthlyNotes";
-import { SecondaryMetrics } from "@/components/dashboard/SecondaryMetrics";
-import { ExpensesChart } from "@/components/dashboard/ExpensesChart";
-import { ComparisonChart } from "@/components/dashboard/ComparisonChart";
-import { CategoryRevenue } from "@/components/dashboard/CategoryRevenue";
-import { HistoricalComparison } from "@/components/dashboard/HistoricalComparison";
-import { RevenueForecast } from "@/components/dashboard/RevenueForecast";
-import { ProductPerformance } from "@/components/dashboard/ProductPerformance";
+import { ChartGrid } from "@/components/dashboard/charts/ChartGrid";
+import { RevenueChart } from "@/components/dashboard/charts/RevenueChart";
+import { ClientsChart } from "@/components/dashboard/charts/ClientsChart";
+import { MonthlyNotesContainer } from "@/components/dashboard/charts/MonthlyNotesContainer";
+import { SecondaryMetricsContainer } from "@/components/dashboard/charts/SecondaryMetricsContainer";
+import { SalesGoalsChart } from "@/components/dashboard/charts/SalesGoalsChart";
+import { CategoryRevenueContainer } from "@/components/dashboard/charts/CategoryRevenueContainer";
+import { HistoricalComparisonContainer } from "@/components/dashboard/charts/HistoricalComparisonContainer";
+import { RevenueForecastContainer } from "@/components/dashboard/charts/RevenueForecastContainer";
+import { ProductPerformanceContainer } from "@/components/dashboard/charts/ProductPerformanceContainer";
+import { ExpensesChartContainer } from "@/components/dashboard/charts/ExpensesChartContainer";
 
 interface ChartsSectionProps {
   salesData: Array<{ name: string; ventas: number }>;
@@ -31,73 +33,17 @@ export function ChartsSection({
   showExpensesChart
 }: ChartsSectionProps) {
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-      <div className="col-span-3 md:col-span-2">
-        <ChartCard title="Ingresos por Mes" subtitle="Últimos 7 meses">
-          <NuaLineChart 
-            data={salesData} 
-            dataKey="ventas" 
-            stroke="#02B1C4"
-          />
-        </ChartCard>
-      </div>
-      {showMonthlyNotes && (
-        <div className="col-span-3 md:col-span-1">
-          <MonthlyNotes />
-        </div>
-      )}
-      <div className="col-span-3 md:col-span-2">
-        <ChartCard title="Clientes por Día" subtitle="Últimos 7 días">
-          <NuaBarChart 
-            data={clientsData} 
-            dataKey="clientes" 
-            barColor="#FF4797"
-          />
-        </ChartCard>
-      </div>
-      {showSecondaryMetrics && (
-        <div className="col-span-3 md:col-span-1">
-          <SecondaryMetrics />
-        </div>
-      )}
-      
-      {/* New comparison chart */}
-      <div className="col-span-3 md:col-span-2">
-        <ComparisonChart 
-          data={salesVsGoalsData} 
-          title="Ventas vs Objetivos" 
-          subtitle="Comparativa mensual"
-        />
-      </div>
-      
-      {/* New category revenue chart */}
-      <div className="col-span-3 md:col-span-1">
-        <CategoryRevenue 
-          data={categoryRevenueData} 
-          title="Ingresos por Categoría"
-        />
-      </div>
-      
-      {/* New historical comparison feature */}
-      <div className="col-span-3 md:col-span-2">
-        <HistoricalComparison title="Comparativa con Año Anterior" />
-      </div>
-      
-      {/* New interactive revenue forecast chart */}
-      <div className="col-span-3 md:col-span-1">
-        <RevenueForecast />
-      </div>
-      
-      {/* New product performance breakdown */}
-      <div className="col-span-3">
-        <ProductPerformance />
-      </div>
-      
-      {showExpensesChart && (
-        <div className="col-span-3">
-          <ExpensesChart data={expensesData} />
-        </div>
-      )}
-    </div>
+    <ChartGrid>
+      <RevenueChart data={salesData} />
+      <MonthlyNotesContainer show={showMonthlyNotes} />
+      <ClientsChart data={clientsData} />
+      <SecondaryMetricsContainer show={showSecondaryMetrics} />
+      <SalesGoalsChart data={salesVsGoalsData} />
+      <CategoryRevenueContainer data={categoryRevenueData} />
+      <HistoricalComparisonContainer />
+      <RevenueForecastContainer />
+      <ProductPerformanceContainer />
+      <ExpensesChartContainer data={expensesData} show={showExpensesChart} />
+    </ChartGrid>
   );
 }
