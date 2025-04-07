@@ -20,11 +20,11 @@ export function Header() {
   return (
     <header className="h-16 px-4 flex items-center justify-between border-b bg-background sticky top-0 z-10 shadow-sm">
       <div className="flex items-center md:ml-2 transition-all duration-300">
-        <div className="flex items-center mr-4 flex-shrink-0">
+        <div className="flex items-center justify-center mr-4 flex-shrink-0 h-full">
           <img 
             src="/lovable-uploads/03330604-0926-4f80-9923-9ed3f0b9c399.png" 
             alt="NÜA Smart Analytics Logo" 
-            className="h-[34px] w-auto my-auto" 
+            className="h-[30px] w-auto" 
           />
         </div>
         
