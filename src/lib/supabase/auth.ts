@@ -132,6 +132,31 @@ export function subscribeToAuthChanges(callback: (user: any, profile: Profile | 
   });
 }
 
+// Verifica si los proveedores de OAuth están disponibles
+export async function getEnabledAuthProviders(): Promise<string[]> {
+  try {
+    const { data, error } = await supabase.auth.getSettings();
+    if (error) throw error;
+    return data?.providers || [];
+  } catch (error) {
+    console.error('Error fetching auth providers:', error);
+    return [];
+  }
+}
+
+// Inicio de sesión con Google
+export async function signInWithGoogle(redirectTo?: string) {
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider: 'google',
+    options: {
+      redirectTo: redirectTo || `${window.location.origin}/auth`
+    }
+  });
+  
+  if (error) throw error;
+  return data;
+}
+
 export function isAdmin(profile: Profile | null): boolean {
   return profile?.rol === 'admin';
 }

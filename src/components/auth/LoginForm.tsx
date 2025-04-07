@@ -6,8 +6,9 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
-import { Mail, Lock, LogIn, UserPlus, User, Eye, EyeOff, AlertTriangle, Info } from "lucide-react";
+import { Mail, Lock, LogIn, UserPlus, User, Eye, EyeOff, AlertTriangle, Info, Google } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
 
 interface FormErrors {
   email?: string;
@@ -23,10 +24,26 @@ export const LoginForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [formErrors, setFormErrors] = useState<FormErrors>({});
+  const [googleEnabled, setGoogleEnabled] = useState(false);
   
   const { signIn, signUp } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
+
+  // Comprobar si Google Auth está habilitado
+  useState(() => {
+    async function checkGoogleAuthEnabled() {
+      try {
+        const { data } = await supabase.auth.getSettings();
+        const providers = data?.providers || [];
+        setGoogleEnabled(providers.includes('google'));
+      } catch (error) {
+        console.error("Error checking auth providers:", error);
+      }
+    }
+    
+    checkGoogleAuthEnabled();
+  });
 
   // Validar formulario
   const validateForm = () => {
@@ -101,6 +118,30 @@ export const LoginForm = () => {
       toast({
         title: "Error",
         description: errorMessage,
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleGoogleSignIn = async () => {
+    try {
+      setIsLoading(true);
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: `${window.location.origin}/auth`
+        }
+      });
+      
+      if (error) throw error;
+      
+      // No necesitamos manejar redirección aquí, ya que Supabase lo hace automáticamente
+    } catch (error: any) {
+      toast({
+        title: "Error al iniciar sesión con Google",
+        description: error.message || "Ha ocurrido un error intentando iniciar sesión con Google",
         variant: "destructive",
       });
     } finally {
@@ -250,6 +291,22 @@ export const LoginForm = () => {
               </span>
             )}
           </Button>
+          
+          {googleEnabled && (
+            <Button
+              type="button"
+              variant="outline"
+              className="w-full"
+              onClick={handleGoogleSignIn}
+              disabled={isLoading}
+            >
+              <span className="flex items-center gap-2">
+                <Google className="h-4 w-4" />
+                {isLogin ? "Iniciar sesión con Google" : "Registrarse con Google"}
+              </span>
+            </Button>
+          )}
+
           <p className="text-center text-sm">
             {isLogin ? "¿No tienes una cuenta?" : "¿Ya tienes una cuenta?"}
             <Button

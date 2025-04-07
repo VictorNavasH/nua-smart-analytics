@@ -6,9 +6,11 @@ import {
   signIn, 
   signOut, 
   signUp, 
+  signInWithGoogle,
   Profile,
   Restaurant,
-  getUserRestaurant
+  getUserRestaurant,
+  getEnabledAuthProviders
 } from '@/lib/supabase/auth';
 
 interface AuthContextType {
@@ -19,10 +21,12 @@ interface AuthContextType {
   signIn: (email: string, password: string) => Promise<any>;
   signUp: (email: string, password: string, userData: { nombre_completo?: string }) => Promise<any>;
   signOut: () => Promise<void>;
+  signInWithGoogle: (redirectTo?: string) => Promise<any>;
   refreshUserData: () => Promise<void>;
   isAdmin: boolean;
   isManager: boolean;
   isAnalyst: boolean;
+  enabledAuthProviders: string[];
 }
 
 const AuthContext = createContext<AuthContextType>({
@@ -33,10 +37,12 @@ const AuthContext = createContext<AuthContextType>({
   signIn: () => Promise.resolve(),
   signUp: () => Promise.resolve(),
   signOut: () => Promise.resolve(),
+  signInWithGoogle: () => Promise.resolve(),
   refreshUserData: () => Promise.resolve(),
   isAdmin: false,
   isManager: false,
-  isAnalyst: false
+  isAnalyst: false,
+  enabledAuthProviders: []
 });
 
 export const useAuth = () => useContext(AuthContext);
@@ -46,6 +52,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [profile, setProfile] = useState<Profile | null>(null);
   const [restaurant, setRestaurant] = useState<Restaurant | null>(null);
   const [loading, setLoading] = useState(true);
+  const [enabledAuthProviders, setEnabledAuthProviders] = useState<string[]>([]);
 
   const refreshUserData = async () => {
     try {
@@ -65,6 +72,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setLoading(false);
     }
   };
+
+  // Cargar proveedores de autenticación disponibles
+  useEffect(() => {
+    async function loadAuthProviders() {
+      try {
+        const providers = await getEnabledAuthProviders();
+        setEnabledAuthProviders(providers);
+      } catch (error) {
+        console.error('Error loading auth providers:', error);
+      }
+    }
+    
+    loadAuthProviders();
+  }, []);
 
   useEffect(() => {
     // Configurar listener para cambios de autenticación antes de verificar sesión existente
@@ -102,6 +123,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     loading,
     signIn,
     signUp,
+    signInWithGoogle,
     signOut: async () => {
       await signOut();
       setUser(null);
@@ -111,7 +133,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     refreshUserData,
     isAdmin,
     isManager,
-    isAnalyst
+    isAnalyst,
+    enabledAuthProviders
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
