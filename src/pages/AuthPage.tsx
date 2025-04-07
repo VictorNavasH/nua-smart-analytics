@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
-import { Mail, Lock, LogIn, UserPlus, User } from "lucide-react";
+import { Mail, Lock, LogIn, UserPlus, User, Eye, EyeOff, AlertTriangle, CheckCircle, Info } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 export default function AuthPage() {
@@ -15,6 +15,13 @@ export default function AuthPage() {
   const [password, setPassword] = useState("");
   const [nombreCompleto, setNombreCompleto] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [formErrors, setFormErrors] = useState<{
+    email?: string;
+    password?: string;
+    nombreCompleto?: string;
+  }>({});
+  
   const { signIn, signUp, user } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
@@ -26,8 +33,50 @@ export default function AuthPage() {
     }
   }, [user, navigate]);
 
+  // Validar formulario
+  const validateForm = () => {
+    const errors: {
+      email?: string;
+      password?: string;
+      nombreCompleto?: string;
+    } = {};
+    let isValid = true;
+
+    // Validar email
+    if (!email) {
+      errors.email = "El email es obligatorio";
+      isValid = false;
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+      errors.email = "Email inválido";
+      isValid = false;
+    }
+
+    // Validar contraseña
+    if (!password) {
+      errors.password = "La contraseña es obligatoria";
+      isValid = false;
+    } else if (password.length < 6) {
+      errors.password = "La contraseña debe tener al menos 6 caracteres";
+      isValid = false;
+    }
+
+    // Validar nombre completo si es registro
+    if (!isLogin && !nombreCompleto) {
+      errors.nombreCompleto = "El nombre es obligatorio";
+      isValid = false;
+    }
+
+    setFormErrors(errors);
+    return isValid;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!validateForm()) {
+      return;
+    }
+    
     setIsLoading(true);
 
     try {
@@ -68,9 +117,13 @@ export default function AuthPage() {
     }
   };
 
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      {/* Header similar al mostrado en la imagen de referencia */}
+      {/* Header con logo pequeño */}
       <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
         <div className="relative flex flex-1 items-center gap-4 md:gap-8">
           <nav className="flex flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
@@ -91,11 +144,11 @@ export default function AuthPage() {
             <img
               src="/lovable-uploads/b59e57f7-7256-4917-a532-2863925ef4f1.png"
               alt="NÜA Logo"
-              className="h-16 w-auto"
+              className="h-24 w-auto"
             />
           </div>
           
-          {/* Título principal similar a la imagen de referencia */}
+          {/* Título principal */}
           <div className="mb-8 text-center">
             <h1 className="text-3xl font-bold tracking-tight text-nua-navy">Bienvenido a NÜA Smart Analytics</h1>
             <p className="text-muted-foreground">Impulsa tu éxito con la inteligencia financiera de NÜA Smart Restaurant.</p>
@@ -125,10 +178,15 @@ export default function AuthPage() {
                         placeholder="Nombre y Apellidos"
                         value={nombreCompleto}
                         onChange={(e) => setNombreCompleto(e.target.value)}
-                        className="pl-10"
-                        required
+                        className={`pl-10 ${formErrors.nombreCompleto ? 'border-red-500 focus-visible:ring-red-500' : ''}`}
                       />
                     </div>
+                    {formErrors.nombreCompleto && (
+                      <p className="text-red-500 text-sm flex items-center mt-1">
+                        <AlertTriangle className="h-3 w-3 mr-1" />
+                        {formErrors.nombreCompleto}
+                      </p>
+                    )}
                   </div>
                 )}
                 <div className="space-y-2">
@@ -141,25 +199,78 @@ export default function AuthPage() {
                       placeholder="tu@email.com"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="pl-10"
-                      required
+                      className={`pl-10 ${formErrors.email ? 'border-red-500 focus-visible:ring-red-500' : ''}`}
                     />
                   </div>
+                  {formErrors.email && (
+                    <p className="text-red-500 text-sm flex items-center mt-1">
+                      <AlertTriangle className="h-3 w-3 mr-1" />
+                      {formErrors.email}
+                    </p>
+                  )}
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="password">Contraseña</Label>
+                  <div className="flex justify-between items-center">
+                    <Label htmlFor="password">Contraseña</Label>
+                    {isLogin && (
+                      <Button
+                        variant="link"
+                        className="p-0 h-auto text-xs"
+                        type="button"
+                        onClick={() => {
+                          // Esto sería para un futuro feature de recuperar contraseña
+                          toast({
+                            title: "Recuperación de contraseña",
+                            description: "Función en desarrollo. Pronto estará disponible.",
+                          });
+                        }}
+                      >
+                        ¿Olvidaste tu contraseña?
+                      </Button>
+                    )}
+                  </div>
                   <div className="relative">
                     <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground h-4 w-4" />
                     <Input
                       id="password"
-                      type="password"
+                      type={showPassword ? "text" : "password"}
                       placeholder="********"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      className="pl-10"
-                      required
+                      className={`pl-10 pr-10 ${formErrors.password ? 'border-red-500 focus-visible:ring-red-500' : ''}`}
                     />
+                    <button
+                      type="button"
+                      onClick={togglePasswordVisibility}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground"
+                    >
+                      {showPassword ? (
+                        <EyeOff className="h-4 w-4" />
+                      ) : (
+                        <Eye className="h-4 w-4" />
+                      )}
+                    </button>
                   </div>
+                  {formErrors.password && (
+                    <p className="text-red-500 text-sm flex items-center mt-1">
+                      <AlertTriangle className="h-3 w-3 mr-1" />
+                      {formErrors.password}
+                    </p>
+                  )}
+                  {!isLogin && (
+                    <div className="space-y-1 mt-2">
+                      <p className="text-sm text-muted-foreground flex items-center">
+                        <Info className="h-3 w-3 mr-1" />
+                        Requisitos de contraseña:
+                      </p>
+                      <ul className="text-xs text-muted-foreground space-y-1 pl-5">
+                        <li className="flex items-center">
+                          <span className={`inline-block w-3 h-3 mr-1 rounded-full ${password.length >= 6 ? 'bg-green-500' : 'bg-gray-300'}`}></span>
+                          Mínimo 6 caracteres
+                        </li>
+                      </ul>
+                    </div>
+                  )}
                 </div>
               </CardContent>
               <CardFooter className="flex flex-col space-y-4">
@@ -187,7 +298,10 @@ export default function AuthPage() {
                   <Button
                     variant="link"
                     className="p-0 ml-1"
-                    onClick={() => setIsLogin(!isLogin)}
+                    onClick={() => {
+                      setIsLogin(!isLogin);
+                      setFormErrors({});
+                    }}
                     type="button"
                   >
                     {isLogin ? "Regístrate" : "Inicia sesión"}

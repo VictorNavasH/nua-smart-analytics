@@ -1,5 +1,5 @@
 
-import { Bell, Settings, LogOut } from "lucide-react";
+import { Bell, Settings, LogOut, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { RestaurantSelector } from "@/components/dashboard/RestaurantSelector";
 import { useSidebar } from "./SidebarContext";
@@ -17,7 +17,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 export function Header() {
   const { toggleExpanded } = useSidebar();
-  const { user, profile, signOut } = useAuth();
+  const { user, profile, restaurant, signOut } = useAuth();
   const navigate = useNavigate();
 
   const handleSignOut = async () => {
@@ -94,6 +94,18 @@ export function Header() {
               <Bell className="h-4 w-4" />
               <span className="sr-only">Notifications</span>
             </Button>
+            
+            {/* Botón de cerrar sesión visible siempre */}
+            <Button 
+              variant="outline" 
+              size="sm"
+              className="text-xs h-8 hidden md:flex"
+              onClick={handleSignOut}
+            >
+              <LogOut className="h-4 w-4 mr-1" />
+              Cerrar Sesión
+            </Button>
+            
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button 
@@ -108,7 +120,7 @@ export function Header() {
                   </Avatar>
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56">
+              <DropdownMenuContent align="end" className="w-56 bg-background border shadow-lg">
                 <DropdownMenuLabel>
                   <div className="flex flex-col">
                     <span className="font-medium">{profile?.nombre_completo || "Usuario"}</span>
@@ -118,15 +130,21 @@ export function Header() {
                     <span className="text-xs mt-1 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-sm inline-block w-fit">
                       {getRoleName()}
                     </span>
+                    {restaurant && (
+                      <span className="text-xs mt-1 flex items-center text-muted-foreground">
+                        <Settings className="h-3 w-3 mr-1" />
+                        Restaurante: {restaurant.nombre}
+                      </span>
+                    )}
                   </div>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={() => navigate("/profile")}>
-                  <Settings className="mr-2 h-4 w-4" />
+                  <User className="mr-2 h-4 w-4" />
                   Perfil y Preferencias
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={handleSignOut}>
+                <DropdownMenuItem onClick={handleSignOut} className="text-red-500 focus:text-red-500 focus:bg-red-50">
                   <LogOut className="mr-2 h-4 w-4" />
                   Cerrar Sesión
                 </DropdownMenuItem>
