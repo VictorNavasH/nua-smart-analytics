@@ -9,7 +9,7 @@ interface RevenueForecastProps {
   title?: string;
 }
 
-export function RevenueForecast({ title = "Proyección de Ingresos" }: RevenueForecastProps) {
+export function RevenueForecast({ title = "Revenue Forecast" }: RevenueForecastProps) {
   const [growthRate, setGrowthRate] = useState<number>(5);
   const [seasonality, setSeasonality] = useState<number>(10);
   
@@ -19,7 +19,7 @@ export function RevenueForecast({ title = "Proyección de Ingresos" }: RevenueFo
     ...revenueForecastData.forecast.map(item => {
       // Apply growth rate and seasonality adjustments
       const adjustedRevenue = item.revenue * (1 + (growthRate - 5) / 100);
-      const seasonalFactor = 1 + ((seasonality - 10) / 100) * (item.month === "Nov" || item.month === "Dic" ? 1 : 0.2);
+      const seasonalFactor = 1 + ((seasonality - 10) / 100) * (item.month === "Nov" || item.month === "Dec" ? 1 : 0.2);
       
       return {
         ...item,
@@ -34,7 +34,7 @@ export function RevenueForecast({ title = "Proyección de Ingresos" }: RevenueFo
     <Card className="h-full">
       <CardHeader className="pb-2">
         <CardTitle className="text-lg font-medium">{title}</CardTitle>
-        <CardDescription>Ajusta los parámetros para visualizar diferentes escenarios</CardDescription>
+        <CardDescription>Adjust parameters to visualize different scenarios</CardDescription>
       </CardHeader>
       <CardContent>
         <RevenueForecastChart data={combinedData} />
