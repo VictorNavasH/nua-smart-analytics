@@ -38,23 +38,23 @@ export function RevenueForecast({ title = "Revenue Forecast" }: RevenueForecastP
   ];
   
   return (
-    <Card className="h-full shadow-md hover:shadow-lg transition-shadow duration-300 border-t-4 border-t-nua-turquoise">
-      <CardHeader className="pb-2 flex flex-row items-start justify-between">
+    <Card className="h-full shadow-lg hover:shadow-xl transition-shadow duration-300 border-t-4 border-t-nua-turquoise rounded-xl overflow-hidden">
+      <CardHeader className="pb-2 flex flex-row items-start justify-between bg-gradient-to-r from-white to-nua-turquoise/5">
         <div>
           <CardTitle className="text-lg font-medium text-nua-blue">{title}</CardTitle>
-          <CardDescription>Adjust parameters to visualize different scenarios</CardDescription>
+          <CardDescription className="text-nua-blue/70">Adjust parameters to visualize different scenarios</CardDescription>
         </div>
         <Button 
           variant="outline" 
           size="icon" 
           onClick={resetControls} 
           title="Reset to defaults"
-          className="hover:bg-nua-turquoise/10 border-nua-turquoise/50"
+          className="hover:bg-nua-turquoise/10 border-nua-turquoise/50 transition-all duration-300 hover:scale-105"
         >
           <RotateCcw className="h-4 w-4 text-nua-turquoise" />
         </Button>
       </CardHeader>
-      <CardContent>
+      <CardContent className="pb-6">
         <RevenueForecastChart data={combinedData} />
         <RevenueForecastControls 
           growthRate={growthRate}

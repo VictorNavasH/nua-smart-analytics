@@ -92,12 +92,13 @@
 
   body {
     @apply bg-background text-foreground;
+    font-feature-settings: "ss01", "ss02", "cv01", "cv02", "cv03";
   }
 }
 
 @layer components {
   .nua-card {
-    @apply rounded-xl border bg-card p-6 shadow-sm transition-all hover:shadow-md;
+    @apply rounded-xl border bg-card p-6 shadow-lg transition-all hover:shadow-xl;
   }
   
   .nua-stat-card {
@@ -122,23 +123,27 @@
 
   /* Nuevos componentes y utilidades */
   .card-hover {
-    @apply transition-all duration-300 hover:shadow-lg border-t-4 border-t-transparent hover:border-t-nua-turquoise;
+    @apply transition-all duration-300 hover:shadow-xl border-t-4 border-t-transparent hover:border-t-nua-turquoise rounded-xl overflow-hidden;
   }
   
   .nua-button-primary {
-    @apply bg-nua-turquoise text-white hover:bg-nua-turquoise/90 rounded-md px-4 py-2 transition-colors;
+    @apply bg-nua-turquoise text-white hover:bg-nua-turquoise/90 rounded-lg px-4 py-2 transition-colors hover:shadow-md;
   }
   
   .nua-button-secondary {
-    @apply bg-nua-pink text-white hover:bg-nua-pink/90 rounded-md px-4 py-2 transition-colors;
+    @apply bg-nua-pink text-white hover:bg-nua-pink/90 rounded-lg px-4 py-2 transition-colors hover:shadow-md;
   }
   
   .nua-input {
-    @apply border rounded-md px-3 py-2 focus:ring-2 focus:ring-nua-turquoise focus:border-nua-turquoise;
+    @apply border rounded-lg px-3 py-2 focus:ring-2 focus:ring-nua-turquoise focus:border-nua-turquoise transition-all;
   }
   
   .scrollbar-thin {
     scrollbar-width: thin;
+  }
+  
+  .glass-card {
+    @apply backdrop-blur-sm bg-white/90 border border-white/20 shadow-lg;
   }
 }
 
@@ -151,5 +156,45 @@
     transition-property: all;
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     transition-duration: 150ms;
+  }
+  
+  .text-gradient-primary {
+    @apply bg-gradient-to-r from-nua-turquoise to-nua-blue bg-clip-text text-transparent;
+  }
+  
+  .text-gradient-secondary {
+    @apply bg-gradient-to-r from-nua-pink to-nua-turquoise bg-clip-text text-transparent;
+  }
+}
+
+#root {
+  margin: 0 auto;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #02B1C4aa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
   }
 }
