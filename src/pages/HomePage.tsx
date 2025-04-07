@@ -1,45 +1,34 @@
-
 import { Link } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChevronRight, LineChart, PieChart, TrendingUp, Receipt, FilePlus } from "lucide-react";
-
 export default function HomePage() {
-  const quickLinks = [
-    {
-      title: "Dashboard Financiero",
-      description: "Ver indicadores clave de rendimiento y análisis de ventas",
-      icon: <LineChart className="h-10 w-10 text-primary" />,
-      href: "/dashboard",
-    },
-    {
-      title: "Cargar Datos",
-      description: "Registrar ventas, gastos y otras transacciones",
-      icon: <FilePlus className="h-10 w-10 text-secondary" />,
-      href: "/data-entry",
-    },
-    {
-      title: "Proyecciones",
-      description: "Analizar tendencias y prever resultados futuros",
-      icon: <TrendingUp className="h-10 w-10 text-nua-yellow" />,
-      href: "/projections",
-    },
-  ];
-
-  return (
-    <Layout>
+  const quickLinks = [{
+    title: "Dashboard Financiero",
+    description: "Ver indicadores clave de rendimiento y análisis de ventas",
+    icon: <LineChart className="h-10 w-10 text-primary" />,
+    href: "/dashboard"
+  }, {
+    title: "Cargar Datos",
+    description: "Registrar ventas, gastos y otras transacciones",
+    icon: <FilePlus className="h-10 w-10 text-secondary" />,
+    href: "/data-entry"
+  }, {
+    title: "Proyecciones",
+    description: "Analizar tendencias y prever resultados futuros",
+    icon: <TrendingUp className="h-10 w-10 text-nua-yellow" />,
+    href: "/projections"
+  }];
+  return <Layout>
       <div className="space-y-6">
         <div className="flex flex-col gap-4">
           <h1 className="text-3xl font-bold tracking-tight">Bienvenido a NÜA Smart Analytics</h1>
-          <p className="text-muted-foreground">
-            Gestiona tus finanzas, analiza tendencias y toma decisiones basadas en datos.
-          </p>
+          <p className="text-muted-foreground">Impulsa tu éxito con la inteligencia financiera de NÜA Smart Restaurant.</p>
         </div>
 
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {quickLinks.map((link, index) => (
-            <Card key={index} className="transition-transform hover:scale-[1.02]">
+          {quickLinks.map((link, index) => <Card key={index} className="transition-transform hover:scale-[1.02]">
               <CardHeader>
                 <div className="mb-2">{link.icon}</div>
                 <CardTitle>{link.title}</CardTitle>
@@ -53,8 +42,7 @@ export default function HomePage() {
                   </Link>
                 </Button>
               </CardFooter>
-            </Card>
-          ))}
+            </Card>)}
         </div>
 
         <div className="grid gap-6 md:grid-cols-2">
@@ -92,21 +80,23 @@ export default function HomePage() {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {[
-                  { text: "Se registraron ventas del día", time: "Hace 2 horas" },
-                  { text: "Actualización de gastos mensuales", time: "Ayer" },
-                  { text: "Nueva proyección trimestral creada", time: "Hace 3 días" },
-                ].map((activity, i) => (
-                  <div key={i} className="flex justify-between items-center border-b pb-2 last:border-0 last:pb-0">
+                {[{
+                text: "Se registraron ventas del día",
+                time: "Hace 2 horas"
+              }, {
+                text: "Actualización de gastos mensuales",
+                time: "Ayer"
+              }, {
+                text: "Nueva proyección trimestral creada",
+                time: "Hace 3 días"
+              }].map((activity, i) => <div key={i} className="flex justify-between items-center border-b pb-2 last:border-0 last:pb-0">
                     <p className="text-sm">{activity.text}</p>
                     <span className="text-xs text-muted-foreground">{activity.time}</span>
-                  </div>
-                ))}
+                  </div>)}
               </div>
             </CardContent>
           </Card>
         </div>
       </div>
-    </Layout>
-  );
+    </Layout>;
 }
