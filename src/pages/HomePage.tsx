@@ -7,9 +7,16 @@ import { ChevronRight, LineChart, PieChart, TrendingUp, Receipt, FilePlus, Githu
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useState } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export default function HomePage() {
   const [timeRange, setTimeRange] = useState("7d");
+  const [viewType, setViewType] = useState("week");
 
   const quickLinks = [{
     title: "Dashboard Financiero",
@@ -76,51 +83,67 @@ export default function HomePage() {
 
         <div className="grid gap-6 md:grid-cols-2">
           <Card className="md:col-span-1 shadow-card hover:shadow-card-hover transition-all duration-300">
-            <CardHeader className="pb-2 flex flex-col md:flex-row md:items-center md:justify-between">
-              <div>
-                <CardTitle className="text-nua-navy flex items-center gap-2">
-                  Resumen de ventas
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button variant="ghost" size="icon" className="h-6 w-6 text-nua-navy/60 hover:text-nua-turquoise">
-                          <HelpCircle className="h-4 w-4" />
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>Total de ventas registradas en el periodo seleccionado</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                </CardTitle>
-                <CardDescription className="flex items-center gap-2">
-                  <Select value={timeRange} onValueChange={setTimeRange}>
-                    <SelectTrigger className="w-[130px] h-7 mt-1 text-xs">
-                      <SelectValue placeholder="Últimos 7 días" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="1d">Último día</SelectItem>
-                      <SelectItem value="7d">Últimos 7 días</SelectItem>
-                      <SelectItem value="30d">Últimos 30 días</SelectItem>
-                      <SelectItem value="90d">Último trimestre</SelectItem>
-                      <SelectItem value="1y">Último año</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </CardDescription>
-              </div>
-              <div className="hidden md:flex gap-2 mt-2 md:mt-0">
-                <Button variant="outline" size="sm" className="text-xs flex items-center gap-1">
-                  <Calendar className="h-3 w-3" />
-                  <span>Día</span>
-                </Button>
-                <Button variant="outline" size="sm" className="text-xs flex items-center gap-1 bg-nua-turquoise/5 border-nua-turquoise/30 text-nua-turquoise">
-                  <BarChart3 className="h-3 w-3" />
-                  <span>Semana</span>
-                </Button>
-                <Button variant="outline" size="sm" className="text-xs flex items-center gap-1">
-                  <PieChart className="h-3 w-3" />
-                  <span>Mes</span>
-                </Button>
+            <CardHeader className="pb-2">
+              <div className="flex flex-col md:flex-row md:items-center md:justify-between space-y-3 md:space-y-0">
+                <div>
+                  <CardTitle className="text-nua-navy flex items-center gap-2">
+                    Resumen de ventas
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button variant="ghost" size="icon" className="h-6 w-6 text-nua-navy/60 hover:text-nua-turquoise">
+                            <HelpCircle className="h-4 w-4" />
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>Total de ventas registradas en el periodo seleccionado</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  </CardTitle>
+                  <CardDescription className="flex items-center gap-2">
+                    <Select value={timeRange} onValueChange={setTimeRange}>
+                      <SelectTrigger className="w-[130px] h-7 mt-1 text-xs">
+                        <SelectValue placeholder="Últimos 7 días" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="1d">Último día</SelectItem>
+                        <SelectItem value="7d">Últimos 7 días</SelectItem>
+                        <SelectItem value="30d">Últimos 30 días</SelectItem>
+                        <SelectItem value="90d">Último trimestre</SelectItem>
+                        <SelectItem value="1y">Último año</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </CardDescription>
+                </div>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline" size="sm" className="text-xs flex items-center gap-1">
+                      {viewType === "day" && <Calendar className="h-3 w-3" />}
+                      {viewType === "week" && <BarChart3 className="h-3 w-3" />}
+                      {viewType === "month" && <PieChart className="h-3 w-3" />}
+                      <span>
+                        {viewType === "day" && "Día"}
+                        {viewType === "week" && "Semana"}
+                        {viewType === "month" && "Mes"}
+                      </span>
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-[100px]">
+                    <DropdownMenuItem onClick={() => setViewType("day")} className="flex items-center gap-1.5 cursor-pointer">
+                      <Calendar className="h-3.5 w-3.5" />
+                      <span>Día</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => setViewType("week")} className="flex items-center gap-1.5 cursor-pointer">
+                      <BarChart3 className="h-3.5 w-3.5" />
+                      <span>Semana</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => setViewType("month")} className="flex items-center gap-1.5 cursor-pointer">
+                      <PieChart className="h-3.5 w-3.5" />
+                      <span>Mes</span>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </div>
             </CardHeader>
             <CardContent>
