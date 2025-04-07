@@ -31,7 +31,7 @@ export default function HomePage() {
     <Layout>
       <div className="space-y-6">
         <div className="flex flex-col gap-4">
-          <h1 className="text-3xl font-bold tracking-tight">Bienvenido a NÜA Business Insights</h1>
+          <h1 className="text-3xl font-bold tracking-tight">Bienvenido a NÜA Smart Analytics</h1>
           <p className="text-muted-foreground">
             Gestiona tus finanzas, analiza tendencias y toma decisiones basadas en datos.
           </p>

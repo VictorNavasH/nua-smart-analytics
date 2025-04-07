@@ -22,7 +22,7 @@ export function Header() {
       <div className="flex items-center md:ml-2 transition-all duration-300">
         <div className="flex items-center mr-4">
           <img 
-            src="/lovable-uploads/b59e57f7-7256-4917-a532-2863925ef4f1.png" 
+            src="/lovable-uploads/7f140b8e-4327-4848-b1f0-b992cb671c52.png" 
             alt="NÜA Logo" 
             className="h-[40px] w-auto" 
           />
