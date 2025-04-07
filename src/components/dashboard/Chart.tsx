@@ -13,12 +13,12 @@ interface ChartCardProps {
 
 export function ChartCard({ title, subtitle, children }: ChartCardProps) {
   return (
-    <div className="nua-card min-h-[300px] h-full w-full flex flex-col animate-fade-in">
+    <div className="nua-card min-h-[350px] h-full w-full max-w-full flex flex-col animate-fade-in overflow-hidden">
       <div className="mb-4">
         <h3 className="text-lg font-medium">{title}</h3>
         {subtitle && <p className="text-sm text-muted-foreground">{subtitle}</p>}
       </div>
-      <div className="flex-1 w-full">
+      <div className="flex-1 w-full min-w-full">
         {children}
       </div>
     </div>
