@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FinancialAlert } from "@/components/dashboard/FinancialAlert";
 import { exportData } from "@/services/exportService";
 import { DashboardHeader } from "@/components/dashboard/DashboardHeader";
@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Home } from "lucide-react";
 import { Layout } from "@/components/layout/Layout";
+import { WelcomeMessage } from "@/components/dashboard/WelcomeMessage";
 import { 
   salesData, clientsData, expensesData, financeConstants, 
   salesVsGoalsData, categoryRevenueData, customerLoyaltyData 
@@ -25,6 +26,7 @@ export default function DashboardPage() {
   const { alerts, dismissAlert } = useDashboardAlerts();
   const { dateRange, setDateRange } = useDateRange();
   const { showSuccess } = useVisualFeedback();
+  const [showWelcome, setShowWelcome] = useState(true);
   
   const handleExport = async (type: "csv" | "excel"): Promise<boolean> => {
     // Here we would handle real data export based on dateRange
@@ -46,6 +48,8 @@ export default function DashboardPage() {
   return (
     <Layout>
       <div className="space-y-6 max-w-full animate-fade-in">
+        {showWelcome && <WelcomeMessage onClose={() => setShowWelcome(false)} />}
+        
         <div className="flex justify-between items-center">
           <DashboardHeader 
             settings={settings} 
