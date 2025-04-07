@@ -5,8 +5,9 @@ import { RevenueForecastChart } from "@/components/dashboard/RevenueForecastChar
 import { RevenueForecastControls } from "@/components/dashboard/RevenueForecastControls";
 import { revenueForecastData } from "@/data/dashboardData";
 import { Button } from "@/components/ui/button";
-import { RotateCcw, RefreshCw, TrendingUp } from "lucide-react";
+import { RotateCcw, RefreshCw, TrendingUp, HelpCircle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface RevenueForecastProps {
   title?: string;
@@ -58,18 +59,30 @@ export function RevenueForecast({ title = "Previsión de Ingresos" }: RevenueFor
   }, [growthRate, seasonality]);
   
   return (
-    <Card className="h-full shadow-lg hover:shadow-xl transition-shadow duration-300 border-t-4 border-t-nua-turquoise rounded-xl overflow-hidden">
+    <Card className="h-full shadow-md hover:shadow-lg transition-shadow duration-300 border-t-4 border-t-nua-turquoise rounded-xl overflow-hidden">
       <CardHeader className="pb-2 flex flex-row items-start justify-between bg-gradient-to-r from-white to-nua-turquoise/5">
         <div>
           <div className="flex items-center gap-2">
-            <CardTitle className="text-lg font-medium text-nua-blue">{title}</CardTitle>
+            <CardTitle className="text-lg font-medium text-nua-navy">{title}</CardTitle>
             <Badge variant="outline" className="bg-nua-turquoise/10 text-nua-turquoise">
               <TrendingUp className="h-3 w-3 mr-1" />
               Modelado
             </Badge>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button variant="ghost" size="icon" className="h-6 w-6 text-nua-navy/60 hover:text-nua-turquoise">
+                    <HelpCircle className="h-4 w-4" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent className="max-w-xs">
+                  <p>El factor de estacionalidad ajusta las proyecciones según patrones históricos en ciertos periodos.</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           </div>
-          <CardDescription className="text-nua-blue/70">
-            Ajuste los parámetros para visualizar diferentes escenarios
+          <CardDescription className="text-nua-navy/70 max-w-[80%]">
+            Proyección de ingresos según tasa de crecimiento y estacionalidad
           </CardDescription>
         </div>
         <div className="flex gap-2">
@@ -96,7 +109,9 @@ export function RevenueForecast({ title = "Previsión de Ingresos" }: RevenueFor
       </CardHeader>
       <CardContent className="pb-6">
         <div className={`transition-opacity duration-300 ${isRecalculating ? 'opacity-50' : 'opacity-100'}`}>
-          <RevenueForecastChart data={combinedData} />
+          <div className="w-full">
+            <RevenueForecastChart data={combinedData} />
+          </div>
           <RevenueForecastControls 
             growthRate={growthRate}
             seasonality={seasonality}

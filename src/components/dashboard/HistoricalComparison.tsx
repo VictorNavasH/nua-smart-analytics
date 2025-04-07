@@ -5,6 +5,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ReferenceLine } from 'recharts';
 import { TrendIndicator } from "@/components/dashboard/TrendIndicator";
 import { historicalComparisonData } from "@/data/dashboardData";
+import { HelpCircle } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { TooltipProvider, TooltipTrigger, TooltipContent, Tooltip as UITooltip } from "@/components/ui/tooltip";
 
 interface HistoricalComparisonProps {
   title?: string;
@@ -36,9 +39,23 @@ export function HistoricalComparison({ title = "Comparativa Histórica" }: Histo
   };
   
   return (
-    <Card className="h-full shadow-lg hover:shadow-xl transition-shadow duration-300 border-t-4 border-t-nua-turquoise rounded-xl overflow-hidden">
+    <Card className="h-full shadow-md hover:shadow-lg transition-shadow duration-300 border-t-4 border-t-nua-turquoise rounded-xl overflow-hidden">
       <CardHeader className="pb-0 flex flex-row items-start justify-between bg-gradient-to-r from-white to-nua-turquoise/5">
-        <CardTitle className="text-lg font-medium text-nua-blue">{title}</CardTitle>
+        <div className="flex items-center gap-2">
+          <CardTitle className="text-lg font-medium text-nua-navy">{title}</CardTitle>
+          <TooltipProvider>
+            <UITooltip>
+              <TooltipTrigger asChild>
+                <Button variant="ghost" size="icon" className="h-6 w-6 text-nua-navy/60 hover:text-nua-turquoise">
+                  <HelpCircle className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Comparación de métricas clave con periodos anteriores</p>
+              </TooltipContent>
+            </UITooltip>
+          </TooltipProvider>
+        </div>
         <Tabs 
           defaultValue="sales" 
           className="w-[260px]"
@@ -64,6 +81,12 @@ export function HistoricalComparison({ title = "Comparativa Histórica" }: Histo
               <Tooltip 
                 formatter={tooltipFormatter}
                 labelFormatter={(label) => `Mes: ${label}`}
+                contentStyle={{
+                  backgroundColor: 'white',
+                  borderRadius: '8px',
+                  border: '1px solid #e2e8f0',
+                  boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)'
+                }}
               />
               <Legend 
                 formatter={(value) => {
@@ -82,7 +105,7 @@ export function HistoricalComparison({ title = "Comparativa Histórica" }: Histo
             <div key={item.month} className="bg-muted/30 p-3 rounded-md">
               <div className="text-sm text-muted-foreground mb-1">{item.month}</div>
               <div className="flex justify-between items-center">
-                <div className="font-medium">{formatValue(item.thisYear)}</div>
+                <div className="font-medium text-nua-navy">{formatValue(item.thisYear)}</div>
                 <TrendIndicator value={item.change} size="sm" />
               </div>
             </div>

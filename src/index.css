@@ -1,3 +1,6 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -90,7 +93,7 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-inter;
     font-feature-settings: "ss01", "ss02", "cv01", "cv02", "cv03";
   }
 }
@@ -105,7 +108,7 @@
   }
   
   .nua-stat-value {
-    @apply text-3xl font-bold;
+    @apply text-3xl font-bold text-nua-navy;
   }
   
   .nua-stat-label {
@@ -195,5 +198,16 @@
 @media (prefers-reduced-motion: no-preference) {
   a:nth-of-type(2) .logo {
     animation: logo-spin infinite 20s linear;
+  }
+}
+
+/* Ajustes para dispositivos móviles */
+@media (max-width: 640px) {
+  .responsive-card {
+    @apply col-span-full;
+  }
+  
+  .responsive-grid {
+    @apply grid-cols-1;
   }
 }

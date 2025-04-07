@@ -6,8 +6,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Progress } from "@/components/ui/progress";
-import { Target, ArrowUpRight, ArrowDownRight } from "lucide-react";
+import { Target, ArrowUpRight, ArrowDownRight, HelpCircle } from "lucide-react";
 import { FinancialHealthIndicator } from "@/components/projections/FinancialHealthIndicator";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface SalesProjectionsProps {
   salesProjection: any[];
@@ -47,19 +48,61 @@ export function SalesProjections({
           />
         </ChartCard>
 
-        <Card className="shadow-sm">
+        <Card className="shadow-sm hover:shadow-card">
           <CardHeader className="pb-2">
-            <CardTitle>Parámetros de Proyección</CardTitle>
+            <CardTitle className="text-nua-navy flex items-center gap-2">
+              Parámetros de Proyección
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button variant="ghost" size="icon" className="h-6 w-6 text-nua-navy/60 hover:text-nua-turquoise">
+                      <HelpCircle className="h-4 w-4" />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Ajusta estos parámetros para personalizar tus proyecciones financieras</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </CardTitle>
             <CardDescription>Ajusta los parámetros para la proyección de ventas</CardDescription>
           </CardHeader>
           <CardContent className="space-y-3">
             <div className="space-y-1">
-              <Label htmlFor="growth-rate">Tasa de Crecimiento Mensual (%)</Label>
+              <Label htmlFor="growth-rate" className="flex items-center gap-1">
+                Tasa de Crecimiento Mensual (%)
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button variant="ghost" size="icon" className="h-4 w-4 text-nua-navy/60 hover:text-nua-turquoise p-0">
+                        <HelpCircle className="h-3 w-3" />
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Porcentaje de crecimiento esperado mes a mes</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              </Label>
               <Input id="growth-rate" defaultValue="3.5" type="number" step="0.1" />
             </div>
             
             <div className="space-y-1">
-              <Label htmlFor="seasonality">Factor de Estacionalidad</Label>
+              <Label htmlFor="seasonality" className="flex items-center gap-1">
+                Factor de Estacionalidad
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button variant="ghost" size="icon" className="h-4 w-4 text-nua-navy/60 hover:text-nua-turquoise p-0">
+                        <HelpCircle className="h-3 w-3" />
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Multiplicador que ajusta las ventas según la temporada</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              </Label>
               <Input id="seasonality" defaultValue="1.2" type="number" step="0.1" />
             </div>
             
@@ -68,14 +111,14 @@ export function SalesProjections({
               <Input id="base-value" defaultValue="12000" type="number" />
             </div>
             
-            <Button className="w-full mt-2">Recalcular Proyección</Button>
+            <Button className="w-full mt-2 bg-nua-turquoise hover:bg-nua-turquoise/90">Recalcular Proyección</Button>
           </CardContent>
         </Card>
       </div>
 
-      <Card className="shadow-sm">
+      <Card className="shadow-sm hover:shadow-card">
         <CardHeader className="pb-2">
-          <CardTitle>Progreso hacia el Objetivo Mensual</CardTitle>
+          <CardTitle className="text-nua-navy">Progreso hacia el Objetivo Mensual</CardTitle>
           <CardDescription className="flex items-center justify-between">
             <span>Ventas actuales vs objetivo del mes</span>
             <FinancialHealthIndicator 
@@ -88,8 +131,8 @@ export function SalesProjections({
         <CardContent>
           <div className="space-y-3">
             <div className="flex justify-between text-sm mb-1">
-              <span>€{currentMonthSales.toLocaleString()}</span>
-              <span>€{currentMonthGoal.toLocaleString()}</span>
+              <span className="font-medium text-nua-navy">€{currentMonthSales.toLocaleString()}</span>
+              <span className="font-medium text-nua-navy">€{currentMonthGoal.toLocaleString()}</span>
             </div>
             <Progress value={progressPercentage} className="h-3" />
             <div className="text-center text-sm text-muted-foreground">
@@ -101,7 +144,7 @@ export function SalesProjections({
                 <Target className="h-4 w-4 mr-1 text-nua-blue" />
                 <span className="text-sm">Punto de Equilibrio</span>
               </div>
-              <span className="text-sm font-medium">€{breakEvenPoint.toLocaleString()}</span>
+              <span className="text-sm font-medium text-nua-navy">€{breakEvenPoint.toLocaleString()}</span>
             </div>
 
             <div className="flex items-center justify-between px-2">
@@ -121,16 +164,30 @@ export function SalesProjections({
         </CardContent>
       </Card>
 
-      <Card className="shadow-sm">
+      <Card className="shadow-sm hover:shadow-card">
         <CardHeader className="pb-2">
-          <CardTitle>Objetivos de Ventas</CardTitle>
+          <CardTitle className="text-nua-navy">Objetivos de Ventas</CardTitle>
           <CardDescription>Establece y monitoriza tus objetivos de ventas</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-3">
             <div className="grid gap-3 md:grid-cols-3">
               <div>
-                <Label htmlFor="quarterly-target">Objetivo Trimestral (€)</Label>
+                <Label htmlFor="quarterly-target" className="flex items-center gap-1">
+                  Objetivo Trimestral (€)
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button variant="ghost" size="icon" className="h-4 w-4 text-nua-navy/60 hover:text-nua-turquoise p-0">
+                          <HelpCircle className="h-3 w-3" />
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Ventas objetivo para el trimestre actual</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                </Label>
                 <Input id="quarterly-target" defaultValue="45000" type="number" className="mt-1" />
               </div>
               <div>
@@ -144,8 +201,8 @@ export function SalesProjections({
             </div>
             
             <div className="flex justify-end space-x-2 mt-2">
-              <Button variant="outline">Restablecer</Button>
-              <Button>Guardar Objetivos</Button>
+              <Button variant="outline" className="hover:bg-muted/50">Restablecer</Button>
+              <Button className="bg-nua-turquoise hover:bg-nua-turquoise/90">Guardar Objetivos</Button>
             </div>
           </div>
         </CardContent>

@@ -7,6 +7,9 @@ import { ProjectionAlerts } from "@/components/projections/ProjectionAlerts";
 import { SalesProjections } from "@/components/projections/SalesProjections";
 import { PlaceholderTab } from "@/components/projections/PlaceholderTab";
 import { salesProjection } from "@/components/projections/ProjectionData";
+import { Button } from "@/components/ui/button";
+import { Home } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export default function ProjectionsPage() {
   const [scenario, setScenario] = useState("proyectado");
@@ -21,11 +24,20 @@ export default function ProjectionsPage() {
   
   return (
     <Layout>
-      <div className="space-y-4">
-        <ProjectionHeader 
-          scenario={scenario} 
-          onScenarioChange={setScenario} 
-        />
+      <div className="space-y-4 animate-fade-in">
+        <div className="flex justify-between items-center">
+          <ProjectionHeader 
+            scenario={scenario} 
+            onScenarioChange={setScenario} 
+          />
+          
+          <Link to="/">
+            <Button variant="outline" size="sm" className="flex items-center gap-2 text-nua-navy hover:text-nua-turquoise">
+              <Home className="h-4 w-4" />
+              <span className="hidden md:inline">Volver a Inicio</span>
+            </Button>
+          </Link>
+        </div>
 
         <ProjectionAlerts 
           breakEvenStatus={breakEvenStatus}
