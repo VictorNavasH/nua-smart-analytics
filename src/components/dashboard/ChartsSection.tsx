@@ -5,6 +5,9 @@ import { SecondaryMetrics } from "@/components/dashboard/SecondaryMetrics";
 import { ExpensesChart } from "@/components/dashboard/ExpensesChart";
 import { ComparisonChart } from "@/components/dashboard/ComparisonChart";
 import { CategoryRevenue } from "@/components/dashboard/CategoryRevenue";
+import { HistoricalComparison } from "@/components/dashboard/HistoricalComparison";
+import { RevenueForecast } from "@/components/dashboard/RevenueForecast";
+import { ProductPerformance } from "@/components/dashboard/ProductPerformance";
 
 interface ChartsSectionProps {
   salesData: Array<{ name: string; ventas: number }>;
@@ -73,6 +76,21 @@ export function ChartsSection({
           data={categoryRevenueData} 
           title="Ingresos por Categoría"
         />
+      </div>
+      
+      {/* New historical comparison feature */}
+      <div className="col-span-3 md:col-span-2">
+        <HistoricalComparison title="Comparativa con Año Anterior" />
+      </div>
+      
+      {/* New interactive revenue forecast chart */}
+      <div className="col-span-3 md:col-span-1">
+        <RevenueForecast />
+      </div>
+      
+      {/* New product performance breakdown */}
+      <div className="col-span-3">
+        <ProductPerformance />
       </div>
       
       {showExpensesChart && (
