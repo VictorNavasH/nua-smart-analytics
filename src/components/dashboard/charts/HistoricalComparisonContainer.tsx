@@ -1,10 +1,14 @@
 
 import { HistoricalComparison } from "@/components/dashboard/HistoricalComparison";
 
-export function HistoricalComparisonContainer() {
+interface HistoricalComparisonContainerProps {
+  title: string;
+}
+
+export function HistoricalComparisonContainer({ title }: HistoricalComparisonContainerProps) {
   return (
     <div className="col-span-full lg:col-span-3 xl:col-span-6">
-      <HistoricalComparison title="Comparativa con Año Anterior" />
+      <HistoricalComparison title={title} />
     </div>
   );
 }
