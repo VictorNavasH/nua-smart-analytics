@@ -15,7 +15,7 @@ interface MobileSidebarProps {
 }
 
 export function MobileSidebar({ navItems }: MobileSidebarProps) {
-  const { expanded, setExpanded } = useSidebar();
+  const { expanded, toggleExpanded } = useSidebar();
   const location = useLocation();
   const { user } = useAuth();
 
@@ -30,7 +30,7 @@ export function MobileSidebar({ navItems }: MobileSidebarProps) {
       {expanded && (
         <div
           className="fixed inset-0 z-10 bg-black/50 md:hidden"
-          onClick={() => setExpanded(false)}
+          onClick={() => toggleExpanded()}
         ></div>
       )}
 
@@ -42,7 +42,7 @@ export function MobileSidebar({ navItems }: MobileSidebarProps) {
         )}
       >
         <div className="flex h-16 items-center border-b px-4">
-          <Link to="/" className="flex items-center" onClick={() => setExpanded(false)}>
+          <Link to="/" className="flex items-center" onClick={() => toggleExpanded()}>
             <img
               src="/lovable-uploads/7f140b8e-4327-4848-b1f0-b992cb671c52.png"
               alt="NÜA Logo"
@@ -52,7 +52,7 @@ export function MobileSidebar({ navItems }: MobileSidebarProps) {
           <div className="flex-1"></div>
           <button
             className="h-8 w-8 rounded-md text-muted-foreground hover:text-foreground"
-            onClick={() => setExpanded(false)}
+            onClick={() => toggleExpanded()}
           >
             <span className="sr-only">Close sidebar</span>
             <svg
@@ -86,7 +86,7 @@ export function MobileSidebar({ navItems }: MobileSidebarProps) {
                         ? "bg-accent text-accent-foreground"
                         : "transparent"
                     )}
-                    onClick={() => setExpanded(false)}
+                    onClick={() => toggleExpanded()}
                   >
                     <Icon className="h-5 w-5" />
                     <span>{item.name}</span>
