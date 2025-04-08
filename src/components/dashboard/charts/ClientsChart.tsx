@@ -7,7 +7,7 @@ interface ClientsChartProps {
 
 export function ClientsChart({ data }: ClientsChartProps) {
   return (
-    <div className="col-span-6 md:col-span-3">
+    <div className="col-span-1 w-full">
       <ChartCard title="Clientes por Día" subtitle="Últimos 7 días">
         <NuaBarChart 
           data={data} 

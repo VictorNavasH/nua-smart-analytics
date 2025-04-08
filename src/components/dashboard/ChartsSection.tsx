@@ -12,6 +12,8 @@ import { ProductPerformanceContainer } from "@/components/dashboard/charts/Produ
 import { ExpensesChartContainer } from "@/components/dashboard/charts/ExpensesChartContainer";
 import { AIPredictionContainer } from "@/components/dashboard/charts/AIPredictionContainer";
 import { ProfitabilityAnalysisContainer } from "@/components/dashboard/charts/ProfitabilityAnalysisContainer";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useState, useEffect } from "react";
 
 interface ChartsSectionProps {
   salesData: Array<{ name: string; ventas: number }>;
@@ -36,6 +38,31 @@ export function ChartsSection({
   showExpensesChart,
   showAIPredictions
 }: ChartsSectionProps) {
+  const [isLoaded, setIsLoaded] = useState(false);
+  
+  // Simulate data loading to fix the "thinking" issue
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoaded(true);
+    }, 500);
+    
+    return () => clearTimeout(timer);
+  }, []);
+  
+  if (!isLoaded) {
+    return (
+      <div className="space-y-6">
+        <div className="bg-background/60 p-4 rounded-lg border shadow-sm">
+          <h2 className="text-lg font-medium mb-4">Tendencias Principales</h2>
+          <div className="grid gap-4 md:grid-cols-2">
+            <Skeleton className="h-[350px] w-full" />
+            <Skeleton className="h-[350px] w-full" />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
       {/* Primera sección: Gráficos primarios */}
