@@ -73,7 +73,7 @@ export function ChartsSection({
           <ClientsChart data={clientsData} />
         </ChartGrid>
         
-        {/* Sección de notas y métricas secundarias */}
+        {/* Sección de notas y métricas secundarias - Ahora debajo de los gráficos principales */}
         {(showMonthlyNotes || showSecondaryMetrics) && (
           <div className="mt-6 grid gap-4 md:grid-cols-2">
             {showMonthlyNotes && <MonthlyNotesContainer show={showMonthlyNotes} />}
@@ -96,6 +96,7 @@ export function ChartsSection({
         <h2 className="text-lg font-medium mb-4">Análisis de Rentabilidad</h2>
         <ChartGrid>
           <ProfitabilityAnalysisContainer />
+          {showExpensesChart && <ExpensesChartContainer data={expensesData} show={showExpensesChart} />}
         </ChartGrid>
       </div>
       
@@ -116,16 +117,6 @@ export function ChartsSection({
           <ProductPerformanceContainer />
         </ChartGrid>
       </div>
-      
-      {/* Quinta sección: Desglose de rendimiento y gastos */}
-      {showExpensesChart && (
-        <div className="bg-background/60 p-4 rounded-lg border shadow-sm">
-          <h2 className="text-lg font-medium mb-4">Análisis Detallado</h2>
-          <ChartGrid>
-            <ExpensesChartContainer data={expensesData} show={showExpensesChart} />
-          </ChartGrid>
-        </div>
-      )}
     </div>
   );
 }

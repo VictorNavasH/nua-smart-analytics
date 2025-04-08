@@ -9,7 +9,7 @@ export function SecondaryMetricsContainer({ show }: SecondaryMetricsContainerPro
   if (!show) return null;
   
   return (
-    <div className="col-span-1">
+    <div className="w-full">
       <SecondaryMetrics />
     </div>
   );

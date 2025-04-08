@@ -7,7 +7,7 @@ interface SalesGoalsChartProps {
 
 export function SalesGoalsChart({ data }: SalesGoalsChartProps) {
   return (
-    <div className="col-span-6 md:col-span-3">
+    <div className="w-full">
       <ComparisonChart 
         data={data} 
         title="Ventas vs Objetivos" 

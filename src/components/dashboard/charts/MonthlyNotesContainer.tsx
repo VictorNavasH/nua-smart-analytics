@@ -9,7 +9,7 @@ export function MonthlyNotesContainer({ show }: MonthlyNotesContainerProps) {
   if (!show) return null;
   
   return (
-    <div className="col-span-1">
+    <div className="w-full">
       <MonthlyNotes />
     </div>
   );

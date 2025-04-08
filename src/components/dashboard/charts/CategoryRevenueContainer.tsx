@@ -7,7 +7,7 @@ interface CategoryRevenueContainerProps {
 
 export function CategoryRevenueContainer({ data }: CategoryRevenueContainerProps) {
   return (
-    <div className="col-span-6 md:col-span-3">
+    <div className="w-full">
       <CategoryRevenue 
         data={data} 
         title="Ingresos por Categoría"

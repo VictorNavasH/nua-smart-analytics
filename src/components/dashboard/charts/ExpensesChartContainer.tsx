@@ -10,7 +10,7 @@ export function ExpensesChartContainer({ data, show }: ExpensesChartContainerPro
   if (!show) return null;
   
   return (
-    <div className="col-span-6 md:col-span-6">
+    <div className="w-full">
       <ExpensesChart data={data} />
     </div>
   );
