@@ -7,7 +7,7 @@ interface RevenueChartProps {
 
 export function RevenueChart({ data }: RevenueChartProps) {
   return (
-    <div className="col-span-3 md:col-span-2">
+    <div className="col-span-6 md:col-span-3">
       <ChartCard title="Ingresos por Mes" subtitle="Últimos 7 meses">
         <NuaLineChart 
           data={data} 

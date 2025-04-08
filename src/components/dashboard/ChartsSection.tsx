@@ -44,8 +44,8 @@ export function ChartsSection({
         <ChartGrid>
           <RevenueChart data={salesData} />
           <ClientsChart data={clientsData} />
-          <MonthlyNotesContainer show={showMonthlyNotes} />
-          <SecondaryMetricsContainer show={showSecondaryMetrics} />
+          {showMonthlyNotes && <MonthlyNotesContainer show={showMonthlyNotes} />}
+          {showSecondaryMetrics && <SecondaryMetricsContainer show={showSecondaryMetrics} />}
         </ChartGrid>
       </div>
       
@@ -71,9 +71,7 @@ export function ChartsSection({
         <h2 className="text-lg font-medium mb-4">Predicciones y Análisis Avanzado</h2>
         <ChartGrid>
           {showAIPredictions && <AIPredictionContainer />}
-          <div className="col-span-full lg:col-span-3 xl:col-span-3">
-            <RevenueForecastContainer />
-          </div>
+          <RevenueForecastContainer />
         </ChartGrid>
       </div>
       
@@ -81,20 +79,20 @@ export function ChartsSection({
       <div className="bg-background/60 p-4 rounded-lg border shadow-sm">
         <h2 className="text-lg font-medium mb-4">Análisis Histórico y Comparativo</h2>
         <ChartGrid>
-          <div className="col-span-full lg:col-span-3 xl:col-span-6">
-            <HistoricalComparisonContainer title="Comparativa con Año Anterior" />
-          </div>
+          <HistoricalComparisonContainer title="Comparativa con Año Anterior" />
           <ProductPerformanceContainer />
         </ChartGrid>
       </div>
       
       {/* Quinta sección: Desglose de rendimiento y gastos */}
-      <div className="bg-background/60 p-4 rounded-lg border shadow-sm">
-        <h2 className="text-lg font-medium mb-4">Análisis Detallado</h2>
-        <ChartGrid>
-          <ExpensesChartContainer data={expensesData} show={showExpensesChart} />
-        </ChartGrid>
-      </div>
+      {showExpensesChart && (
+        <div className="bg-background/60 p-4 rounded-lg border shadow-sm">
+          <h2 className="text-lg font-medium mb-4">Análisis Detallado</h2>
+          <ChartGrid>
+            <ExpensesChartContainer data={expensesData} show={showExpensesChart} />
+          </ChartGrid>
+        </div>
+      )}
     </div>
   );
 }
