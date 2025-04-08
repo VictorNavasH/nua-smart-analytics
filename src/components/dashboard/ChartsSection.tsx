@@ -44,9 +44,15 @@ export function ChartsSection({
         <ChartGrid>
           <RevenueChart data={salesData} />
           <ClientsChart data={clientsData} />
-          {showMonthlyNotes && <MonthlyNotesContainer show={showMonthlyNotes} />}
-          {showSecondaryMetrics && <SecondaryMetricsContainer show={showSecondaryMetrics} />}
         </ChartGrid>
+        
+        {/* Sección de notas y métricas secundarias */}
+        {(showMonthlyNotes || showSecondaryMetrics) && (
+          <div className="mt-6 grid gap-4 md:grid-cols-2">
+            {showMonthlyNotes && <MonthlyNotesContainer show={showMonthlyNotes} />}
+            {showSecondaryMetrics && <SecondaryMetricsContainer show={showSecondaryMetrics} />}
+          </div>
+        )}
       </div>
       
       {/* Segunda sección: Comparativa de ventas vs objetivos */}
