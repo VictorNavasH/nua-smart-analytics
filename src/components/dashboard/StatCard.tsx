@@ -39,15 +39,15 @@ export function StatCard({
       "transition-all duration-300 hover:shadow-lg", 
       highlight ? "border-l-4 border-l-nua-turquoise" : ""
     )}>
-      <CardContent className="p-6">
+      <CardContent className="p-4">
         <div className="flex justify-between items-start">
-          <div className="flex items-center gap-2">
-            <h3 className="text-sm font-medium text-muted-foreground">{title}</h3>
+          <div className="flex items-center gap-1">
+            <h3 className="text-xs font-medium text-muted-foreground">{title}</h3>
             {helpText && (
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <button className="inline-flex h-4 w-4 items-center justify-center rounded-full text-muted-foreground hover:text-nua-turquoise">
+                    <button className="inline-flex h-3 w-3 items-center justify-center rounded-full text-muted-foreground hover:text-nua-turquoise">
                       <HelpCircle className="h-3 w-3" />
                       <span className="sr-only">Info</span>
                     </button>
@@ -61,24 +61,24 @@ export function StatCard({
           </div>
           
           {icon && (
-            <div className={cn("p-2 rounded-full", colorClass)}>
+            <div className={cn("p-1.5 rounded-full", colorClass)}>
               {icon}
             </div>
           )}
         </div>
         
-        <div className="mt-2">
+        <div className="mt-1">
           <div className="flex items-end">
-            <p className="text-2xl font-semibold text-nua-navy">{value}</p>
+            <p className="text-xl font-semibold text-nua-navy">{value}</p>
             {trend !== undefined && (
               <div className={cn(
-                "flex items-center ml-2 text-xs font-medium",
+                "flex items-center ml-2 text-[10px] font-medium",
                 trend >= 0 ? "text-green-500" : "text-red-500"
               )}>
                 {trend >= 0 ? (
-                  <TrendingUp className="h-3 w-3 mr-0.5" />
+                  <TrendingUp className="h-2.5 w-2.5 mr-0.5" />
                 ) : (
-                  <TrendingDown className="h-3 w-3 mr-0.5" />
+                  <TrendingDown className="h-2.5 w-2.5 mr-0.5" />
                 )}
                 {Math.abs(trend)}%
               </div>
@@ -86,9 +86,9 @@ export function StatCard({
           </div>
           
           {showProgressBar && progress !== undefined && (
-            <div className="mt-2 space-y-1">
-              <Progress value={progressPercentage} className="h-1.5" />
-              <p className="text-xs text-muted-foreground">{progressPercentage}% del objetivo</p>
+            <div className="mt-1.5 space-y-0.5">
+              <Progress value={progressPercentage} className="h-1" />
+              <p className="text-[10px] text-muted-foreground">{progressPercentage}% del objetivo</p>
             </div>
           )}
         </div>
