@@ -27,12 +27,29 @@ interface ExpensesFormProps {
   setDate: (date: Date | undefined) => void;
   expenseComment: string;
   setExpenseComment: (value: string) => void;
-  onSave: () => void;
+  onSave: (data: any) => void;
+  isLoading: boolean;
 }
 
-export function ExpensesForm({ date, setDate, expenseComment, setExpenseComment, onSave }: ExpensesFormProps) {
+export function ExpensesForm({ date, setDate, expenseComment, setExpenseComment, onSave, isLoading }: ExpensesFormProps) {
+  const [expenses, setExpenses] = useState<string>("");
+  const [expenseCategory, setExpenseCategory] = useState<string>("supplies");
+  const [supplier, setSupplier] = useState<string>("");
+  
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    onSave({ 
+      expenses, 
+      expense_category: expenseCategory,
+      supplier
+    });
+    // Reseteamos los campos del formulario
+    setExpenses("");
+    setSupplier("");
+  };
+
   return (
-    <form className="space-y-6">
+    <form className="space-y-6" onSubmit={handleSubmit}>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         <div className="space-y-2">
           <Label htmlFor="expense-date">Fecha</Label>
@@ -44,6 +61,7 @@ export function ExpensesForm({ date, setDate, expenseComment, setExpenseComment,
                   "w-full justify-start text-left font-normal",
                   !date && "text-muted-foreground"
                 )}
+                type="button"
               >
                 <CalendarIcon className="mr-2 h-4 w-4" />
                 {date ? format(date, "PPP", { locale: es }) : <span>Seleccionar fecha</span>}
@@ -76,7 +94,11 @@ export function ExpensesForm({ date, setDate, expenseComment, setExpenseComment,
         
         <div className="space-y-2">
           <Label htmlFor="expense-category">Categoría</Label>
-          <Select defaultValue="supplies">
+          <Select 
+            defaultValue="supplies"
+            value={expenseCategory}
+            onValueChange={setExpenseCategory}
+          >
             <SelectTrigger>
               <SelectValue placeholder="Seleccionar categoría" />
             </SelectTrigger>
@@ -93,12 +115,24 @@ export function ExpensesForm({ date, setDate, expenseComment, setExpenseComment,
         
         <div className="space-y-2">
           <Label htmlFor="expense-amount">Importe (€)</Label>
-          <Input id="expense-amount" placeholder="0.00" type="number" step="0.01" />
+          <Input 
+            id="expense-amount" 
+            placeholder="0.00" 
+            type="number" 
+            step="0.01"
+            value={expenses}
+            onChange={(e) => setExpenses(e.target.value)}
+          />
         </div>
         
         <div className="space-y-2">
           <Label htmlFor="supplier">Proveedor</Label>
-          <Input id="supplier" placeholder="Nombre del proveedor" />
+          <Input 
+            id="supplier" 
+            placeholder="Nombre del proveedor"
+            value={supplier}
+            onChange={(e) => setSupplier(e.target.value)}
+          />
         </div>
         
         <div className="space-y-2">
@@ -124,8 +158,9 @@ export function ExpensesForm({ date, setDate, expenseComment, setExpenseComment,
         placeholder="Ej: Gasto extraordinario, compra semestral, etc."
       />
       
-      <Button onClick={onSave} className="w-full md:w-auto">
-        <Save className="mr-2 h-4 w-4" /> Guardar
+      <Button type="submit" disabled={isLoading} className="w-full md:w-auto">
+        <Save className="mr-2 h-4 w-4" /> 
+        {isLoading ? "Guardando..." : "Guardar"}
       </Button>
     </form>
   );

@@ -27,12 +27,24 @@ interface SalesFormProps {
   setDate: (date: Date | undefined) => void;
   salesComment: string;
   setSalesComment: (value: string) => void;
-  onSave: () => void;
+  onSave: (data: any) => void;
+  isLoading: boolean;
 }
 
-export function SalesForm({ date, setDate, salesComment, setSalesComment, onSave }: SalesFormProps) {
+export function SalesForm({ date, setDate, salesComment, setSalesComment, onSave, isLoading }: SalesFormProps) {
+  const [sales, setSales] = useState<string>("");
+  const [customers, setCustomers] = useState<string>("");
+  
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    onSave({ sales, customers });
+    // Reseteamos los campos del formulario
+    setSales("");
+    setCustomers("");
+  };
+
   return (
-    <form className="space-y-6">
+    <form className="space-y-6" onSubmit={handleSubmit}>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         <div className="space-y-2">
           <Label htmlFor="sales-date">Fecha</Label>
@@ -44,6 +56,7 @@ export function SalesForm({ date, setDate, salesComment, setSalesComment, onSave
                   "w-full justify-start text-left font-normal",
                   !date && "text-muted-foreground"
                 )}
+                type="button"
               >
                 <CalendarIcon className="mr-2 h-4 w-4" />
                 {date ? format(date, "PPP", { locale: es }) : <span>Seleccionar fecha</span>}
@@ -76,17 +89,37 @@ export function SalesForm({ date, setDate, salesComment, setSalesComment, onSave
         
         <div className="space-y-2">
           <Label htmlFor="total-sales">Ventas Totales (€)</Label>
-          <Input id="total-sales" placeholder="0.00" type="number" step="0.01" />
+          <Input 
+            id="total-sales" 
+            placeholder="0.00" 
+            type="number" 
+            step="0.01"
+            value={sales}
+            onChange={(e) => setSales(e.target.value)}
+          />
         </div>
         
         <div className="space-y-2">
           <Label htmlFor="num-clients">Número de Clientes</Label>
-          <Input id="num-clients" placeholder="0" type="number" />
+          <Input 
+            id="num-clients" 
+            placeholder="0" 
+            type="number"
+            value={customers}
+            onChange={(e) => setCustomers(e.target.value)}
+          />
         </div>
         
         <div className="space-y-2">
           <Label htmlFor="avg-ticket">Ticket Medio (€)</Label>
-          <Input id="avg-ticket" placeholder="0.00" type="number" step="0.01" />
+          <Input 
+            id="avg-ticket" 
+            placeholder="0.00" 
+            type="number" 
+            step="0.01"
+            value={customers && sales ? (Number(sales) / Number(customers)).toFixed(2) : "0.00"}
+            readOnly
+          />
         </div>
         
         <div className="space-y-2">
@@ -113,8 +146,9 @@ export function SalesForm({ date, setDate, salesComment, setSalesComment, onSave
         placeholder="Ej: Semana Santa aumentó ingresos, promoción especial, etc."
       />
       
-      <Button onClick={onSave} className="w-full md:w-auto">
-        <Save className="mr-2 h-4 w-4" /> Guardar
+      <Button type="submit" disabled={isLoading} className="w-full md:w-auto">
+        <Save className="mr-2 h-4 w-4" /> 
+        {isLoading ? "Guardando..." : "Guardar"}
       </Button>
     </form>
   );
