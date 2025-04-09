@@ -1,5 +1,5 @@
 
-import { supabase } from './client';
+import { supabase } from '@/integrations/supabase/client';
 import type { FinancialData } from './types';
 
 export async function getFinancialData(restaurantId: string, startDate?: string, endDate?: string) {
