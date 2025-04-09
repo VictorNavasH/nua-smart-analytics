@@ -13,27 +13,46 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function HomePage() {
   const [timeRange, setTimeRange] = useState("7d");
   const [viewType, setViewType] = useState("week");
+  const { isAdmin, isManager } = useAuth();
 
-  const quickLinks = [{
-    title: "Dashboard Financiero",
-    description: "Ver indicadores clave de rendimiento y análisis de ventas",
-    icon: <LineChart className="h-10 w-10 text-nua-turquoise" />,
-    href: "/dashboard"
-  }, {
-    title: "Cargar Datos",
-    description: "Registrar ventas, gastos y otras transacciones",
-    icon: <FilePlus className="h-10 w-10 text-nua-pink" />,
-    href: "/data-entry"
-  }, {
-    title: "Proyecciones",
-    description: "Analizar tendencias y prever resultados futuros",
-    icon: <TrendingUp className="h-10 w-10 text-nua-yellow" />,
-    href: "/projections"
-  }];
+  // Filtrar enlaces rápidos según permisos del usuario
+  const getQuickLinks = () => {
+    const baseLinks = [{
+      title: "Dashboard Financiero",
+      description: "Ver indicadores clave de rendimiento y análisis de ventas",
+      icon: <LineChart className="h-10 w-10 text-nua-turquoise" />,
+      href: "/dashboard"
+    }];
+
+    // Solo mostrar Cargar Datos si es admin o manager
+    if (isAdmin || isManager) {
+      baseLinks.push({
+        title: "Cargar Datos",
+        description: "Registrar ventas, gastos y otras transacciones",
+        icon: <FilePlus className="h-10 w-10 text-nua-pink" />,
+        href: "/data-entry"
+      });
+    }
+
+    // Solo mostrar Proyecciones si es admin o manager
+    if (isAdmin || isManager) {
+      baseLinks.push({
+        title: "Proyecciones",
+        description: "Analizar tendencias y prever resultados futuros",
+        icon: <TrendingUp className="h-10 w-10 text-nua-yellow" />,
+        href: "/projections"
+      });
+    }
+
+    return baseLinks;
+  };
+  
+  const quickLinks = getQuickLinks();
   
   return (
     <Layout>

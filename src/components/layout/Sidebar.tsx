@@ -4,9 +4,7 @@ import { DesktopSidebar } from "./DesktopSidebar";
 import { MobileSidebar } from "./MobileSidebar";
 import { useSidebarNavItems } from "./SidebarNavItems";
 
-interface SidebarProps {}
-
-export function Sidebar(props: SidebarProps) {
+export function Sidebar() {
   const [isMobile, setIsMobile] = useState(false);
   const navItems = useSidebarNavItems();
 

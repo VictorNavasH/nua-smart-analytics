@@ -1,5 +1,4 @@
 
-import { ReactNode } from "react";
 import { DataEntryCard } from "@/components/data-entry/DataEntryCard";
 import { ExpensesForm } from "@/components/data-entry/ExpensesForm";
 import { CsvUploader } from "@/components/data-entry/CsvUploader";

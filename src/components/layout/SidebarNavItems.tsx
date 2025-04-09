@@ -43,12 +43,5 @@ export function useSidebarNavItems() {
   return navItems;
 }
 
-export const navItems = [
-  { name: "Inicio", href: "/", icon: HomeIcon },
-  { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-  { name: "Smart Forecast", href: "/smart-forecast", icon: LineChart },
-  { name: "Carga de Datos", href: "/data-entry", icon: ClipboardList },
-  { name: "Proyecciones", href: "/projections", icon: TrendingUp },
-  { name: "Restaurantes", href: "/restaurants", icon: Building },
-  { name: "Perfil", href: "/profile", icon: UserCog },
-];
+// Eliminar el array de navItems estático, ya que ahora usamos el hook useSidebarNavItems
+// que proporciona los elementos de navegación según el rol del usuario
