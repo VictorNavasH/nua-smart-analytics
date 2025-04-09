@@ -12,6 +12,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import {
+  Form,
   FormControl,
   FormDescription,
   FormField,
@@ -22,6 +23,7 @@ import {
 import { Switch } from "@/components/ui/switch";
 import { useVisualFeedback } from "@/hooks/useVisualFeedback";
 import { DashboardSettings } from "@/hooks/useDashboardSettings";
+import { useForm } from "react-hook-form";
 
 interface UserSettingsProps {
   settings: DashboardSettings;
@@ -31,17 +33,20 @@ interface UserSettingsProps {
 export function UserSettings({ settings, onSettingsChange }: UserSettingsProps) {
   const { showSuccess } = useVisualFeedback();
   const [open, setOpen] = useState(false);
-  const [localSettings, setLocalSettings] = useState<DashboardSettings>(settings);
+  
+  // Initialize the form with react-hook-form
+  const form = useForm({
+    defaultValues: settings
+  });
 
-  const handleToggle = (key: keyof DashboardSettings) => {
-    setLocalSettings(prev => ({
-      ...prev,
-      [key]: !prev[key]
-    }));
-  };
+  // Update local form values when settings prop changes
+  useState(() => {
+    form.reset(settings);
+  }, [settings, form]);
 
   const handleSave = () => {
-    onSettingsChange(localSettings);
+    const values = form.getValues();
+    onSettingsChange(values);
     setOpen(false);
     showSuccess(
       "Configuración guardada", 
@@ -50,7 +55,7 @@ export function UserSettings({ settings, onSettingsChange }: UserSettingsProps) 
   };
 
   const handleCancel = () => {
-    setLocalSettings(settings);
+    form.reset(settings);
     setOpen(false);
   };
 
@@ -72,85 +77,121 @@ export function UserSettings({ settings, onSettingsChange }: UserSettingsProps) 
             Configura qué elementos deseas visualizar en tu panel de control.
           </DialogDescription>
         </DialogHeader>
-        <div className="py-4">
-          <div className="space-y-4">
-            <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 transition-all hover:shadow-sm">
-              <div className="space-y-0.5">
-                <FormLabel>Mostrar métricas secundarias</FormLabel>
-                <FormDescription>
-                  Muestra la sección de métricas adicionales
-                </FormDescription>
-              </div>
-              <FormControl>
-                <Switch
-                  checked={localSettings.showSecondaryMetrics}
-                  onCheckedChange={() => handleToggle("showSecondaryMetrics")}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-            <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 transition-all hover:shadow-sm">
-              <div className="space-y-0.5">
-                <FormLabel>Mostrar notas mensuales</FormLabel>
-                <FormDescription>
-                  Muestra la sección de notas y comentarios
-                </FormDescription>
-              </div>
-              <FormControl>
-                <Switch
-                  checked={localSettings.showMonthlyNotes}
-                  onCheckedChange={() => handleToggle("showMonthlyNotes")}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-            <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 transition-all hover:shadow-sm">
-              <div className="space-y-0.5">
-                <FormLabel>Mostrar barras de progreso</FormLabel>
-                <FormDescription>
-                  Muestra el progreso hacia objetivos
-                </FormDescription>
-              </div>
-              <FormControl>
-                <Switch
-                  checked={localSettings.showProgressBars}
-                  onCheckedChange={() => handleToggle("showProgressBars")}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-            <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 transition-all hover:shadow-sm">
-              <div className="space-y-0.5">
-                <FormLabel>Mostrar gráfico de gastos</FormLabel>
-                <FormDescription>
-                  Muestra el gráfico de distribución de gastos
-                </FormDescription>
-              </div>
-              <FormControl>
-                <Switch
-                  checked={localSettings.showExpensesChart}
-                  onCheckedChange={() => handleToggle("showExpensesChart")}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-            <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 transition-all hover:shadow-sm">
-              <div className="space-y-0.5">
-                <FormLabel>Mostrar predicciones IA</FormLabel>
-                <FormDescription>
-                  Muestra las predicciones de inteligencia artificial
-                </FormDescription>
-              </div>
-              <FormControl>
-                <Switch
-                  checked={localSettings.showAIPredictions}
-                  onCheckedChange={() => handleToggle("showAIPredictions")}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          </div>
-        </div>
+        <Form {...form}>
+          <form className="py-4">
+            <div className="space-y-4">
+              <FormField
+                control={form.control}
+                name="showSecondaryMetrics"
+                render={({ field }) => (
+                  <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 transition-all hover:shadow-sm">
+                    <div className="space-y-0.5">
+                      <FormLabel>Mostrar métricas secundarias</FormLabel>
+                      <FormDescription>
+                        Muestra la sección de métricas adicionales
+                      </FormDescription>
+                    </div>
+                    <FormControl>
+                      <Switch
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              
+              <FormField
+                control={form.control}
+                name="showMonthlyNotes"
+                render={({ field }) => (
+                  <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 transition-all hover:shadow-sm">
+                    <div className="space-y-0.5">
+                      <FormLabel>Mostrar notas mensuales</FormLabel>
+                      <FormDescription>
+                        Muestra la sección de notas y comentarios
+                      </FormDescription>
+                    </div>
+                    <FormControl>
+                      <Switch
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              
+              <FormField
+                control={form.control}
+                name="showProgressBars"
+                render={({ field }) => (
+                  <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 transition-all hover:shadow-sm">
+                    <div className="space-y-0.5">
+                      <FormLabel>Mostrar barras de progreso</FormLabel>
+                      <FormDescription>
+                        Muestra el progreso hacia objetivos
+                      </FormDescription>
+                    </div>
+                    <FormControl>
+                      <Switch
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              
+              <FormField
+                control={form.control}
+                name="showExpensesChart"
+                render={({ field }) => (
+                  <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 transition-all hover:shadow-sm">
+                    <div className="space-y-0.5">
+                      <FormLabel>Mostrar gráfico de gastos</FormLabel>
+                      <FormDescription>
+                        Muestra el gráfico de distribución de gastos
+                      </FormDescription>
+                    </div>
+                    <FormControl>
+                      <Switch
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              
+              <FormField
+                control={form.control}
+                name="showAIPredictions"
+                render={({ field }) => (
+                  <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 transition-all hover:shadow-sm">
+                    <div className="space-y-0.5">
+                      <FormLabel>Mostrar predicciones IA</FormLabel>
+                      <FormDescription>
+                        Muestra las predicciones de inteligencia artificial
+                      </FormDescription>
+                    </div>
+                    <FormControl>
+                      <Switch
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+          </form>
+        </Form>
         <DialogFooter>
           <Button variant="outline" onClick={handleCancel} className="transition-all hover:bg-background/80">
             Cancelar
