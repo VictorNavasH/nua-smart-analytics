@@ -32,14 +32,14 @@ export function StatsSection({
   customerLoyalty
 }: StatsSectionProps) {
   return (
-    <div className="grid gap-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
+    <div className="grid gap-2 grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-8">
       {/* Primera fila: KPIs críticos (3 más importantes) */}
-      <div className="order-1">
+      <div className="col-span-1">
         <StatCard 
           title="Ingresos" 
           value="€2,854.00" 
           trend={12.5} 
-          icon={<BanknoteIcon className="h-4 w-4 text-nua-turquoise" />}
+          icon={<BanknoteIcon className="h-3.5 w-3.5 text-nua-turquoise" />}
           progress={showProgressBars ? currentSales : undefined}
           progressMax={monthlyGoal}
           showProgressBar={showProgressBars}
@@ -47,23 +47,23 @@ export function StatsSection({
           helpText="Total de ventas en el periodo seleccionado"
         />
       </div>
-      <div className="order-2">
+      <div className="col-span-1">
         <StatCard 
           title="Margen Neto" 
           value="24.8%" 
           trend={-1.2} 
-          icon={<Percent className="h-4 w-4 text-nua-blue" />}
+          icon={<Percent className="h-3.5 w-3.5 text-nua-blue" />}
           colorClass="#364F6B/10"
           highlight={true}
           helpText="Porcentaje de beneficio después de gastos"
         />
       </div>
-      <div className="order-3">
+      <div className="col-span-1">
         <StatCard 
           title="Beneficio Operativo" 
           value="€705.75" 
           trend={7.3} 
-          icon={<BarChart4 className="h-4 w-4 text-green-500" />}
+          icon={<BarChart4 className="h-3.5 w-3.5 text-green-500" />}
           colorClass="rgba(34, 197, 94, 0.1)"
           highlight={true}
           helpText="Beneficio antes de impuestos e intereses"
@@ -71,33 +71,33 @@ export function StatsSection({
       </div>
       
       {/* Segunda fila: KPIs secundarios */}
-      <div className="order-4">
+      <div className="col-span-1">
         <StatCard 
           title="Clientes" 
           value="210" 
           trend={8.2} 
-          icon={<Users className="h-4 w-4 text-nua-pink" />}
+          icon={<Users className="h-3.5 w-3.5 text-nua-pink" />}
           colorClass="#FF4797/10"
           helpText="Número total de clientes atendidos"
         />
       </div>
-      <div className="order-5">
+      <div className="col-span-1">
         <StatCard 
           title="Ticket Medio" 
           value="€13.59" 
           trend={3.7} 
-          icon={<Receipt className="h-4 w-4 text-nua-yellow" />}
+          icon={<Receipt className="h-3.5 w-3.5 text-nua-yellow" />}
           colorClass="#FFCE85/10"
           helpText="Valor promedio por transacción"
         />
       </div>
       {customerLoyalty && (
-        <div className="order-6">
+        <div className="col-span-1">
           <StatCard 
-            title="Fidelidad de Clientes" 
+            title="Fidelidad" 
             value={`${customerLoyalty.retentionRate}%`} 
             trend={customerLoyalty.trend} 
-            icon={<HeartPulse className="h-4 w-4 text-red-500" />}
+            icon={<HeartPulse className="h-3.5 w-3.5 text-red-500" />}
             colorClass="rgba(239, 68, 68, 0.1)"
             progress={showProgressBars ? customerLoyalty.retentionRate : undefined}
             progressMax={100}
@@ -108,11 +108,11 @@ export function StatsSection({
       )}
       
       {/* Tercera fila: KPIs adicionales */}
-      <div className="order-7">
+      <div className="col-span-1">
         <StatCard 
-          title="% Punto Equilibrio" 
+          title="Punto Equilibrio" 
           value="76%" 
-          icon={<Scale className="h-4 w-4 text-orange-500" />}
+          icon={<Scale className="h-3.5 w-3.5 text-orange-500" />}
           colorClass="rgba(249, 115, 22, 0.1)"
           helpText="Porcentaje alcanzado del punto de equilibrio"
         />
