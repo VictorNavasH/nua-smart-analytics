@@ -8,8 +8,8 @@ import { DataEntryCard } from "@/components/data-entry/DataEntryCard";
 import { SalesForm } from "@/components/data-entry/SalesForm";
 import { ExpensesForm } from "@/components/data-entry/ExpensesForm";
 import { CsvUploader } from "@/components/data-entry/CsvUploader";
-import { supabase } from "@/integrations/supabase/client";
 import { format } from "date-fns";
+import { createFinancialEntry } from "@/lib/supabase/financial-data";
 
 export default function DataEntryPage() {
   const [date, setDate] = useState<Date | undefined>(new Date());
@@ -37,48 +37,41 @@ export default function DataEntryPage() {
     try {
       const formattedDate = formatDate(date);
       
-      // Get the current user's restaurant ID
-      const { data: profileData, error: profileError } = await supabase
-        .from('profiles')
-        .select('restaurante_id')
-        .single();
+      // Simulamos obtener el ID del restaurante del usuario actual
+      const restaurantId = "restaurant-1"; // ID fijo para desarrollo
       
-      if (profileError) throw profileError;
+      // Preparamos los datos según el tipo de entrada
+      let entryData;
       
-      const restaurantId = profileData?.restaurante_id;
-      
-      if (!restaurantId) {
-        throw new Error("No hay restaurante asignado a este usuario");
+      if (type === 'sales') {
+        entryData = {
+          restaurant_id: restaurantId,
+          date: formattedDate,
+          revenue: Number(data.sales) || 0,
+          expenses: 0,
+          clients: Number(data.customers) || 0,
+          avg_ticket: Number(data.sales) / (Number(data.customers) || 1)
+        };
+      } else {
+        entryData = {
+          restaurant_id: restaurantId,
+          date: formattedDate,
+          revenue: 0,
+          expenses: Number(data.expenses) || 0,
+          clients: 0,
+          avg_ticket: 0
+        };
       }
-
-      // Prepare data entry based on type
-      const entry = {
-        restaurant_id: restaurantId,
-        date: formattedDate,
-        ...(type === 'sales' ? {
-          sales: data.sales || 0,
-          customers: data.customers || 0,
-          comment: salesComment
-        } : {
-          expenses: data.expenses || 0,
-          expense_category: data.category || 'otros',
-          comment: expenseComment
-        })
-      };
-
-      // Insert data into financial_data table
-      const { error } = await supabase
-        .from('financial_data')
-        .insert(entry);
-
-      if (error) throw error;
+      
+      // Usamos la función para crear una entrada financiera
+      await createFinancialEntry(entryData);
 
       toast({
         title: "Datos guardados",
         description: "Los datos se han guardado correctamente",
       });
 
-      // Reset form if successful
+      // Resetear formulario si fue exitoso
       if (type === 'sales') {
         setSalesComment("");
       } else {
@@ -104,46 +97,34 @@ export default function DataEntryPage() {
     let errorCount = 0;
     
     try {
-      // Get the current user's restaurant ID
-      const { data: profileData, error: profileError } = await supabase
-        .from('profiles')
-        .select('restaurante_id')
-        .single();
+      // Simulamos obtener el ID del restaurante del usuario actual
+      const restaurantId = "restaurant-1"; // ID fijo para desarrollo
       
-      if (profileError) throw profileError;
-      const restaurantId = profileData?.restaurante_id;
-      
-      if (!restaurantId) {
-        throw new Error("No hay restaurante asignado a este usuario");
-      }
-      
-      // Process each row from CSV
+      // Procesamos cada fila del CSV
       for (const row of data) {
-        // Format and validate the data
+        // Formato y validación de datos
         if (!row.date) {
           errorCount++;
           continue;
         }
         
-        const entry = {
-          restaurant_id: restaurantId,
-          date: row.date,
-          sales: row.sales || row.ventas || 0,
-          customers: row.customers || row.clientes || 0,
-          expenses: row.expenses || row.gastos || 0,
-          expense_category: row.category || row.categoria || 'otros',
-          comment: row.comment || row.comentario || ''
-        };
-        
-        const { error } = await supabase
-          .from('financial_data')
-          .insert(entry);
+        try {
+          // Preparar datos financieros
+          const entryData = {
+            restaurant_id: restaurantId,
+            date: row.date,
+            revenue: Number(row.sales || row.ventas || 0),
+            expenses: Number(row.expenses || row.gastos || 0),
+            clients: Number(row.customers || row.clientes || 0),
+            avg_ticket: Number(row.sales || row.ventas || 0) / (Number(row.customers || row.clientes || 1) || 1)
+          };
           
-        if (error) {
-          errorCount++;
-          console.error("Error al importar fila:", error);
-        } else {
+          // Crear entrada financiera
+          await createFinancialEntry(entryData);
           successCount++;
+        } catch (err) {
+          errorCount++;
+          console.error("Error al importar fila:", err);
         }
       }
       
