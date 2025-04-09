@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -40,7 +40,7 @@ export function UserSettings({ settings, onSettingsChange }: UserSettingsProps) 
   });
 
   // Update local form values when settings prop changes
-  useState(() => {
+  useEffect(() => {
     form.reset(settings);
   }, [settings, form]);
 
