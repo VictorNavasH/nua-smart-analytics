@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { ChevronRight, LineChart, PieChart, TrendingUp, Receipt, FilePlus, Github, Calendar, BarChart3, HelpCircle } from "lucide-react";
+import { ChevronRight, LineChart, PieChart, TrendingUp, Receipt, FilePlus, Github, Calendar, BarChart3, HelpCircle, NotebookPen, Building, Clock, BookOpen } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useState } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -27,6 +27,11 @@ export default function HomePage() {
       description: "Ver indicadores clave de rendimiento y análisis de ventas",
       icon: <LineChart className="h-10 w-10 text-nua-turquoise" />,
       href: "/dashboard"
+    }, {
+      title: "Smart Forecast",
+      description: "Predicciones inteligentes basadas en IA para tu negocio",
+      icon: <BarChart3 className="h-10 w-10 text-nua-blue" />,
+      href: "/smart-forecast"
     }];
 
     // Solo mostrar Cargar Datos si es admin o manager
@@ -46,6 +51,16 @@ export default function HomePage() {
         description: "Analizar tendencias y prever resultados futuros",
         icon: <TrendingUp className="h-10 w-10 text-nua-yellow" />,
         href: "/projections"
+      });
+    }
+
+    // Solo administradores pueden ver gestión de restaurantes
+    if (isAdmin) {
+      baseLinks.push({
+        title: "Restaurantes",
+        description: "Gestionar locales y configuración de sucursales",
+        icon: <Building className="h-10 w-10 text-green-500" />,
+        href: "/restaurants"
       });
     }
 
@@ -73,6 +88,7 @@ export default function HomePage() {
           <p className="text-muted-foreground">Impulsa tu éxito con la inteligencia financiera de NÜA Smart Restaurant.</p>
         </div>
 
+        {/* Módulos principales - Accesos rápidos */}
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {quickLinks.map((link, index) => (
             <Card 
@@ -100,6 +116,7 @@ export default function HomePage() {
           ))}
         </div>
 
+        {/* Módulos secundarios - Información y resumen */}
         <div className="grid gap-6 md:grid-cols-2">
           <Card className="md:col-span-1 shadow-card hover:shadow-card-hover transition-all duration-300">
             <CardHeader className="pb-2">
@@ -220,7 +237,89 @@ export default function HomePage() {
             </CardContent>
           </Card>
         </div>
+
+        {/* Nueva fila de tarjetas - Enlaces rápidos y recursos */}
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {/* Acceso a mi perfil */}
+          <Card className="shadow-card hover:shadow-card-hover transition-all duration-300">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-nua-navy flex items-center gap-2 text-lg">
+                <NotebookPen className="h-5 w-5 text-nua-pink" />
+                Perfil y Preferencias
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="pt-1">
+              <p className="text-sm text-muted-foreground">Gestiona tu información personal y configura tus preferencias del sistema.</p>
+            </CardContent>
+            <CardFooter>
+              <Button 
+                asChild 
+                variant="outline" 
+                className="w-full justify-between hover:bg-nua-pink/5 hover:border-nua-pink"
+              >
+                <Link to="/profile">
+                  <span>Mi perfil</span>
+                  <ChevronRight className="h-4 w-4" />
+                </Link>
+              </Button>
+            </CardFooter>
+          </Card>
+
+          {/* Próximos eventos */}
+          <Card className="shadow-card hover:shadow-card-hover transition-all duration-300">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-nua-navy flex items-center gap-2 text-lg">
+                <Clock className="h-5 w-5 text-nua-yellow" />
+                Próximos Eventos
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="pt-1">
+              <div className="space-y-2">
+                <div className="flex items-center justify-between border-b pb-2">
+                  <p className="text-sm font-medium">Reunión mensual</p>
+                  <span className="text-xs text-muted-foreground">15/04 - 10:00</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <p className="text-sm font-medium">Cierre de mes</p>
+                  <span className="text-xs text-muted-foreground">30/04 - 18:00</span>
+                </div>
+              </div>
+            </CardContent>
+            <CardFooter>
+              <Button 
+                variant="outline" 
+                className="w-full justify-between hover:bg-nua-yellow/5 hover:border-nua-yellow"
+              >
+                <span>Ver calendario</span>
+                <Calendar className="h-4 w-4" />
+              </Button>
+            </CardFooter>
+          </Card>
+
+          {/* Centro de ayuda */}
+          <Card className="shadow-card hover:shadow-card-hover transition-all duration-300">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-nua-navy flex items-center gap-2 text-lg">
+                <BookOpen className="h-5 w-5 text-nua-turquoise" />
+                Centro de Ayuda
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="pt-1">
+              <p className="text-sm text-muted-foreground">Accede a guías, tutoriales y documentación para aprovechar al máximo la plataforma.</p>
+            </CardContent>
+            <CardFooter>
+              <Button 
+                variant="outline" 
+                className="w-full justify-between hover:bg-nua-turquoise/5 hover:border-nua-turquoise"
+              >
+                <span>Ver recursos</span>
+                <ChevronRight className="h-4 w-4" />
+              </Button>
+            </CardFooter>
+          </Card>
+        </div>
       </div>
     </Layout>
   );
 }
+
